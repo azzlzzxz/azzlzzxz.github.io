@@ -11,6 +11,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'async&await', link: '/base/promise/async' },
       ],
     },
+    {
+      text: '浏览器相关知识',
+      collapsed: false,
+      items: [{ text: '浏览器渲染原理', link: '/base/browser/browser' }],
+    },
     // {
     //   text: 'TypeScript',
     //   link: '/fe/typescript/base',
@@ -19,6 +24,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
 
   '/node/': [
     {
+      text: '规范与模块',
+      collapsed: false,
+      items: [{ text: 'CommonJs规范', link: '/node/norm/commonJs' }],
+    },
+    {
       text: 'Node 相关',
       collapsed: false,
       items: [
@@ -26,6 +36,20 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'npm', link: '/node/npm/source' },
         { text: 'pnpm', link: '/node/npm/pnpm' },
       ],
+    },
+  ],
+  '/react/': [
+    {
+      text: 'React源码',
+      collapsed: false,
+      items: [{ text: 'Fiber', link: '/react/source/fiber' }],
+    },
+  ],
+  '/vue/': [
+    {
+      text: 'Vue源码',
+      collapsed: false,
+      items: [{ text: 'Effect', link: '/vue/source/effect' }],
     },
   ],
 }

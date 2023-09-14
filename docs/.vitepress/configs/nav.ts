@@ -15,4 +15,11 @@ export const nav: DefaultTheme.Config['nav'] = [
     items: [{ text: 'npm', link: '/node/npm/npm' }],
     activeMatch: '^/node',
   },
+  {
+    text: '源码阅读',
+    items: [
+      { text: 'Vue', link: '/vue/source/effect' },
+      { text: 'React', link: '/react/source/fiber' },
+    ],
+  },
 ]

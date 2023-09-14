@@ -42,7 +42,7 @@ export default defineConfig({
 
     footer: {
       message: '如有转载或 CV 的请标注本站原文地址',
-      copyright: 'Copyright © 2023-present azzlzzxz',
+      copyright: 'Copyright © 2021-present azzlzzxz',
     },
 
     darkModeSwitchLabel: '外观',

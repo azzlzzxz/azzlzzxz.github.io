@@ -9,7 +9,7 @@ const pageId = computed(() => route.path.replace('/mm-notes', ''))
 </script>
 
 <template>
-  <div class="copyright">Copyright © 2023-present azzlzzxz</div>
+  <div class="copyright">Copyright © 2021-present azzlzzxz</div>
 </template>
 
 <style scoped>

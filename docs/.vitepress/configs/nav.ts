@@ -10,4 +10,9 @@ export const nav: DefaultTheme.Config['nav'] = [
     ],
     activeMatch: '^/base',
   },
+  {
+    text: 'Node',
+    items: [{ text: 'npm', link: '/node/npm/npm' }],
+    activeMatch: '^/node',
+  },
 ]

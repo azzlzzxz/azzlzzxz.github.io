@@ -88,5 +88,16 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '查找', link: '/work/structure/search' },
       ],
     },
+    {
+      text: '构建工具',
+      collapsed: false,
+      items: [
+        {
+          text: 'webpack',
+          collapsed: false,
+          items: [{ text: '基础', link: '/work/construct/webpack/base' }],
+        },
+      ],
+    },
   ],
 }

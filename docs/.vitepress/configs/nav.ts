@@ -37,6 +37,9 @@ export const nav: DefaultTheme.Config['nav'] = [
   },
   {
     text: 'work',
-    items: [{ text: '数据结构与算法', link: '/work/structure/linkList' }],
+    items: [
+      { text: '数据结构与算法', link: '/work/structure/linkList' },
+      { text: '构建工具', link: '/work/construct/webpack/base' },
+    ],
   },
 ]

@@ -5,8 +5,9 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: '基础知识',
     items: [
-      { text: '浏览器相关知识', link: '/base/browser/browser' },
       { text: 'promise', link: '/base/promise/promise' },
+      { text: 'TS', link: '/base/typescript/ts' },
+      { text: '浏览器相关知识', link: '/base/browser/browser' },
     ],
     activeMatch: '^/base',
   },
@@ -18,8 +19,8 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: '源码阅读',
     items: [
-      { text: 'Vue', link: '/vue/source/effect' },
       { text: 'React', link: '/react/source/fiber' },
+      { text: 'Vue', link: '/vue/source/effect' },
     ],
   },
 ]

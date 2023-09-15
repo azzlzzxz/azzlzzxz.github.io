@@ -12,14 +12,25 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
+      text: 'TypeScript',
+      collapsed: false,
+      items: [
+        { text: '介绍', link: '/base/typescript/ts' },
+        { text: '常用类型', link: '/base/typescript/type' },
+        { text: '接口', link: '/base/typescript/interface' },
+        { text: '泛型', link: '/base/typescript/generic' },
+        { text: '类', link: '/base/typescript/class' },
+        { text: '模块', link: '/base/typescript/module' },
+        { text: '装饰器', link: '/base/typescript/decorator' },
+        { text: '类型兼容性', link: '/base/typescript/compatibility' },
+        { text: '类型体操', collapsed: false, items: [] },
+      ],
+    },
+    {
       text: '浏览器相关知识',
       collapsed: false,
       items: [{ text: '浏览器渲染原理', link: '/base/browser/browser' }],
     },
-    // {
-    //   text: 'TypeScript',
-    //   link: '/fe/typescript/base',
-    // },
   ],
 
   '/node/': [

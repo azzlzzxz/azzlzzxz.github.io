@@ -40,6 +40,14 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   ],
   '/react/': [
     {
+      text: 'React基础',
+      collapsed: false,
+      items: [
+        { text: 'jsx', link: '/react/base/jsx' },
+        { text: '虚拟DOM', link: '/react/base/virtualDOM' },
+      ],
+    },
+    {
       text: 'React源码',
       collapsed: false,
       items: [{ text: 'Fiber', link: '/react/source/fiber' }],

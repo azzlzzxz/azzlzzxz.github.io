@@ -137,3 +137,47 @@ node_modules
 这种布局乍一看可能很奇怪，但它与 Node 的模块解析算法完全兼容！ 解析模块时，Node 会忽略符号链接，因此当 foo@1.0.0/node_modules/foo/index.js 需要 bar 时，Node 不会使用在 foo@1.0.0/node_modules/bar 的 bar，相反，bar 是被解析到其实际位置（bar@1.0.0/node_modules/bar）。 因此，bar 也可以解析其在 bar@1.0.0/node_modules 中的依赖项。
 
 这种布局的一大好处是只有真正在依赖项中的包才能访问。
+
+## 处理 peerDependencies
+
+## .npmrc
+
+pnpm 的配置文件
+
+### 依赖提升设置
+
+#### hoist
+
+当 hoist 为 true 时，所有依赖项都会被提升到 node_modules/.pnpm/node_modules。 这使得 node_modules 所有包都可以访问 未列出的依赖项。
+
+```sh
+hoist = true
+```
+
+#### hoist-pattern
+
+告诉 pnpm 哪些包应该被提升到 node_modules/.pnpm/node_modules。 默认情况下，所有包都被提升 —— 但是，如果您知道只有某些有缺陷的包具有幻影依赖，您可以使用此选项专门提升幻影依赖（推荐做法）。
+
+```sh
+hoist-pattern[]=[*]
+hoist-pattern[]=*eslint*
+hoist-pattern[]=*babel*
+```
+
+#### public-hoist-pattern
+
+不同于 hoist-pattern 会把依赖提升到一个虚拟存储中的隐藏的模块目录中，public-hoist-pattern 将匹配的依赖提升至根模块目录中。 提升至根模块目录中意味着应用代码可以访问到幻影依赖，即使他们对解析策略做了不当的修改。
+
+```sh
+public-hoist-pattern[]=['*eslint*', '*prettier*']
+```
+
+#### shamefully-hoist
+
+```sh
+shamefully-hoist = true
+
+# =
+
+public-hoist-pattern[]=*
+```

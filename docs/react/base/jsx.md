@@ -8,7 +8,7 @@
 
 用户编写 jsx 到生成真实 DOM 的流程：
 
-![jsx](../../.vuepress/public/images/jsx.jpg)
+![jsx](./image/jsx.jpg)
 
 ## react18 对于 jsx 的变化
 

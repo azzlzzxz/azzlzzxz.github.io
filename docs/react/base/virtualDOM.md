@@ -15,4 +15,4 @@ let element = (
 console.log(element)
 ```
 
-![virtual_dom](../../.vuepress/public/images/virtual_dom.jpg)
+![virtual_dom](./image/virtual_dom.jpg)

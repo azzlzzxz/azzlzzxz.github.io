@@ -140,6 +140,67 @@ node_modules
 
 ## 处理 peerDependencies
 
+pnpm 的最佳特征之一是，在一个项目中，package 的一个特定版本将始终只有一组依赖项。 这个规则有一个例外 -那就是具有 peer dependencies 的 package。
+
+peer 依赖项（peer dependencies）会从依赖图中更高的已安装的依赖项中解析（resolve），因为它们与父级共享相同的版本。 这意味着，如果 foo@1.0.0 有两个 peers 依赖（bar@^1 和 baz@^1），那么它可能在一个项目中有多个不同的依赖项集合。
+
+```lua
+- foo-parent-1
+  - bar@1.0.0
+  - baz@1.0.0
+  - foo@1.0.0
+- foo-parent-2
+  - bar@1.0.0
+  - baz@1.1.0
+  - foo@1.0.0
+```
+
+在上面的示例中， foo@1.0.0 已安装在 foo-parent-1 和 foo-parent-2 中。 这两个包都有依赖包 baz 和 bar, 但是它们却依赖着不同版本的 baz。 因此， foo@1.0.0 有两组不同的依赖项：一组具有 baz@1.0.0 ，另一组具有 baz@1.1.0。 若要支持这些用例，pnpm 必须有几组不同的依赖项，就去硬链接几次 foo@1.0.0。
+
+通常，如果一个 package 没有 peer 依赖项（peer dependencies），它会被硬链接到其依赖项的软连接（symlinks）旁的 node_modules，就像这样：
+
+```lua
+node_modules
+└── .pnpm
+    ├── foo@1.0.0
+    │   └── node_modules
+    │       ├── foo
+    │       ├── qux   -> ../../qux@1.0.0/node_modules/qux
+    │       └── plugh -> ../../plugh@1.0.0/node_modules/plugh
+    ├── qux@1.0.0
+    ├── plugh@1.0.0
+```
+
+但是，如果 foo 有 peer 依赖（peer dependencies），那么它可能就会有多组依赖项，所以我们为不同的 peer 依赖项创建不同的解析：
+
+```lua
+node_modules
+└── .pnpm
+    ├── foo@1.0.0_bar@1.0.0+baz@1.0.0
+    │   └── node_modules
+    │       ├── foo
+    │       ├── bar   -> ../../bar@1.0.0/node_modules/bar
+    │       ├── baz   -> ../../baz@1.0.0/node_modules/baz
+    │       ├── qux   -> ../../qux@1.0.0/node_modules/qux
+    │       └── plugh -> ../../plugh@1.0.0/node_modules/plugh
+    ├── foo@1.0.0_bar@1.0.0+baz@1.1.0
+    │   └── node_modules
+    │       ├── foo
+    │       ├── bar   -> ../../bar@1.0.0/node_modules/bar
+    │       ├── baz   -> ../../baz@1.1.0/node_modules/baz
+    │       ├── qux   -> ../../qux@1.0.0/node_modules/qux
+    │       └── plugh -> ../../plugh@1.0.0/node_modules/plugh
+    ├── bar@1.0.0
+    ├── baz@1.0.0
+    ├── baz@1.1.0
+    ├── qux@1.0.0
+    ├── plugh@1.0.0
+```
+
+我们创建 foo@1.0.0_bar@1.0.0+baz@1.0.0 或foo@1.0.0_bar@1.0.0+baz@1.1.0内到 foo 的软链接。 因此，Node.js 模块解析器将找到正确的 peers。
+
+如果一个 package 没有 peer 依赖（peer dependencies），不过它的依赖项有 peer 依赖，这些依赖会在更高的依赖图中解析, 则这个传递 package 便可在项目中有几组不同的依赖项。
+
 ## .npmrc
 
 pnpm 的配置文件
@@ -159,9 +220,9 @@ hoist = true
 告诉 pnpm 哪些包应该被提升到 node_modules/.pnpm/node_modules。 默认情况下，所有包都被提升 —— 但是，如果您知道只有某些有缺陷的包具有幻影依赖，您可以使用此选项专门提升幻影依赖（推荐做法）。
 
 ```sh
-hoist-pattern[]=[*]
-hoist-pattern[]=*eslint*
-hoist-pattern[]=*babel*
+hoist-pattern[] = [*]
+hoist-pattern[] = *eslint*
+hoist-pattern[] = *babel*
 ```
 
 #### public-hoist-pattern
@@ -169,7 +230,7 @@ hoist-pattern[]=*babel*
 不同于 hoist-pattern 会把依赖提升到一个虚拟存储中的隐藏的模块目录中，public-hoist-pattern 将匹配的依赖提升至根模块目录中。 提升至根模块目录中意味着应用代码可以访问到幻影依赖，即使他们对解析策略做了不当的修改。
 
 ```sh
-public-hoist-pattern[]=['*eslint*', '*prettier*']
+public-hoist-pattern[] = ['*eslint*', '*prettier*']
 ```
 
 #### shamefully-hoist
@@ -179,5 +240,15 @@ shamefully-hoist = true
 
 # =
 
-public-hoist-pattern[]=*
+public-hoist-pattern[] = *
+```
+
+### Peer Dependency 设置
+
+#### auto-install-peers
+
+当值为 true 时，将自动安装任何缺少的非可选同级依赖关系。
+
+```sh
+auto-install-peers = true
 ```

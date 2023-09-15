@@ -29,7 +29,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: '浏览器相关知识',
       collapsed: false,
-      items: [{ text: '浏览器渲染原理', link: '/base/browser/browser' }],
+      items: [
+        { text: '浏览器渲染原理', link: '/base/browser/browser' },
+        { text: '浏览器相关API', link: '/base/browser/api' },
+      ],
     },
   ],
 
@@ -69,6 +72,21 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'Vue源码',
       collapsed: false,
       items: [{ text: 'Effect', link: '/vue/source/effect' }],
+    },
+  ],
+  '/work/': [
+    {
+      text: '数据结构与算法',
+      collapsed: false,
+      items: [
+        { text: '链表', link: '/work/structure/linkList' },
+        { text: '栈', link: '/work/structure/stack' },
+        { text: '队列', link: '/work/structure/queue' },
+        { text: '树', link: '/work/structure/tree' },
+        { text: '图', link: '/work/structure/graph' },
+        { text: '排序', link: '/work/structure/sort' },
+        { text: '查找', link: '/work/structure/search' },
+      ],
     },
   ],
 }

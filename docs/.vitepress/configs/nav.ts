@@ -19,8 +19,24 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: '源码阅读',
     items: [
-      { text: 'React', link: '/react/source/fiber' },
-      { text: 'Vue', link: '/vue/source/effect' },
+      {
+        text: '框架',
+        items: [
+          { text: 'React', link: '/react/source/fiber' },
+          { text: 'Vue', link: '/vue/source/effect' },
+        ],
+      },
+      {
+        text: '第三方库',
+        items: [
+          { text: 'React-Window', link: 'https://github.com/azzlzzxz/react-window' },
+          { text: 'React-Dnd', link: 'https://github.com/azzlzzxz/react-dnd' },
+        ],
+      },
     ],
+  },
+  {
+    text: 'work',
+    items: [{ text: '数据结构与算法', link: '/work/structure/linkList' }],
   },
 ]

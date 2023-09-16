@@ -237,7 +237,7 @@ npm run 是最常用的命令，他的作用是运行 pacgake.json 中指定的�
 为什么我们直接执行 hello 找不到命令，使用 npm run 来执行却可以？
 原因是 npm run 执行脚本时会先去 node_modules/.bin 中查找是否存在要运行的命令，如果不存在则查找 ../node_modules/.bin，如果全都找不到才会去按系统的环境变量查找。
 
-![hello.js](.image/hello.jpg)
+![hello.js](./image/hello.jpg)
 
 好在现在 node 给我们提供了 npx 命令来解决这个问题。运行 npx hello 即可运行 hello 命令。当然你也可以直接运行 node_modules/.bin/hello
 

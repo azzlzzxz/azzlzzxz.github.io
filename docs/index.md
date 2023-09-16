@@ -23,13 +23,13 @@ features:
     linkText: 前端常用知识
   - icon: 📘
     title: 源码阅读
-    details: 了解各种库的实现原理<br />学习其中的小技巧和冷知识
-    link:
+    details: 了解各种库的实现原理<br />学习其中的设计思路和知识
+    link: /react/source/fiber
     linkText: 源码阅读
   - icon: 💡
-    title: Workflow
-    details: 在工作中学到的一切<small>（常用库/工具/奇淫技巧等）</small><br />配合 CV 大法来更好的摸鱼
-    link:
+    title: Work
+    details: 在工作中用到的一切<small>（常用构建工具/数据结构等）</small><br />配合 CV 大法来加快你的开发😄
+    link: /work/structure/linkList
     linkText: 常用工具库
   - icon: 🧰
     title: 提效工具
@@ -42,8 +42,8 @@ features:
     link:
     linkText: 踩坑记录
   - icon: 💯
-    title: 吾志所向，一往无前。
-    details: '<small class="bottom-small">一个想躺平的小开发</small>'
+    title: 记录、总结、深入。
+    details: '<small class="bottom-small">不断学习、进步的前端开发</small>'
     link:
 ---
 

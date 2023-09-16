@@ -6,9 +6,15 @@
 
 - 我们希望快速响应用户，让用户觉得够快，不能阻塞用户的交互。
 - requestIdleCallback 使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。
-- 正常帧任务完成后没超过 16.6 ms,说明时间有富余，此时就会执行 requestIdleCallback 里注册的任务。
+- 正常帧任务完成后没超过 16.6 ms，说明时间有富余，此时就会执行 requestIdleCallback 里注册的任务。
 
 ![requestIdleCallback](images/requestIdleCallback.jpeg)
+
+缺点：
+
+1. 兼容性问题。
+2. 执行任务的帧空闲时间不可控（React 自己实现了一个 requestIdleCallback）。
+3. 一个任务就是最小的执行单位，不能被打断，所以有可能会被卡住。
 
 ### Demo
 
@@ -31,7 +37,7 @@
       const works = [
         () => {
           console.log('第1个任务开始')
-          // 任务执行时间少过当前帧的空余时间，就会等待当前任务执行完毕，但前帧才会结束
+          // 任务执行时间少过当前帧的空余时间，就会等待当前任务执行完毕，当前帧才会结束
           sleep(1000)
           console.log('第1个任务结束')
         },
@@ -55,6 +61,7 @@
 
         //如果没有剩余时间了，就会跳出循环
         while (deadline.timeRemaining() > 1 && works.length > 0) {
+          // 还有空闲时间 && 还有任务没执行
           performUnitOfWork()
         }
 

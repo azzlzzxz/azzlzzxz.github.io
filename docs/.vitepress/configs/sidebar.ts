@@ -62,7 +62,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: 'React源码',
+      text: 'React-18.2源码',
       collapsed: false,
       items: [{ text: 'Fiber', link: '/react/source/fiber' }],
     },

@@ -105,7 +105,7 @@ ll.add(300) // 末尾添加
 
 ![recursion](image/recursion.png)
 
-![reverse](image/reverse.jpg)
+![reverse](image/reverse.jpeg)
 
 #### Demo
 
@@ -157,7 +157,7 @@ console.log(reverseList)
 
 ### 创建一个新链表
 
-![create](image/create.jpg)
+![create](image/create.jpeg)
 
 #### Demo
 

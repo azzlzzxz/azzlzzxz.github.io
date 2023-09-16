@@ -1,13 +1,3 @@
-<script setup lang="ts">
-import { inject, Ref, computed } from 'vue'
-import { useRoute } from 'vitepress'
-
-const DEV = inject('DEV') as Ref<boolean>
-const route = useRoute()
-
-const pageId = computed(() => route.path.replace('/mm-notes', ''))
-</script>
-
 <template>
   <div class="copyright">Copyright © 2021-present azzlzzxz</div>
 </template>

@@ -7,14 +7,13 @@
   "description": "Development related notes",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/azzlzzxz/note.git"
+    "url": "git+https://github.com/azzlzzxz/azzlzzxz.github.io.git"
   },
   "license": "MIT",
   "author": "azzlzzxz <azzlzzxz@gmail.com>",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development vitepress dev docs --port=8732",
+    "dev": "vitepress dev docs --port=8732",
     "build": "vitepress build docs",
-    "build:github": "cross-env APP_BASE_PATH=/mm-notes/ npm run build",
     "lint": "prettier --write .",
     "prepare": "husky install"
   },

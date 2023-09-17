@@ -6,9 +6,15 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'ES6 常用知识点',
       collapsed: false,
       items: [
-        { text: 'promise原理', link: '/base/promise/promise' },
-        { text: 'promise方法', link: '/base/promise/promiseMethod' },
-        { text: 'async&await', link: '/base/promise/async' },
+        {
+          text: 'promise',
+          collapsed: false,
+          items: [
+            { text: 'promise原理', link: '/base/promise/promise' },
+            { text: 'promise方法', link: '/base/promise/promiseMethod' },
+            { text: 'async', link: '/base/promise/async' },
+          ],
+        },
       ],
     },
     {

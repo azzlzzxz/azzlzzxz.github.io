@@ -174,3 +174,7 @@ export function initializeUpdateQueue(fiber) {
 双缓冲技术是在内存或显存中开辟一块与屏幕一样大小的储存空间，作为缓冲屏幕。将下一帧要显示的图像绘制到这个缓冲屏幕上，在显示的时候将虚拟屏幕中的数据复制到可见区域里去。
 
 ![double_buffering](image/double_buffering.jpg)
+
+### Fiber Tree
+
+![fiber_tree](image/fiber_tree.jpg)

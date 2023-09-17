@@ -1,4 +1,4 @@
-# generator 与 async await
+# async&await
 
 - Promise 中有很多问题，内部还是采用回调的方式，如果逻辑过多还是可能会导致回调地狱。
 - 我们希望写的代码更像同步一些 --->generator。

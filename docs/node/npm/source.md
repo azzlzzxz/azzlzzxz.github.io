@@ -464,11 +464,11 @@ package-lock.json 组成
 
 那么 npm install 的时候，通过扁平化处理之后，究竟是这样:
 
-![depend_second](./image/depend_second.png)
+![depend_second](./image/depend_second.jpg)
 
 还是这样:
 
-![depend_three](./image/depend_three.png)
+![depend_three](./image/depend_three.jpg)
 
 答案是: 都有可能。取决于 a 和 b 在 package.json 中的位置，如果 a 声明在前面，那么就是前面的结构，否则是后面的结构。
 这就是为什么会产生依赖结构的不确定问题，也是 lock 文件诞生的原因之一，无论是 package-lock.json(npm 5.x 才出现)还是 yarn.lock，都是为了保证 install 之后都产生确定的 node_modules 结构。

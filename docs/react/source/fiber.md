@@ -70,10 +70,9 @@ export function createContainer(containerInfo) {
 }
 ```
 
-#### createFiberRoot(创建根 Fiber)
+#### createFiberRoot(创建 Fiber 根)
 
-初始化更新队列
-![initializeUpdateQueue](image/initializeUpdateQueue.png)
+> FiberRoot 是真实的 DOM 节点（根节点）
 
 ```js
 // ReactFiberRoot
@@ -95,6 +94,19 @@ export function createFiberRoot(containerInfo) {
   // 初始化更新队列
   initializeUpdateQueue(uninitializedFiber)
   return root
+}
+```
+
+#### createHostRootFiber(创建根 Fiber)
+
+```js
+// ReactFiber
+export function createFiber(tag, pendingProps, key) {
+  return new FiberNode(tag, pendingProps, key)
+}
+
+export function createHostRootFiber() {
+  return createFiber(HostRoot, null, null)
 }
 ```
 
@@ -143,14 +155,6 @@ export function FiberNode(tag, pendingProps, key) {
   //我们将可以自由重用的“其他”未使用节点集合在一起。
   this.alternate = null
 }
-
-export function createFiber(tag, pendingProps, key) {
-  return new FiberNode(tag, pendingProps, key)
-}
-
-export function createHostRootFiber() {
-  return createFiber(HostRoot, null, null)
-}
 ```
 
 #### Fiber 类型
@@ -179,6 +183,12 @@ export const Placement = 0b0000000000000000000000000010
 export const Update = 0b0000000000000000000000000100
 ```
 
+#### 初始化更新队列
+
+> 每个 Fiber 上都可能会有更新队列，存放它的更新（不同类型的 Fiber，存放的更新都不一样）。
+
+![initializeUpdateQueue](image/initializeUpdateQueue.png)
+
 ```js
 // ReactFiberClassUpdateQueue
 export function initializeUpdateQueue(fiber) {
@@ -192,13 +202,13 @@ export function initializeUpdateQueue(fiber) {
 }
 ```
 
-#### 双缓冲
+### 双缓冲
 
 双缓冲技术是在内存或显存中开辟一块与屏幕一样大小的储存空间，作为缓冲屏幕。将下一帧要显示的图像绘制到这个缓冲屏幕上，在显示的时候将虚拟屏幕中的数据复制到可见区域里去。
 
 ![double_buffering](image/double_buffering.jpg)
 
-### Fiber Tree
+### 构建 Fiber Tree
 
 ![fiber_tree](image/fiber_tree.jpg)
 
@@ -281,7 +291,7 @@ export function initializeUpdateQueue(fiber) {
 +  return update
 +}
 
-+// 单向循环链表
+// 单向循环链表
 +export function enqueueUpdate(fiber, update) {
 +  // 获取当前fiber的更新队列
 +  const updateQueue = fiber.updateQueue
@@ -404,6 +414,10 @@ function performUnitOfWork(unitOfWork) {
 }
 ```
 
+> workInProgress(新的 HostRootFiber)
+
+![prepareFreshStack](image/prepareFreshStack.png)
+
 #### scheduleCallback(任务调度回调)
 
 ```js
@@ -508,3 +522,47 @@ export function createHostRootFiber() {
 ```
 
 ### BeginWork
+
+> 源码地址 [BeginWork](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberBeginWork.new.js#L3685C20-L3685C20)
+
+![begin_work](image/begin_work.jpg)
+
+```js
+// ReactFiberBeginWork
+import logger from 'shared/logger'
+import { HostRoot, HostComponent, HostText } from './ReactWorkTags'
+
+function updateHostRoot(current, workInProgress) {
+  // 需要知道它的子虚拟DOM，知道它的儿子的虚拟DOM信息
+  processUpdateQueue(workInProgress) // workInProgress.memoizedState = { element }
+
+  const nextState = workInProgress.memoizedState
+  const nextChildren = nextState.element
+  // 协调子节点，DOM-DIFF在其中
+  reconcileChildren(current, workInProgress, nextChildren)
+
+  return workInProgress.child // 根据新的虚拟DOM计算新的子节点
+}
+
+function updateHostComponent(current, workInProgress) {}
+
+/**
+ * 目标是根据新的虚拟DOM构建新的fiber子链表
+ * @param {*} current 老fiber
+ * @param {*} workInProgress 新fiber
+ * @returns
+ */
+export function beginWork(current, workInProgress) {
+  logger('beginWork', workInProgress)
+  switch (workInProgress.tag) {
+    case HostRoot:
+      return updateHostRoot(current, workInProgress)
+    case HostComponent:
+      return updateHostComponent(current, workInProgress)
+    case HostText:
+      return null
+    default:
+      return null
+  }
+}
+```

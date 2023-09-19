@@ -52,7 +52,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [{ text: 'CommonJs规范', link: '/node/norm/commonJs' }],
     },
     {
-      text: 'Node 相关',
+      text: 'npm 相关',
       collapsed: false,
       items: [
         { text: 'npm 常用命令', link: '/node/npm/npm' },
@@ -92,7 +92,6 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '栈', link: '/work/structure/stack' },
         { text: '队列', link: '/work/structure/queue' },
         { text: '树', link: '/work/structure/tree' },
-        { text: '图', link: '/work/structure/graph' },
         { text: '排序', link: '/work/structure/sort' },
         { text: '查找', link: '/work/structure/search' },
       ],

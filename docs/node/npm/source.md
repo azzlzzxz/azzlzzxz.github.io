@@ -458,7 +458,7 @@ package-lock.json 组成
 
 ### 依赖结构不确定
 
-假如项目依赖两个包 a 和 b，这两个包的依赖又是这样的:
+假如项目依赖两个包 express 和 koa，这两个包的依赖又是这样的:
 
 ![depend_one](./image/depend_one.jpg)
 
@@ -470,7 +470,7 @@ package-lock.json 组成
 
 ![depend_three](./image/depend_three.jpg)
 
-答案是: 都有可能。取决于 a 和 b 在 package.json 中的位置，如果 a 声明在前面，那么就是前面的结构，否则是后面的结构。
+答案是: 都有可能。取决于 express 和 koa 在 package.json 中的位置，如果 express 声明在前面，那么就是前面的结构，否则是后面的结构。
 这就是为什么会产生依赖结构的不确定问题，也是 lock 文件诞生的原因之一，无论是 package-lock.json(npm 5.x 才出现)还是 yarn.lock，都是为了保证 install 之后都产生确定的 node_modules 结构。
 
 ### 扁平化导致可以非法访问没有声明过依赖的包（幽灵依赖）
@@ -485,10 +485,7 @@ package-lock.json 组成
   "name": "demo",
   "main": "index.js",
   "dependencies": {
-    "minimatch": "^3.0.4"
-  },
-  "devDependencies": {
-    "rimraf": "^2.6.2"
+    "express": "^3.0.4"
   }
 }
 ```
@@ -497,17 +494,17 @@ package-lock.json 组成
 
 ```json
 // index.js
-var minimatch = require("minimatch")
-var expand = require("brace-expansion");  // ???
-var glob = require("glob")  // ???
+const cookie = require("cookie");  // ???
+
+// （更多使用那些库的代码)
 
 // （更多使用那些库的代码)
 ```
 
-有两个库根本没有被作为依赖定义在 package.json 文件中。那这到底是怎么跑起来的呢？
-原来 brace-expansion 是 minimatch 的依赖，而 glob 是 rimraf 的依赖。在安装的时候，NPM 会打平他们的文件夹到 node_modules。NodeJS 的 require() 函数能够在依赖目录找到它们，因为 require() 在查找文件夹时 根本不会受 package.json 文件 影响。
+这个库根本没有被作为依赖定义在 package.json 文件中。那这到底是怎么跑起来的呢？
+原来 cookie 是 express 的依赖，在安装的时候，NPM 会打平他们的文件夹到 node_modules。NodeJS 的 require() 函数能够在依赖目录找到它们，因为 require() 在查找文件夹时 根本不会受 package.json 文件 影响。
 
-这是很不安全的，当未来 minimatch 中不再依赖 brace-expansion 时将会导致项目报错，因为那时整个项目可能没有如何包依赖了 brace-expansion，也就不会在顶层依赖树中有 brace-expansion，所以项目一定会因为找不到 brace-expansion 这个包而报错。
+这是很不安全的，当未来 express 中不再依赖 cookie 时将会导致项目报错，因为那时如果整个项目可能没有如何包依赖了 cookie，也就不会在顶层依赖树中有 cookie，所以项目一定会因为找不到 cookie 这个包而报错。
 
 ### 又慢又大
 

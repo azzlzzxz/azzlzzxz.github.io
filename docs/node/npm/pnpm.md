@@ -49,6 +49,8 @@ pnpm 引入了另一套依赖管理策略：内容寻址存储。
 
 该策略会将包安装在系统的全局 store 中，依赖的每个版本只会在系统中安装一次。
 
+![pnpm_store](image/pnpm_store.jpg)
+
 在引用项目 node_modules 的依赖时，会通过硬链接与符号链接在全局 store 中找到这个文件。
 
 node_modules 中每个包的每个文件都是来自内容可寻址存储的硬链接。 假设您安装了依赖于 bar@1.0.0 的 foo@1.0.0。 pnpm 会将两个包硬链接到 node_modules 如下所示：

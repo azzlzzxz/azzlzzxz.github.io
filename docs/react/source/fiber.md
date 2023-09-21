@@ -531,20 +531,43 @@ export function createHostRootFiber() {
 // ReactFiberBeginWork
 import logger from 'shared/logger'
 import { HostRoot, HostComponent, HostText } from './ReactWorkTags'
+import { processUpdateQueue } from './ReactFiberClassUpdateQueue'
+import { mountChildFibers, reconcileChildFibers } from './ReactChildFiber'
+
+/**
+ * 根据新的虚拟DOM构建新的fiber子链表
+ * @param {*} current 老的父fiber
+ * @param {*} workInProgress 新的父fiber
+ * @param {*} nextChildren 新的虚拟DOM
+ * @returns
+ */
+function reconcileChildren(current, workInProgress, nextChildren) {
+  // 如果此新fiber没有老fiber，说明此新fiber是新创建的不是更新的
+  if (current === null) {
+    workInProgress.child = mountChildFibers(workInProgress, null, nextChildren)
+  } else {
+    // 如果此新fiber有老fiber，说明此新fiber是更新的不是新创建的，需要做DOM-DIFF，拿老的子fiber链表和新的子虚拟DOM进行最小化更新
+    workInProgress.child = reconcileChildFibers(workInProgress, current.child, nextChildren)
+  }
+}
 
 function updateHostRoot(current, workInProgress) {
   // 需要知道它的子虚拟DOM，知道它的儿子的虚拟DOM信息
   processUpdateQueue(workInProgress) // workInProgress.memoizedState = { element }
 
   const nextState = workInProgress.memoizedState
+  // nextChildren是新的子虚拟DOM
   const nextChildren = nextState.element
   // 协调子节点，DOM-DIFF在其中
+  // 根据新的虚拟DOM生成子Fiber链表
   reconcileChildren(current, workInProgress, nextChildren)
 
   return workInProgress.child // 根据新的虚拟DOM计算新的子节点
 }
 
-function updateHostComponent(current, workInProgress) {}
+function updateHostComponent(current, workInProgress) {
+  return null
+}
 
 /**
  * 目标是根据新的虚拟DOM构建新的fiber子链表
@@ -565,4 +588,164 @@ export function beginWork(current, workInProgress) {
       return null
   }
 }
+```
+
+#### processUpdateQueue
+
+> 根据老状态和更新队列中的更新计算新状态
+
+```js
+// ReactFiberClassUpdateQueue
+import { markUpdateLaneFromFiberToRoot } from "./ReactFiberCocurrentUpdates";
+import assign from "shared/assign";
+
+// 更新状态
+const UpdateState = 0;
+
+export function initializeUpdateQueue(fiber) {
+  // 创建一个新的更新队列
+  const queue = {
+    shared: {
+      pending: null, // 是循环链表
+    },
+  };
+  fiber.updateQueue = queue;
+}
+
+export function createUpdate() {
+  const update = { tag: UpdateState };
+  return update;
+}
+
+// 单向循环链表
+export function enqueueUpdate(fiber, update) {
+  // 获取当前fiber的更新队列
+  const updateQueue = fiber.updateQueue;
+  const pending = updateQueue.shared.pending;
+  if (pending === null) {
+    // 第一次更新
+    update.next = update;
+  } else {
+    // 第n次更新
+    update.next = pending.next;
+    pending.next = update;
+  }
+  // pending指向最后一个更新，最后一个更新的next指向第一个更新
+  updateQueue.shared.pending = update;
+
+  // 返回跟节点，从当前fiber一直到跟节点
+  return markUpdateLaneFromFiberToRoot(fiber);
+}
+
+/**
+ * 根据老状态和更新队列中的更新计算新状态
+ * @param {*} workInProgress 要计算的Fiber
+ */
++ export function processUpdateQueue(workInProgress) {
++  const queue = workInProgress.updateQueue;
++  const pendingQueue = queue.shared.pending;
++  // 如果有更新，或者说更新队列里有内容
++  if (pendingQueue !== null) {
++    // 清除等待生效的更新
++    queue.shared.pending = null;
++    // 获取更新队列中的最后一个更新 update = {payload: {element: h1}}
++    const lastPendingUpdate = pendingQueue;
++    // 让最后一个更新的next指向第一个更新
++    const firstPendingUpdate = lastPendingUpdate.next;
++    // 把循环链表剪开，变成单向链表
++    lastPendingUpdate.next = null;
++    // 获取老状态
++    let newState = workInProgress.memoizedState;
++    let update = firstPendingUpdate;
++    while (update) {
++      // 根据老状态和更新计算新状态
++      newState = getStateFromUpdate(update, newState);
++      update = update.next;
++    }
++    // 把最终计算到的状态赋值给memoizedState
++    workInProgress.memoizedState = newState;
++  }
++ }
+
+/**
+ * 根据老状态和更新计算新状态
+ * @param {*} update 更新的对象其实有很多种类型
+ * @param {*} prevState 老状态
+ */
++ function getStateFromUpdate(update, prevState) {
++  switch (update.tag) {
++    case UpdateState:
++      // payload是一个对象，里面有新的状态
++      const { payload } = update;
++      return assign({}, prevState, payload);
++  }
++ }
+```
+
+#### createChildReconciler
+
+> DOM-DIFF 用老的子 fiber 链表和新的虚拟 DOM 进行比较的过程
+
+```js
+import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols'
+import { createFiberFromElement } from './ReactFiber'
+import { Placement } from './ReactFiberFlags'
+
+/**
+ *
+ * @param {*} shouldTrackSideEffects 是否跟踪副作用
+ */
+function createChildReconciler(shouldTrackSideEffects) {
+  function reconcileSingleElement(returnFiber, currentFirstFiber, element) {
+    // 因为我们现在实现的是初次挂载，那么老节点currentFirstFiber肯定是没有的，所以可以根据虚拟DOM创建fiber节点
+    const created = createFiberFromElement(element)
+    created.return = returnFiber
+    return created
+  }
+
+  /**
+   * 设置副作用（增删改）
+   * @param {*} newFiber
+   * @returns
+   */
+  function placeSingleChild(newFiber) {
+    // 说明要添加副作用
+    if (shouldTrackSideEffects) {
+      // 要在提交阶段插入此节点
+      // React渲染分为渲染（创建Fiber树）和提交（更新真实DOM）两个阶段
+      newFiber.flags |= Placement // Placement 这个新fiber需要变成DOM，插入到dom中
+    }
+    return newFiber
+  }
+
+  /**
+   * 比较子fiber
+   * DOM-DIFF 用老的子fiber链表和新的虚拟DOM进行比较的过程
+   * @param {*} returnFiber 新的父fiber
+   * @param {*} currentFirstFiber 老fiber的第一个子fiber，current一般指的是老的意思
+   * @param {*} newChild 新的子虚拟DOM （h1 虚拟DOM）
+   */
+  function reconcileChildFibers(returnFiber, currentFirstFiber, newChild) {
+    // 现在暂时考虑新的虚拟DOM只有一个的情况
+    if (typeof newChild === 'object' && newChild !== null) {
+      switch (newChild.$$typeof) {
+        // 如果是react元素
+        case REACT_ELEMENT_TYPE:
+          return placeSingleChild(
+            // 协调单节点
+            reconcileSingleElement(returnFiber, currentFirstFiber, newChild),
+          )
+        default:
+          break
+      }
+    }
+  }
+
+  return reconcileChildFibers
+}
+
+// 有老fiber更新的时候用这个
+export const reconcileChildFibers = createChildReconciler(true)
+// 如果没有老父fiber，节点初次挂载的的时候用这个
+export const mountChildFibers = createChildReconciler(false)
 ```

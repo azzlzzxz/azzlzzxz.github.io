@@ -254,3 +254,10 @@ public-hoist-pattern[] = *
 ```sh
 auto-install-peers = true
 ```
+
+## 支持 PnP
+
+```sh
+node-linker=pnp
+symlink=false
+```

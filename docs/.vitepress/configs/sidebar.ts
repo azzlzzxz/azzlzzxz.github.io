@@ -24,12 +24,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '介绍', link: '/base/typescript/ts' },
         { text: '常用类型', link: '/base/typescript/type' },
         { text: '接口', link: '/base/typescript/interface' },
-        { text: '泛型', link: '/base/typescript/generic' },
-        { text: '类', link: '/base/typescript/class' },
-        { text: '模块', link: '/base/typescript/module' },
-        { text: '装饰器', link: '/base/typescript/decorator' },
-        { text: '类型兼容性', link: '/base/typescript/compatibility' },
-        { text: '类型体操', collapsed: false, items: [] },
+        // { text: '泛型', link: '/base/typescript/generic' },
+        // { text: '类', link: '/base/typescript/class' },
+        // { text: '模块', link: '/base/typescript/module' },
+        // { text: '装饰器', link: '/base/typescript/decorator' },
+        // { text: '类型兼容性', link: '/base/typescript/compatibility' },
+        // { text: '类型体操', collapsed: false, items: [] },
       ],
     },
     {
@@ -37,10 +37,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: '浏览器渲染原理', link: '/base/browser/browser' },
-        { text: '浏览器缓存', link: '/base/browser/cache' },
         { text: 'EventLoop', link: '/base/browser/eventLoop' },
-        { text: '浏览器优化', link: '/base/browser/performance' },
-        { text: '浏览器相关API', link: '/base/browser/api' },
+        { text: '浏览器缓存', link: '/base/browser/cache' },
+        // { text: '浏览器优化', link: '/base/browser/performance' },
+        // { text: '浏览器相关API', link: '/base/browser/api' },
       ],
     },
   ],
@@ -52,7 +52,20 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [{ text: 'CommonJs规范', link: '/node/norm/commonJs' }],
     },
     {
-      text: 'Node 相关',
+      text: 'Node基础',
+      collapsed: false,
+      items: [
+        { text: 'Node介绍', link: '/node/base/base' },
+        { text: 'EventLoop', link: '/node/base/eventLoop' },
+        { text: 'Global', link: '/node/base/global' },
+        // { text: 'Events', link: '/node/base/event' },
+        // { text: 'FS', link: '/node/base/fs' },
+        // { text: 'Stream', link: '/node/base/stream' },
+        // { text: 'Cookie', link: '/node/base/cookie' },
+      ],
+    },
+    {
+      text: '包管理工具',
       collapsed: false,
       items: [
         { text: 'npm 常用命令', link: '/node/npm/npm' },
@@ -60,6 +73,18 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'pnpm', link: '/node/npm/pnpm' },
       ],
     },
+    // {
+    //   text: '框架',
+    // },
+    // {
+    //   text: 'Express',
+    // },
+    // {
+    //   text: 'Koa',
+    // },
+    // {
+    //   text: 'Nest',
+    // },
   ],
   '/react/': [
     {
@@ -89,23 +114,23 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: '链表', link: '/work/structure/linkList' },
-        { text: '栈', link: '/work/structure/stack' },
-        { text: '队列', link: '/work/structure/queue' },
         { text: '树', link: '/work/structure/tree' },
-        { text: '图', link: '/work/structure/graph' },
-        { text: '排序', link: '/work/structure/sort' },
-        { text: '查找', link: '/work/structure/search' },
+        // { text: '栈', link: '/work/structure/stack' },
+        // { text: '队列', link: '/work/structure/queue' },
+        // { text: '图', link: '/work/structure/graph' },
+        // { text: '排序', link: '/work/structure/sort' },
+        // { text: '查找', link: '/work/structure/search' },
       ],
     },
     {
       text: '构建工具',
       collapsed: false,
       items: [
-        {
-          text: 'webpack',
-          collapsed: false,
-          items: [{ text: '基础', link: '/work/construct/webpack/base' }],
-        },
+        // {
+        //   text: 'webpack',
+        //   collapsed: false,
+        //   items: [{ text: '基础', link: '/work/construct/webpack/base' }],
+        // },
       ],
     },
   ],

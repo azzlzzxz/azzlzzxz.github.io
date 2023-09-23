@@ -3,6 +3,15 @@ import type { DefaultTheme } from 'vitepress'
 export const sidebar: DefaultTheme.Config['sidebar'] = {
   '/base/': [
     {
+      text: 'JavaScript 基础知识',
+      collapsed: false,
+      items: [
+        { text: '数据类型', link: '/base/javaScript/dataType' },
+        { text: '执行上下文', link: '/base/javaScript/context' },
+        { text: '作用域', link: '/base/javaScript/scope' },
+      ],
+    },
+    {
       text: 'ES6 常用知识点',
       collapsed: false,
       items: [
@@ -10,9 +19,9 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           text: 'promise',
           collapsed: false,
           items: [
-            { text: 'promise原理', link: '/base/promise/promise' },
-            { text: 'promise方法', link: '/base/promise/promiseMethod' },
-            { text: 'async', link: '/base/promise/async' },
+            { text: 'promise原理', link: '/base/es6/promise/promise' },
+            { text: 'promise方法', link: '/base/es6/promise/promiseMethod' },
+            { text: 'async', link: '/base/es6/promise/async' },
           ],
         },
       ],

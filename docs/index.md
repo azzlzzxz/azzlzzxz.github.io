@@ -11,7 +11,7 @@ hero:
     alt: Steins Gate
   actions:
     - text: 前端知识
-      link: /base/promise/promise
+      link: /base/javaScript/dataType
     - text: 前端导航
       link: /nav
       theme: alt

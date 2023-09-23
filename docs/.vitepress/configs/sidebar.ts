@@ -9,6 +9,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '数据类型', link: '/base/javaScript/dataType' },
         { text: '执行上下文', link: '/base/javaScript/context' },
         { text: '作用域', link: '/base/javaScript/scope' },
+        { text: '闭包', link: '/base/javaScript/closure' },
       ],
     },
     {
@@ -42,7 +43,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: '浏览器相关知识',
+      text: '浏览器与网络相关知识',
       collapsed: false,
       items: [
         { text: '浏览器渲染原理', link: '/base/browser/browser' },
@@ -51,6 +52,9 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         // { text: '浏览器优化', link: '/base/browser/performance' },
         // { text: '浏览器相关API', link: '/base/browser/api' },
       ],
+    },
+    {
+      text: '编程题',
     },
   ],
 

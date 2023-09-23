@@ -57,7 +57,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'Node介绍', link: '/node/base/base' },
         { text: 'EventLoop', link: '/node/base/eventLoop' },
-        { text: 'Global', link: '/node/base/global' },
+        { text: 'API', link: '/node/base/global' },
         // { text: 'Events', link: '/node/base/event' },
         // { text: 'FS', link: '/node/base/fs' },
         // { text: 'Stream', link: '/node/base/stream' },

@@ -1,4 +1,4 @@
-# Node 的一些 API
+# 基础 API
 
 ## Global
 
@@ -132,3 +132,44 @@ program.prase(process.argv)
 ```
 
 ![commander_rm](image/commander_rm.png)
+
+## path
+
+```js
+const path = require('path') // 处理路径的
+
+// 默认解析的路径是以process.cwd()为基准，但是process.chdir是能够更改的
+// __dirname 是文件所在的目录 不能更改
+path.resolve(__dirname, 'note.md') // 你给我个相对路径，我还你个绝对路径，有拼接功能
+
+path.join(__dirname, 'note.md') // 只是简单的拼接
+
+// 如果遇到 / 的路径，resolve会认为是根路径，join则是拼接在一起
+console.log(path.resolve(__dirname, '/')) // /
+
+console.log(path.join(__dirname, '/')) // /Users/xinxu/Desktop/node-master/6.node/
+
+path.extname('a.min.js') // .js 取后缀名
+
+path.relative('a', 'a/a.js') // a.js 去掉相同的部分
+
+path.dirname(__dirname) // path.dirname = __dirname
+```
+
+## vm
+
+```js
+const vm = require('vm')
+let a = 1
+const log = `console.log(a)`
+
+eveal(log) // 1
+//eveal执行时会查找上下文，所以eveal是不干净的，如果其他文件模块里也有a，那么eval在查找上下文时会出现问题
+
+let fn = new Function(log)
+fn() //  a is not defined
+// new Function是可以产生一个执行环境，不依赖于外层作用域，必须包一层函数，模版引擎中会使用new Function + with
+
+vm.runInThisContext(log) // a is not defined
+// 让字符串直接执行，并在沙箱环境中
+```

@@ -57,11 +57,20 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'Node介绍', link: '/node/base/base' },
         { text: 'EventLoop', link: '/node/base/eventLoop' },
-        { text: 'API', link: '/node/base/global' },
-        // { text: 'Events', link: '/node/base/event' },
-        // { text: 'FS', link: '/node/base/fs' },
-        // { text: 'Stream', link: '/node/base/stream' },
-        // { text: 'Cookie', link: '/node/base/cookie' },
+        {
+          text: 'Node_API',
+          collapsed: false,
+          items: [
+            { text: '基础API', link: '/node/base/global' },
+            { text: 'Events', link: '/node/base/event' },
+            { text: 'Buffer', link: '/node/base/buffer' },
+            { text: 'FS', link: '/node/base/fs' },
+            { text: 'Stream', link: '/node/base/stream' },
+            { text: 'Http', link: '/node/base/http' },
+            { text: 'Cookie', link: '/node/base/cookie' },
+            { text: 'JWT', link: '/node/base/jwt' },
+          ],
+        },
       ],
     },
     {

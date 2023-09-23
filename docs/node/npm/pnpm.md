@@ -134,7 +134,7 @@ node_modules
             └── qar -> <store>/qar
 ```
 
-< color="#E9EBFE">如你所见，即使图形现在更深（foo > bar > qar），但目录深度仍然相同。</font>
+如你所见，即使图形现在更深（foo > bar > qar），但目录深度仍然相同。
 
 这种布局乍一看可能很奇怪，但它与 Node 的模块解析算法完全兼容！ 解析模块时，Node 会忽略符号链接，因此当 foo@1.0.0/node_modules/foo/index.js 需要 bar 时，Node 不会使用在 foo@1.0.0/node_modules/bar 的 bar，相反，bar 是被解析到其实际位置（bar@1.0.0/node_modules/bar）。 因此，bar 也可以解析其在 bar@1.0.0/node_modules 中的依赖项。
 

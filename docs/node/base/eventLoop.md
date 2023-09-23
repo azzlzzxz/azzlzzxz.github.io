@@ -1,6 +1,6 @@
 # Node 的事件循环机制
 
-![node_eventLoop](image/Node_EventLoop.png)
+![node_eventLoop](image/Node_EventLoop.jpg)
 
 ## event loop 是一个独立的线程
 

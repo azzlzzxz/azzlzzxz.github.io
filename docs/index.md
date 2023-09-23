@@ -12,9 +12,9 @@ hero:
   actions:
     - text: 前端知识
       link: /base/promise/promise
-    - text: 前端导航
-      link: /nav
-      theme: alt
+    # - text: 前端导航
+    #   link: /nav
+    #   theme: alt
 features:
   - icon: 📖
     title: 常用知识

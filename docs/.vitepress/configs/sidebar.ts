@@ -16,6 +16,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'ES6 常用知识点',
       collapsed: false,
       items: [
+        { text: '箭头函数', link: '/base/es6/arrowFn' },
         {
           text: 'promise',
           collapsed: false,

@@ -7,7 +7,7 @@ hero:
   text: 前端记录
   tagline: 知识是进步的阶梯，争取每天都有知识点更新
   image:
-    src: /logo.png
+    src: /logo.jpg
     alt: Steins Gate
   actions:
     - text: 前端知识

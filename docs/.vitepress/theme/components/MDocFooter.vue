@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { inject, Ref, computed } from 'vue'
-import { useRoute } from 'vitepress'
+import { inject, Ref } from 'vue'
 
 const DEV = inject('DEV') as Ref<boolean>
-const route = useRoute()
-
-const pageId = computed(() => route.path.replace('/azzlzzxz.azzlzzxz.github.io', ''))
 </script>
 <template>
   <div class="copyright">
     <img
       v-if="!DEV"
       class="visitor"
-      :src="`https://visitor-badge.laobi.icu/badge?page_id=${pageId}`"
-      title="当前页面累计访问数"
+      src="https://visitor-badge.laobi.icu/badge?page_id=azzlzzxz.azzlzzxz.github.io"
       onerror="this.style.display='none'"
     />
     Copyright © 2021-present azzlzzxz

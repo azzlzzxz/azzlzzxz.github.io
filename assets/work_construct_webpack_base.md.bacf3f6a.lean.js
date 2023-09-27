@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as a}from"./chunks/framework.a5035e6c.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"work/construct/webpack/base.md","lastUpdated":1695474575000}'),r={name:"work/construct/webpack/base.md"};function s(c,o,n,p,d,_){return t(),a("div")}const f=e(r,[["render",s]]);export{m as __pageData,f as default};

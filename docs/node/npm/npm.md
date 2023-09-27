@@ -76,3 +76,107 @@ npm cache clean -f
 # OR
 yarn cache clean
 ```
+
+## npm init 初始化
+
+```sh
+# 项目名
+package name: (test)
+# 版本号
+version: (1.0.0)
+# 项目描述
+description:
+# 入口文件
+entry point: (index.js)
+# 运行 test 脚本时所执行的命令
+test command:
+# 项目 git 地址
+git repository:
+# 关键字，用于 npm search
+keywords:
+# 作者
+author:
+# 开源协议
+license: (ISC)
+```
+
+## npm config 配置文件
+
+```sh
+# 查看 npm 的配置
+npm config list -l
+
+# 查看 npm 配置
+npm config get init.author.name
+
+# 修改 npm 默认配置
+npm config set init.author.name maomao
+
+# 删除 npm 指定配置
+npm config delete init.author.name
+```
+
+## npm search 搜索模块
+
+```sh
+npm search 搜索词 [-g]
+```
+
+## npm install 模块安装
+
+```sh
+# 安装最新包
+npm install antd
+# 安装指定版本
+npm install antd@4.16.24
+# 安装指定版本范围
+npm install lodash@">=4.16.24 <4.16.24"
+
+# 别名
+i add
+
+# 配置项
+# 全局依赖
+--global -g
+# 生产环境依赖 dependencies (默认)
+--save -S
+# 开发环境依赖 devDependencies
+--save-dev -D
+```
+
+## npm uninstall 模块卸载
+
+```sh
+# 卸载
+npm uninstall antd
+```
+
+## npm link 引用模块
+
+```sh
+# 在全局模块路径下中创建 link
+npm link
+
+# 在其他目录下创建一个从全局模块路径到项目模块路径的 link
+# packageName 是取自包的 package.json 中 name 字段
+npm link packageName
+
+# 别名
+ln
+
+# 移除模块引用
+npm unlink
+```
+
+## 发布相关命令
+
+```sh
+# 在 npmjs.com 注册一个用户
+npm adduser
+
+# 登录
+npm login
+
+# 将当前模块发布到 npmjs.com
+npm publish
+```

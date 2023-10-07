@@ -48,7 +48,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: '浏览器渲染原理', link: '/base/browser/browser' },
-        { text: 'EventLoop', link: '/base/browser/eventLoop' },
+        { text: 'EventLoop', link: '/base/browser/eventloop' },
         { text: '浏览器缓存', link: '/base/browser/cache' },
         { text: '浏览器V8引擎', link: '/base/browser/engine' },
         { text: '浏览器优化', link: '/base/browser/performance' },

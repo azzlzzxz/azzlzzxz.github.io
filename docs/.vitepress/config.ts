@@ -12,7 +12,7 @@ export default defineConfig({
   base: process.env.APP_BASE_PATH || '/',
 
   lang: 'zh-CN',
-  title: 'Steins Gate',
+  title: 'SteinsGate',
   description: '包含前端常用知识、源码阅读笔记、日常遇到的问题等',
   head,
 

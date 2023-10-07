@@ -51,8 +51,8 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'EventLoop', link: '/base/browser/eventLoop' },
         { text: '浏览器缓存', link: '/base/browser/cache' },
         { text: '浏览器V8引擎', link: '/base/browser/engine' },
-        // { text: '浏览器优化', link: '/base/browser/performance' },
-        // { text: '浏览器相关API', link: '/base/browser/api' },
+        { text: '浏览器优化', link: '/base/browser/performance' },
+        { text: '浏览器相关API', link: '/base/browser/api' },
       ],
     },
     {

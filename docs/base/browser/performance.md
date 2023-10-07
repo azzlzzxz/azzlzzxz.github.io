@@ -350,7 +350,7 @@ background-color: expression((new Date()) .getHours() %2 ? 'red': 'yellow');
    1. defer 是 html 解析时加载 js，等 html 解析完执行 js，defer 是有序的。
    2. async 是 html 解析时加载 js，js 加载完毕就立即执行 js，会阻塞 html 解析，async 是无序的。
 
-![async_defer](image.png)
+![async_defer](images/async_defer.png)
 
 1. 减少 DOM 操作，缓存访问过的元素。
 2. 操作不直接应用到 DOM 上，而应用到虚拟 DOM 上。最后一次性的应用到 DOM 上。

@@ -44,15 +44,25 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: '浏览器与网络相关知识',
+      text: '浏览器相关知识',
       collapsed: false,
       items: [
         { text: '浏览器渲染原理', link: '/base/browser/browser' },
-        { text: 'EventLoop', link: '/base/browser/eventloop' },
+        { text: '浏览器事件循环机制', link: '/base/browser/eventloop' },
         { text: '浏览器缓存', link: '/base/browser/cache' },
         { text: '浏览器V8引擎', link: '/base/browser/engine' },
-        { text: '浏览器优化', link: '/base/browser/performance' },
+        { text: '浏览器性能优化', link: '/base/browser/performance' },
         { text: '浏览器相关API', link: '/base/browser/api' },
+        { text: 'chrome扩展开发', link: '/base/browser/chrome' },
+      ],
+    },
+    {
+      text: '网络相关知识',
+      collapsed: false,
+      items: [
+        { text: 'RestFulAPI', link: '/base/network/restful' },
+        { text: 'http状态码', link: '/base/network/httpStatus' },
+        { text: 'http协议', link: '/base/network/httpAgreement' },
       ],
     },
     {

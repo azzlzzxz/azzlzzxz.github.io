@@ -1,4 +1,4 @@
-# 浏览器的一些 API
+# 浏览器相关的 API
 
 ## requestIdleCallback
 

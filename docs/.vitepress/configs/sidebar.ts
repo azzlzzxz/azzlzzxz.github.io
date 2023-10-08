@@ -77,6 +77,15 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [{ text: 'CommonJs规范', link: '/node/norm/commonJs' }],
     },
     {
+      text: '包管理工具',
+      collapsed: false,
+      items: [
+        { text: 'npm 常用命令', link: '/node/npm/npm' },
+        { text: 'npm', link: '/node/npm/source' },
+        { text: 'pnpm', link: '/node/npm/pnpm' },
+      ],
+    },
+    {
       text: 'Node基础',
       collapsed: false,
       items: [
@@ -99,25 +108,15 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: '包管理工具',
+      text: 'Nest',
       collapsed: false,
-      items: [
-        { text: 'npm 常用命令', link: '/node/npm/npm' },
-        { text: 'npm', link: '/node/npm/source' },
-        { text: 'pnpm', link: '/node/npm/pnpm' },
-      ],
+      items: [{ text: '基础知识', link: '/node/nest/base' }],
     },
-    // {
-    //   text: '框架',
-    // },
     // {
     //   text: 'Express',
     // },
     // {
     //   text: 'Koa',
-    // },
-    // {
-    //   text: 'Nest',
     // },
   ],
   '/react/': [

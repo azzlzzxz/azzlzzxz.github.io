@@ -137,7 +137,9 @@ exports.area = function (r) {
 }
 ```
 
-==注意：不能直接将 exports 变量指向一个值，因为这样就等于切断了 exports 与 module.exports 的联系。==
+:::tip
+注意：不能直接将 exports 变量指向一个值，因为这样就等于切断了 exports 与 module.exports 的联系。
+:::
 
 ```js
 exports = function (x) {

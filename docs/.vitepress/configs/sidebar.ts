@@ -23,9 +23,9 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           items: [
             { text: 'promise原理', link: '/base/es6/promise/promise' },
             { text: 'promise方法', link: '/base/es6/promise/promiseMethod' },
-            { text: 'async', link: '/base/es6/promise/async' },
           ],
         },
+        { text: 'async&await', link: '/base/es6/async' },
       ],
     },
     {
@@ -60,7 +60,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '网络相关知识',
       collapsed: false,
       items: [
-        { text: 'RestFulAPI', link: '/base/network/restFul' },
+        { text: 'RestFulAPI', link: '/base/network/restFulAPI' },
         { text: 'http状态码', link: '/base/network/httpStatus' },
         { text: 'http协议', link: '/base/network/httpAgreement' },
       ],

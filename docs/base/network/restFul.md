@@ -114,7 +114,7 @@ options 请求属于浏览器的预检请求，查看服务器是否接受请求
 
 ### GET 使用 URL 或 Cookie 传参，而 POST 将数据放在 BODY 中
 
-GET 和 POST 是由 HTTP 协议定义的。
+**<font color="FF9D00">GET 和 POST 是由 HTTP 协议定义的。</font>**
 
 在 HTTP 协议中，Method 和 Data（URL， Body， Header）是正交的两个概念，也就是说，使用哪个 Method 与应用层的数据如何传输是没有相互关系的。
 
@@ -126,7 +126,7 @@ HTTP 没有要求，如果 Method 是 POST 数据就要放在 BODY 中。也没�
 
 ### GET 方式提交的数据有长度限制，则 POST 的数据则可以非常大
 
-先说结论：HTTP 协议对 GET 和 POST 都没有对长度的限制。HTTP 协议明确地指出了，HTTP 头和 Body 都没有长度的要求。
+**<font color="FF9D00">先说结论：HTTP 协议对 GET 和 POST 都没有对长度的限制。HTTP 协议明确地指出了，HTTP 头和 Body 都没有长度的要求。</font>**
 
 首先是"GET 方式提交的数据有长度限制"，如果我们使用 GET 通过 URL 提交数据，那么 GET 可提交的数据量就跟 URL 的长度有直接关系了。而实际上，URL 不存在参数上限的问题，HTTP 协议规范没有对 URL 长度进行限制。这个限制是特定的浏览器及服务器对它的限制。IE 对 URL 长度的限制是 2083 字节(2K+35)。对于其他浏览器，如 Netscape、FireFox 等，理论上没有长度限制，其限制取决于操作系统的支持。
 

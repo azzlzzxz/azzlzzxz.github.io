@@ -60,7 +60,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '网络相关知识',
       collapsed: false,
       items: [
-        { text: 'RestFulAPI', link: '/base/network/restful' },
+        { text: 'RestFulAPI', link: '/base/network/restFul' },
         { text: 'http状态码', link: '/base/network/httpStatus' },
         { text: 'http协议', link: '/base/network/httpAgreement' },
       ],

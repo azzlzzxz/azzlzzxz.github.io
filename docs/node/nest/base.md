@@ -160,7 +160,7 @@ export class PersonController {
 json 需要指定 content-type 为 application/json。
 后端代码同样使用 @Body 来接收，不需要做啥变动。form urlencoded 和 json 都是从 body 取值，Nest 内部会根据 content type 做区分，使用不同的解析方式。
 
-### form data
+### 5 form data
 
 form data 是用 -------- 作为 boundary 分隔传输的内容的。
 Nest 解析 form data 使用 FilesInterceptor 的拦截器，用 @UseInterceptors 装饰器启用，然后通过 @UploadedFiles 来取。非文件的内容，同样是通过 @Body 来取。
@@ -193,7 +193,7 @@ npm i -D @types/multer
 
 前端代码使用 axios 发送 post 请求，指定 content type 为 multipart/form-data。
 
-### 总节：
+### 总节
 
 我们用 axios 发送请求，使用 Nest 起后端服务，实现了 5 种 http/https 的数据传输方式：
 

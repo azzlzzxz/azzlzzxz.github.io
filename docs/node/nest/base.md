@@ -193,7 +193,7 @@ npm i -D @types/multer
 
 前端代码使用 axios 发送 post 请求，指定 content type 为 multipart/form-data。
 
-### 总节
+### 小结
 
 我们用 axios 发送请求，使用 Nest 起后端服务，实现了 5 种 http/https 的数据传输方式：
 

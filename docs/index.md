@@ -28,8 +28,8 @@ features:
     linkText: 源码阅读
   - icon: 💡
     title: Work
-    details: 在工作中用到的一切<small>（常用构建工具/数据结构等）</small><br />配合 CV 大法来加快你的开发😄
-    link: /work/structure/linkList
+    details: 在工作中用到的一切<small>（常用工具等）</small><br />配合 CV 大法来加快你的开发😄
+    link: /work/utility/ni
     linkText: 常用工具库
   # - icon: 🧰
   #   title: 提效工具

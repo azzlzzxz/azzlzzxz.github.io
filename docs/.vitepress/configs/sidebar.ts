@@ -66,6 +66,19 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
+      text: '数据结构与算法',
+      collapsed: false,
+      items: [
+        { text: '链表', link: '/base/structure/linkList' },
+        { text: '树', link: '/base/structure/tree' },
+        // { text: '栈', link: '/base/structure/stack' },
+        // { text: '队列', link: '/base/structure/queue' },
+        // { text: '图', link: '/base/structure/graph' },
+        // { text: '排序', link: '/base/structure/sort' },
+        // { text: '查找', link: '/base/structure/search' },
+      ],
+    },
+    {
       text: '编程题',
     },
   ],
@@ -141,20 +154,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [{ text: 'Effect', link: '/vue/source/effect' }],
     },
   ],
-  '/work/': [
-    {
-      text: '数据结构与算法',
-      collapsed: false,
-      items: [
-        { text: '链表', link: '/work/structure/linkList' },
-        { text: '树', link: '/work/structure/tree' },
-        // { text: '栈', link: '/work/structure/stack' },
-        // { text: '队列', link: '/work/structure/queue' },
-        // { text: '图', link: '/work/structure/graph' },
-        // { text: '排序', link: '/work/structure/sort' },
-        // { text: '查找', link: '/work/structure/search' },
-      ],
-    },
+  '/capital/': [
     {
       text: '构建工具',
       collapsed: false,
@@ -165,6 +165,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         //   items: [{ text: '基础', link: '/work/construct/webpack/base' }],
         // },
       ],
+    },
+  ],
+  '/work/': [
+    {
+      text: '实用工具',
+      collapsed: false,
+      items: [{ text: 'ni', link: '/work/utility/ni' }],
     },
   ],
 }

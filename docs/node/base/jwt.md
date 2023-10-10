@@ -1,6 +1,6 @@
 # JWT
 
-## 什么事 JWT
+## 什么是 JWT
 
 JSON Web Token（JWT）是目前最流行的跨域身份验证解决方案。
 

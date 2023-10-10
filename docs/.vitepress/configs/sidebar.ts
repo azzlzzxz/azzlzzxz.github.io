@@ -123,7 +123,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'Nest',
       collapsed: false,
-      items: [{ text: '基础知识', link: '/node/nest/base' }],
+      items: [
+        { text: '基础知识', link: '/node/nest/base' },
+        { text: 'IOC', link: '/node/nest/ioc' },
+      ],
     },
     // {
     //   text: 'Express',

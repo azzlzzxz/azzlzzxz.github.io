@@ -1,6 +1,6 @@
 # IOC
 
-## IOC 解决了什么问题
+## :pencil2: IOC 解决了什么问题
 
 后端系统里有很多对象：
 
@@ -46,6 +46,7 @@ const controller = new Controller(service)
 
 💭 IOC 实现思路：我在 class 上声明依赖了啥，工具去分析我声明的依赖关系，根据先后顺序把对象创建好，再组装起来。
 
+:::tip
 在 Nest 中，IOC 和依赖注入的核心概念是：
 
 1. Provider（提供者）：Provider 是一个可被注入的类，它负责创建和管理特定类型的实例。在 Nest 中，常见的 Provider 类型包括服务类、仓储类、工厂类等。
@@ -53,6 +54,7 @@ const controller = new Controller(service)
 2. Module（模块）：Module 是一个逻辑单元，它用于组织和配置应用程序中的提供者。每个 Nest 应用程序都由多个模块组成。模块通过 `@Module` 装饰器来定义，并在 `imports` 属性中指定依赖的其他模块。
 
 3. Dependency Injection Container（依赖注入容器）：Nest 中的依赖注入容器负责管理和解决 Provider 之间的依赖关系。容器在应用程序启动时会扫描模块的依赖关系，并根据需要创建和注入 Provider 的实例。
+   :::
 
 在使用 IOC 和依赖注入时，您可以通过在类的构造函数参数上使用 `@Inject()` 装饰器来声明依赖项。Nest 将根据这些声明来解析依赖关系，并在需要时提供依赖项的实例。
 
@@ -64,6 +66,7 @@ const controller = new Controller(service)
 
 当您在类上应用 @Injectable 装饰器时，Nest 将能够根据需要创建类的实例，并将其注入到其他类中。这使得在 Nest 应用程序中使用依赖注入变得非常方便。
 
+:::tip
 @Injectable 装饰器主要用于以下目的：
 
 1.  依赖注入：通过在类的构造函数参数上使用 @Injectable 装饰器，您可以告诉 Nest 该类需要哪些依赖项。在需要创建类的实例时，Nest 会自动解析并提供这些依赖项。
@@ -71,6 +74,8 @@ const controller = new Controller(service)
 2.  单例模式：默认情况下，使用 @Injectable 装饰器标记的类在整个应用程序中是单例的。这意味着每次请求都将获得相同的实例。Nest 会负责创建并管理这些实例，以确保它们在需要时正确地共享。
 
 3.  循环依赖解析：Nest 支持解析循环依赖关系。当出现类之间的循环依赖时，您可以使用 @Injectable 装饰器来解决问题。Nest 将根据需要创建类的代理对象，以避免循环依赖引发的问题。
+
+:::
 
 总之，@Injectable 装饰器在 Nest 中是非常重要的，它允许您使用依赖注入来创建可维护和可扩展的应用程序。通过使用该装饰器，您可以轻松地管理类之间的依赖关系，并实现松耦合的代码架构
 

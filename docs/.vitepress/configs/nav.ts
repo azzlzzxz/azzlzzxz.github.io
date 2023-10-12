@@ -9,7 +9,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       { text: 'ES6 基础知识', link: '/base/es6/promise/promise' },
       { text: 'TypeScript', link: '/base/typescript/ts' },
       { text: '浏览器相关知识', link: '/base/browser/browser' },
-      { text: '网络相关知识', link: '/base/network/restFul' },
+      { text: '网络相关知识', link: '/base/network/restFulAPI' },
       { text: '数据结构与算法', link: '/base/structure/linkList' },
     ],
     activeMatch: '^/base',
@@ -48,6 +48,9 @@ export const nav: DefaultTheme.Config['nav'] = [
   },
   {
     text: 'work',
-    items: [{ text: '实用工具', link: '/work/utility/ni' }],
+    items: [
+      { text: '实用工具', link: '/work/utility/ni' },
+      { text: '日常问题记录', link: '/work/question/npm' },
+    ],
   },
 ]

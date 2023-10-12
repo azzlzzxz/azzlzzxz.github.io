@@ -176,5 +176,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [{ text: 'ni', link: '/work/utility/ni' }],
     },
+    {
+      text: '日常问题记录',
+      collapsed: false,
+      items: [{ text: 'npm相关', link: '/work/question/npm' }],
+    },
   ],
 }

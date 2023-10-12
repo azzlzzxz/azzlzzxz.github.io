@@ -2,7 +2,11 @@
 
 ## nvm
 
-安装 [HomeBrew](https://brew.idayer.com/)
+安装 HomeBrew
+
+:::tip
+[参考链接-HomeBrew](https://brew.idayer.com/)
+:::
 
 ```sh
 /bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"

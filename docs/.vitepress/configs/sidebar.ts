@@ -174,7 +174,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: '实用工具',
       collapsed: false,
-      items: [{ text: 'ni', link: '/work/utility/ni' }],
+      items: [
+        { text: 'ni', link: '/work/utility/ni' },
+        { text: 'node版本管理', link: '/work/utility/nvm' },
+      ],
     },
     {
       text: '日常问题记录',

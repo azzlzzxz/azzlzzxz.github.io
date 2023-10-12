@@ -66,6 +66,8 @@ brew switch python 3.8
 :::tip
 [参考链接-starkoverflow 解决 nvm 安装问题](https://stackoverflow.com/questions/67254339/nvm-install-node-fails-to-install-on-macos-big-sur-m1-chip)
 
+[参考链接-nvm 的 python 版本问题](https://stackoverflow.com/questions/60038415/why-does-nvm-use-the-incorrect-version-of-python)
+
 [参考链接-node-sass 平台支持](https://github.com/sass/node-sass/releases/tag/v4.14.1)
 
 [参考链接-切换 sass](https://stackoverflow.com/questions/68095626/node-sass-with-apple-m1-big-sur-and-arm64)

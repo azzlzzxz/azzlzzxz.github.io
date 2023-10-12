@@ -12,7 +12,7 @@
 npm i -g @antfu/ni
 ```
 
-## ni - install
+## ni
 
 ```sh
 ni

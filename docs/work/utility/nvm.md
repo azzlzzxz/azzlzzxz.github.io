@@ -49,3 +49,35 @@ source .bash_profile
 4. 查看安装的 node 列表：nvm ls
 
 ![nvm](images/nvm.png)
+
+## fnm
+
+:::tip
+[参考链接-fnm](https://github.com/Schniz/fnm)
+:::
+
+安装 fnm
+
+```sh
+# homebrew
+brew install fnm
+
+# curl
+curl -fsSL https://fnm.vercel.app/install | bash
+```
+
+使用 fnm
+
+```sh
+# fnm 版本
+fnm --version
+
+# 安装指定node版本
+fnm install <版本号>
+
+# 切换node版本
+fnm use <版本号>
+
+# 查看安装的node版本
+fnm ls
+```

@@ -55,6 +55,7 @@ export const nav: DefaultTheme.Config['nav'] = [
     items: [
       { text: '实用工具', link: '/work/utility/ni' },
       { text: '日常问题记录', link: '/work/question/npm' },
+      { text: '其他', link: '/work/command/command' },
     ],
   },
 ]

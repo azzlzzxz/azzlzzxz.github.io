@@ -174,6 +174,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   ],
   '/work/': [
     {
+      text: 'Git',
+      collapsed: false,
+      items: [{ text: 'Git常用命令', link: '/work/git/command' }],
+    },
+    {
       text: '实用工具',
       collapsed: false,
       items: [
@@ -185,6 +190,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '日常问题记录',
       collapsed: false,
       items: [{ text: 'npm相关', link: '/work/question/npm' }],
+    },
+    {
+      text: '其他',
+      collapsed: false,
+      items: [{ text: '命令', link: '/work/command/command' }],
     },
   ],
 }

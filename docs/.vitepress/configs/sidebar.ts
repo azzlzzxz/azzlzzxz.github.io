@@ -135,26 +135,28 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     //   text: 'Koa',
     // },
   ],
-  '/react/': [
+  '/frame/react/': [
     {
       text: 'React基础',
       collapsed: false,
       items: [
-        { text: 'jsx', link: '/react/base/jsx' },
-        { text: '虚拟DOM', link: '/react/base/virtualDOM' },
+        { text: 'jsx', link: '/base/jsx' },
+        { text: '虚拟DOM', link: '/base/virtualDOM' },
       ],
     },
+  ],
+  '/rsource/': [
     {
       text: 'React-18.2源码',
       collapsed: false,
-      items: [{ text: 'Fiber', link: '/react/source/fiber' }],
+      items: [{ text: 'Fiber', link: '/react/fiber' }],
     },
   ],
-  '/vue/': [
+  '/vsource/': [
     {
-      text: 'Vue源码',
+      text: 'Vue3源码',
       collapsed: false,
-      items: [{ text: 'Effect', link: '/vue/source/effect' }],
+      items: [{ text: 'Effect', link: '/vue/effect' }],
     },
   ],
   '/capital/': [

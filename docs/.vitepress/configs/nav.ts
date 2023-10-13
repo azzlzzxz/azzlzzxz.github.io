@@ -24,17 +24,21 @@ export const nav: DefaultTheme.Config['nav'] = [
     activeMatch: '^/node',
   },
   {
-    text: '源码阅读',
+    text: '框架&源码',
     items: [
       {
         text: '框架',
+        items: [{ text: 'React', link: '/frame/react/base/jsx' }],
+      },
+      {
+        text: '源码',
         items: [
-          { text: 'React', link: '/react/source/fiber' },
-          { text: 'Vue', link: '/vue/source/effect' },
+          { text: 'React18.2源码', link: '/rsource/react/fiber' },
+          { text: 'Vue3源码', link: '/vsource/vue/effect' },
         ],
       },
       {
-        text: '第三方库',
+        text: '第三方库源码解析',
         items: [
           { text: 'React-Window', link: 'https://github.com/azzlzzxz/react-window' },
           { text: 'React-Dnd', link: 'https://github.com/azzlzzxz/react-dnd' },

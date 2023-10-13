@@ -24,7 +24,7 @@ features:
   - icon: 📘
     title: 源码阅读
     details: 了解各种库的实现原理<br />学习其中的设计思路和知识
-    link: /react/source/fiber
+    link: /rsource/react/fiber
     linkText: 源码阅读
   - icon: 💡
     title: Work

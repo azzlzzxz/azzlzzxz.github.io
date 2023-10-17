@@ -63,6 +63,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'RestFulAPI', link: '/base/network/restFulAPI' },
         { text: 'http状态码', link: '/base/network/httpStatus' },
         { text: 'http协议', link: '/base/network/httpAgreement' },
+        { text: 'webSocket', link: '/base/network/webSocket' },
       ],
     },
     {

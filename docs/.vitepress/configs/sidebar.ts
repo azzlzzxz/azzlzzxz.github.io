@@ -153,6 +153,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+  '/frame/electron/': [
+    {
+      text: 'Electron',
+      collapsed: false,
+      items: [{ text: 'electron概念', link: '/introduce' }],
+    },
+  ],
   '/rsource/': [
     {
       text: 'React-18.2源码',

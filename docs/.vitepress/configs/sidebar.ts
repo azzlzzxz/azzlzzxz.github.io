@@ -157,7 +157,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'Electron',
       collapsed: false,
-      items: [{ text: 'electron概念', link: '/introduce' }],
+      items: [
+        { text: 'electron概念', link: '/introduce' },
+        { text: 'electron进程', link: '/process' },
+      ],
     },
   ],
   '/rsource/': [

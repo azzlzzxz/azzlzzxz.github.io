@@ -159,6 +159,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'electron概念', link: '/frame/electron/introduce' },
         { text: 'electron进程', link: '/frame/electron/process' },
+        { text: 'electron简单应用', link: '/frame/electron/apply' },
       ],
     },
   ],

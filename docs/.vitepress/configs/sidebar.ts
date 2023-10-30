@@ -167,14 +167,14 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'React-18.2源码',
       collapsed: false,
-      items: [{ text: 'Fiber', link: '/react/fiber' }],
+      items: [{ text: 'Fiber', link: 'rsource/react/fiber' }],
     },
   ],
   '/vsource/': [
     {
       text: 'Vue3源码',
       collapsed: false,
-      items: [{ text: 'Effect', link: '/vue/effect' }],
+      items: [{ text: 'Effect', link: 'vsource/vue/effect' }],
     },
   ],
   '/capital/': [

@@ -148,18 +148,17 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'React基础',
       collapsed: false,
       items: [
-        { text: 'jsx', link: '/base/jsx' },
-        { text: '虚拟DOM', link: '/base/virtualDOM' },
+        { text: 'jsx', link: '/frame/react/base/jsx' },
+        { text: '虚拟DOM', link: '/frame/react/base/virtualDOM' },
       ],
     },
   ],
   '/frame/electron/': [
     {
       text: 'Electron',
-      collapsed: false,
       items: [
-        { text: 'electron概念', link: '/introduce' },
-        { text: 'electron进程', link: '/process' },
+        { text: 'electron概念', link: '/frame/electron/introduce' },
+        { text: 'electron进程', link: '/frame/electron/process' },
       ],
     },
   ],

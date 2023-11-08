@@ -1,14 +1,14 @@
 # async await
 
-- Promise 中有很多问题，内部还是采用回调的方式，如果逻辑过多还是可能会导致回调地狱。
-- 我们希望写的代码更像同步一些 ---> generator。
-- koa 1.0 用的是 generator koa2.0 用的是 async+await。
+- `Promise` 中有很多问题，内部还是采用回调的方式，如果逻辑过多还是可能会导致回调地狱。
+- 我们希望写的代码更像同步一些 ---> `generator`。
+- `koa 1.0 `用的是 `generator` `koa2.0` 用的是 `async+await`。
 
-## generator（生成器）里的关键字：
+## `generator`（生成器）里的关键字：
 
-1. 代表 generator 函数（返回迭代器函数）（写在 function 与函数名之间）
-2. yield 表示产出。
-3. iterator.next()函数返回结果对象
+1. 代表 `generator` 函数（返回迭代器函数）（写在 `function` 与函数名之间）
+2. `yield` 表示产出。
+3. `iterator.next()`函数返回结果对象
 
 ```js
 {
@@ -41,7 +41,7 @@ console.log(it.next()) // {value:3,done:false}
 console.log(it.next()) // {value:100,done:true}
 ```
 
-简单实现下 generator
+简单实现下 `generator`
 
 ```js
 function $gen(contxt) {
@@ -83,7 +83,7 @@ console.log(it.next()) // {value:3,done:false}
 console.log(it.next()) // {value:100,done:true}
 ```
 
-## co 模块：自动执行 Generator 函数
+## `co` 模块：自动执行 `Generator` 函数
 
 ```js
 const fs = require('fs').promises
@@ -138,10 +138,10 @@ read().then(data => {
 })
 ```
 
-async + await 就是 generator 的语法糖。
+`async + await` 就是 `generator` 的语法糖。
 
-## Async Await 如何通过同步的方式实现异步
+## `Async Await` 如何通过同步的方式实现异步
 
-Async/Await 就是一个自执行的 generate 函数。
+`Async/Await` 就是一个自执行的 `generate` 函数。
 
-利用 generate 函数的特性把异步的代码写成“同步”的形式,第一个请求的返回值作为后面一个请求的参数,其中每一个参数都是一个 promise 对象。
+利用 `generate` 函数的特性把异步的代码写成“同步”的形式,第一个请求的返回值作为后面一个请求的参数,其中每一个参数都是一个 `promise` 对象。

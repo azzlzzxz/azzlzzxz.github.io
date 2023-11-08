@@ -207,7 +207,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: '日常问题记录',
       collapsed: false,
-      items: [{ text: 'npm相关', link: '/work/question/npm' }],
+      items: [
+        { text: 'npm相关', link: '/work/question/npm' },
+        { text: '日常', link: '/work/question/work' },
+      ],
     },
     {
       text: '其他',

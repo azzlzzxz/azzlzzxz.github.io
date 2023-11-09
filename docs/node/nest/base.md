@@ -1,14 +1,14 @@
 # Nest 基础
 
-## nest 介绍
+## `nest` 介绍
 
-Nest (NestJS) 是一个用于构建高效、可扩展的 Node.js 服务器端应用程序的框架。它使用渐进式 JavaScript，使用 TypeScript 构建并完全支持 TypeScript（但仍然允许开发人员使用纯 JavaScript 进行编码），并结合了 OOP（面向对象编程）、FP（函数式编程）和 FRP（函数式反应式编程）的元素。
+`Nest (NestJS)` 是一个用于构建高效、可扩展的 `Node.js` 服务器端应用程序的框架。它使用渐进式 `JavaScript`，使用 `TypeScript` 构建并完全支持 `TypeScript`（但仍然允许开发人员使用纯 `JavaScript` 进行编码），并结合了 `OOP（面向对象编程）`、`FP（函数式编程）`和 `FRP（函数式反应式编程）`的元素。
 
-在底层，Nest 使用强大的 HTTP 服务器框架，如 Express（默认），并且也可以选择配置为使用 Fastify！
+在底层，`Nest `使用强大的 `HTTP` 服务器框架，如 `Express（默认`），并且也可以选择配置为使用 `Fastify！`
 
-Nest 提供了高于这些常见 Node.js 框架（Express/Fastify）的抽象级别，而且还直接向开发人员公开其 API。这使开发人员可以自由地使用可用于底层平台的无数第三方模块。
+`Nest `提供了高于这些常见 `Node.js` 框架`（Express/Fastify）`的抽象级别，而且还直接向开发人员公开其 `API`。这使开发人员可以自由地使用可用于底层平台的无数第三方模块。
 
-## nest 相关命令
+## `nest `相关命令
 
 ```sh
 # 安装nest cli
@@ -42,7 +42,7 @@ nest start
 nest info
 ```
 
-## nest-cli.json 配置
+## `nest-cli.json` 配置
 
 ```json
 {
@@ -83,18 +83,18 @@ src
 ::: tip
 | 文件名 | 文件概述 |
 | ---------------------- | ------------------------------------------------------------- |
-| app.controller.ts | 带有单个路由的基本控制器示例。 |
-| app.controller.spec.ts | 对于基本控制器的单元测试样例。 |
-| app.module.ts | 应用程序的根模块。 |
-| app.service.ts | 带有单个方法的基本服务。 |
-| main.ts | 应用程序入口文件。它使用 NestFactory 用来创建 Nest 应用实例。 |
+| `app.controller.ts` | 带有单个路由的基本控制器示例。 |
+| `app.controller.spec.ts` | 对于基本控制器的单元测试样例。 |
+| `app.module.ts` | 应用程序的根模块。 |
+| `app.service.ts` | 带有单个方法的基本服务。 |
+| `main.ts` | 应用程序入口文件。它使用 `NestFactory` 用来创建 `Nest` 应用实例。 |
 :::
 
-## 5 种 Http 数据传输方式
+## 5 种 `Http` 数据传输方式
 
-### 1 url param
+### 1 `url param`
 
-url param 是 url 中的参数，Nest 里通过 :参数名 的方式来声明，然后通过 @Param(参数名) 的装饰器取出来注入到 controller
+`url param` 是 `url` 中的参数，`Nest` 里通过 :参数名 的方式来声明，然后通过 `@Param(参数名)` 的装饰器取出来注入到 `controller`
 
 ```js
 @Controller('api/person')
@@ -106,13 +106,13 @@ export class PersonController {
 }
 ```
 
-@Controller('api/person') 的路由和 @Get(':id') 的路由会拼到一起，也就是只有 /api/person/xxx 的 get 请求才会走到这个方法。
+`@Controller('api/person')` 的路由和 `@Get(':id')` 的路由会拼到一起，也就是只有 `/api/person/xxx` 的 `get` 请求才会走到这个方法。
 
-### 2 query
+### 2 `query`
 
-query 是 url 中 ? 后的字符串，需要做 url encode。
+`query` 是 `url` 中 ? 后的字符串，需要做 `url encode`。
 
-在 Nest 里，通过 @Query 装饰器来取：
+在 `Nest` 里，通过 `@Query` 装饰器来取：
 
 ```js
 @Controller('api/person')
@@ -125,14 +125,14 @@ export class PersonController {
 ```
 
 :::tip
-注意，这个 find 的路由要放到 :id 的路由前面，因为 Nest 是从上往下匹配的，如果放在后面，那就匹配到 :id 的路由了。
+注意，这个 `find` 的路由要放到 `:id` 的路由前面，因为 `Nest` 是从上往下匹配的，如果放在后面，那就匹配到 `:id` 的路由了。
 :::
 
-### 3 form urlencoded
+### 3 `form urlencoded`
 
-form urlencoded 是通过 body 传输数据，其实是把 query 字符串放在了 body 里，所以需要做 url encode
-用 Nest 接收的话，使用 @Body 装饰器，Nest 会解析请求体，然后注入到 dto 中。
-dto 是 data transfer object，就是用于封装传输的数据的对象：
+`form urlencoded` 是通过 `body` 传输数据，其实是把 `query` 字符串放在了 `body` 里，所以需要做 `url encode`
+用 `Nest` 接收的话，使用 `@Body` 装饰器，`Nest` 会解析请求体，然后注入到 `dto` 中。
+`dto` 是 `data transfer object`，就是用于封装传输的数据的对象：
 
 ```js
 export class CreatePersonDto {
@@ -153,17 +153,17 @@ export class PersonController {
 }
 ```
 
-前端代码使用 post 方式请求，指定 content type 为 application/x-www-form-urlencoded，用 qs 做下 url encode。
+前端代码使用 `post` 方式请求，指定 `content type` 为 `application/x-www-form-urlencoded`，用 `qs` 做下 `url encode`。
 
-### 4 json
+### 4 `json`
 
-json 需要指定 content-type 为 application/json。
-后端代码同样使用 @Body 来接收，不需要做啥变动。form urlencoded 和 json 都是从 body 取值，Nest 内部会根据 content type 做区分，使用不同的解析方式。
+`json` 需要指定 `content-type` 为 `application/json`。
+后端代码同样使用 `@Body` 来接收，不需要做啥变动。`form urlencoded` 和 `json` 都是从 `body` 取值，`Nest` 内部会根据 `content type` 做区分，使用不同的解析方式。
 
-### 5 form data
+### 5 `form data`
 
-form data 是用 -------- 作为 boundary 分隔传输的内容的。
-Nest 解析 form data 使用 FilesInterceptor 的拦截器，用 @UseInterceptors 装饰器启用，然后通过 @UploadedFiles 来取。非文件的内容，同样是通过 @Body 来取。
+`form data` 是用 -------- 作为 `boundary` 分隔传输的内容的。
+`Nest` 解析 `form data` 使用 `FilesInterceptor` 的拦截器，用 `@UseInterceptors` 装饰器启用，然后通过 `@UploadedFiles` 来取。非文件的内容，同样是通过 `@Body` 来取。
 
 ```js
 import { AnyFilesInterceptor } from '@nestjs/platform-express'
@@ -191,22 +191,22 @@ export class PersonController {
 npm i -D @types/multer
 ```
 
-前端代码使用 axios 发送 post 请求，指定 content type 为 multipart/form-data。
+前端代码使用 `axios` 发送 `post` 请求，指定 `content type` 为 `multipart/form-data`。
 
 ### 小结
 
-我们用 axios 发送请求，使用 Nest 起后端服务，实现了 5 种 http/https 的数据传输方式：
+我们用 `axios` 发送请求，使用 `Nest` 起后端服务，实现了 5 种 `http/https` 的数据传输方式：
 
-其中前两种是 url 中的：
+其中前两种是 `url` 中的：
 
-url param： url 中的参数，Nest 中使用 @Param 来取。
+`url param：` `url` 中的参数，`Nest` 中使用 `@Param `来取。
 
-query：url 中 ? 后的字符串，Nest 中使用 @Query 来取。
+` query：``url ` 中 ? 后的字符串，`Nest` 中使用`@Query`来取。
 
-后三种是 body 中的：
+后三种是 `body` 中的：
 
-form urlencoded： 类似 query 字符串，只不过是放在 body 中。Nest 中使用 @Body 来取，axios 中需要指定 content type 为 application/x-www-form-urlencoded，并且对数据用 qs 或者 query-string 库做 url encode。
+`form urlencoded：` 类似 query 字符串，只不过是放在 `body` 中。`Nest` 中使用 `@Body` 来取，`axios` 中需要指定 `content type` 为 `application/x-www-form-urlencoded`，并且对数据用 `qs` 或者 `query-string` 库做 `url encode`。
 
-json： json 格式的数据。Nest 中使用 @Body 来取，axios 中不需要单独指定 content type，axios 内部会处理。
+`json：` `json` 格式的数据。`Nest` 中使用 `@Body` 来取，`axios` 中不需要单独指定 `content type`，`axios` 内部会处理。
 
-form data：通过 ----- 作为 boundary 分隔的数据。主要用于传输文件，Nest 中要使用 FilesInterceptor 来处理其中的 binary 字段，用 @UseInterceptors 来启用，其余字段用 @Body 来取。axios 中需要指定 content type 为 multipart/form-data，并且用 FormData 对象来封装传输的内容。
+`form data：`通过 ----- 作为 `boundary` 分隔的数据。主要用于传输文件，`Nest` 中要使用 `FilesInterceptor` 来处理其中的 `binary` 字段，用 `@UseInterceptors` 来启用，其余字段用 `@Body` 来取。`axios` 中需要指定 `content type` 为 `multipart/form-data`，并且用 `FormData` 对象来封装传输的内容。

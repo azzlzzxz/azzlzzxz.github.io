@@ -1,18 +1,18 @@
 # JSX
 
-## jsx 是什么
+## `jsx` 是什么
 
-[React Jsx API](https://zh-hans.legacy.reactjs.org/docs/introducing-jsx.html)，JSX 是一个 JavaScript 的语法扩展,JSX 可以很好地描述 UI 应该呈现出它应有交互的本质形式。
+[React Jsx API](https://zh-hans.legacy.reactjs.org/docs/introducing-jsx.html)，`JSX` 是一个 JavaScript 的语法扩展,`JSX` 可以很好地描述 `UI` 应该呈现出它应有交互的本质形式。
 
-## jsx 是怎么变成真实 DOM 的
+## `jsx` 是怎么变成真实 `DOM` 的
 
-用户编写 jsx 到生成真实 DOM 的流程：
+用户编写 `jsx` 到生成真实 `DOM` 的流程：
 
 ![jsx](./image/jsx.jpg)
 
-## react18 对于 jsx 的变化
+## react18 对于 `jsx` 的变化
 
-在 React17 以前，babel 转换是老的写法
+在 `React17` `以前，babel` 转换是老的写法
 
 ```jsx
 const babel = require('@babel/core')
@@ -51,7 +51,7 @@ console.log(result.code)
 )
 ```
 
-React18 的新写法，使用 jsx 方法代替了 React.createElement
+`React18` 的新写法，使用 `jsx` 方法代替了 `React.createElement`
 
 ```jsx
 const babel = require('@babel/core')

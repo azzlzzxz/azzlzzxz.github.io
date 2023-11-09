@@ -2,7 +2,7 @@
 
 ## 镜像
 
-1. 镜像查询可以使用 nrm
+1. 镜像查询可以使用 `nrm`
 
 ```sh
  # 全局安装 nrm
@@ -33,17 +33,17 @@ npm set registry https://registry.npmjs.org/
 npm config get registry
 ```
 
-## npx
+## `npx`
 
-npx: Node 包的可执行运行器。
+`npx:` `Node` 包的可执行运行器。
 
-npx 和 npm 区别：
+`npx` 和 `npm` 区别：
 
-1. npx 是 npm 5.2.0 版本之后新增的命令，可以直接运行安装在本地 node_modules 目录下的可执行文件，而不需要全局安装。npm 需要全局安装才能使用。
+1. `npx` 是 `npm5.2.0` 版本之后新增的命令，可以直接运行安装在本地 `node_modules` 目录下的可执行文件，而不需要全局安装。`npm` 需要全局安装才能使用。
 
-2. npx 可以直接运行远程仓库中的包，而不需要先安装到本地。npm 需要先安装到本地才能使用。
+2. `npx` 可以直接运行远程仓库中的包，而不需要先安装到本地。`npm` 需要先安装到本地才能使用。
 
-3. npx 可以避免全局安装的包版本冲突问题，因为它会优先使用本地的包。npm 需要全局安装，容易出现版本冲突问题。
+3. `npx` 可以避免全局安装的包版本冲突问题，因为它会优先使用本地的包。`npm` 需要全局安装，容易出现版本冲突问题。
 
 ```sh
 npx create-react-app my-app
@@ -77,7 +77,7 @@ npm cache clean -f
 yarn cache clean
 ```
 
-## npm init 初始化
+## `npm init `初始化
 
 ```sh
 # 项目名
@@ -100,7 +100,7 @@ author:
 license: (ISC)
 ```
 
-## npm config 配置文件
+## `npm config` 配置文件
 
 ```sh
 # 查看 npm 的配置
@@ -116,13 +116,13 @@ npm config set init.author.name maomao
 npm config delete init.author.name
 ```
 
-## npm search 搜索模块
+## `npm search` 搜索模块
 
 ```sh
 npm search 搜索词 [-g]
 ```
 
-## npm install 模块安装
+## `npm install` 模块安装
 
 ```sh
 # 安装最新包
@@ -144,14 +144,14 @@ i add
 --save-dev -D
 ```
 
-## npm uninstall 模块卸载
+## `npm uninstall` 模块卸载
 
 ```sh
 # 卸载
 npm uninstall antd
 ```
 
-## npm link 引用模块
+## `npm link `引用模块
 
 ```sh
 # 在全局模块路径下中创建 link

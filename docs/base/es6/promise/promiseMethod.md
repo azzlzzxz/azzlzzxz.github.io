@@ -1,6 +1,6 @@
 # Promise 方法
 
-## 1.Promise.all
+## 1.`Promise.all`
 
 ```js
 const fs = require('fs')
@@ -11,9 +11,9 @@ Promise.all([1, getName, getAge, 2]).then((data) => {
 })
 ```
 
-### Promise.all 方法返回的是一个 promise,其中一个失败就真的失败了
+### `Promise.all` 方法返回的是一个 `promise`,其中一个失败就真的失败了
 
-Promise.all 实现原理
+`Promise.all` 实现原理
 
 ```js
 // 判断是不是promise
@@ -44,7 +44,7 @@ Promise.all = function (promises) {
 }
 ```
 
-## 2.Promise.race (赛跑 采用跑的快的作为结果)
+## 2.`Promise.race` (赛跑 采用跑的快的作为结果)
 
 ```js
 let p1 = new Promise((resolve, reject) => {
@@ -66,7 +66,7 @@ Promise.race([p1, p2, 1])
   })
 ```
 
-Promise.race 实现原理
+`Promise.race` 实现原理
 
 ```js
 Promise.race = function (promises) {
@@ -83,7 +83,7 @@ Promise.race = function (promises) {
 }
 ```
 
-## 3.Promise.finally
+## 3.`Promise.finally`
 
 ```js
 // Promise.prototype.finally 也是相当于then 最终的  不是try  catch  finally
@@ -122,7 +122,7 @@ Promise.reject(123)
   )
 ```
 
-## 4.PromisifyAll
+## 4.`PromisifyAll`
 
 ```js
 const fs = require('fs')
@@ -172,7 +172,7 @@ readFile('note.md', 'utf8').then((data) => {
 })
 ```
 
-## 5.abort：Promise 超时处理
+## 5.`abort：Promise` 超时处理
 
 ```js
 let p1 = new Promise((resolve, reject) => {

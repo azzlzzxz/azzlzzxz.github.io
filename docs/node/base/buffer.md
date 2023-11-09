@@ -1,8 +1,8 @@
 # Buffer
 
-## 前端自己的二进制变量 arrayBuffer
+## 前端自己的二进制变量 `arrayBuffer`
 
-arrayBuffer 可以来操作二进制。
+`arrayBuffer` 可以来操作二进制。
 
 ```js
 // 创建一个空间，就的申请这个空间的大小
@@ -16,9 +16,9 @@ console.log(arrayBuffer)
 1. 开头字母 I 和 U 的区别：有无符号位，U 代表无符号位，I 代表有符号位。
 2. Int8、Int16、Int32 的区别：分别代表单字节、双字节、四字节。
 
-拿到的 arrayBuffer 是不能读取和操作的，只是声明，想操作它，据需要创建一个视图去读取 arrayBuffer 里的数据。
+拿到的 `arrayBuffer` 是不能读取和操作的，只是声明，想操作它，据需要创建一个视图去读取 `arrayBuffer` 里的数据。
 
-**Uint8Array、Uint16Array、Uint32Array 展现方式是不同的，但是结果是一样的。**
+**`Uint8Array`、`Uint16Array`、`Uint32Array` 展现方式是不同的，但是结果是一样的。**
 
 ```js
 const arrayBuffer = new ArrayBuffer(4)
@@ -41,13 +41,13 @@ console.log(x3) // [65281] （四个组成一个）
 
 ![buffer](image/buffer.png)
 
-## node 中的 Buffer
+## `node` 中的 `Buffer`
 
-node 中的 buffer 表示用的是 2 进制，但是展现的方式是 16 进制（2 进制太长了）。
+`node` 中的 `buffer` 表示用的是 2 进制，但是展现的方式是 16 进制（2 进制太长了）。
 
 16 进制 0xff = 2 进制 11111111 = 10 进制 255（不同进制可以表示同一个数）。
 
-JS 中有进制转换方法不需要自己转换：
+`JS` 中有进制转换方法不需要自己转换：
 
 ```js
 // 任意进制转10进制
@@ -79,11 +79,11 @@ console.log((255.0).toString(16)) // ff
 不能用有限的内存记录无限的数，所以会进1，所以0.1在存进电脑里就会大一些。
 ```
 
-## base64 是如何转换出来的
+## `base64` 是如何转换出来的
 
-base64 可以用来数据传递、替代 url。（就像数据传递时不能传中文，就需要转成 base64 进行传递）
+`base64` 可以用来数据传递、替代 `url`。（就像数据传递时不能传中文，就需要转成 `base64` 进行传递）
 
-node 不支持 gbk，只支持 utf8。
+`node` 不支持 `gbk`，只支持 `utf8`。
 
 ```js
 let r = Buffer.from('珠')
@@ -122,11 +122,11 @@ Buffer.from('珠').toString('base64') // 54+g
 Buffer.from('a') // <Buffer 61> 不够补0，缺少四位用=号去拼
 ```
 
-## Buffer 基本用法
+## `Buffer` 基本用法
 
-buffer 用来表示当前内存的信息，因为内存里放的都是二进制，所以用 buffer 来表现。
+`buffer` 用来表示当前内存的信息，因为内存里放的都是二进制，所以用 `buffer` 来表现。
 
-### Buffer 声明方式
+### `Buffer` 声明方式
 
 固定大小、声明出来不能随意改变。
 
@@ -137,20 +137,20 @@ let buffer1 = Buffer.from('明年加油')
 let buffer2 = Buffer.from([0x01, 2, 3, 0x64])
 ```
 
-### buffer 的长度
+### `buffer` 的长度
 
-buffer 的长度是字节数目的长度
+`buffer` 的长度是字节数目的长度
 
 ```js
 let buffer = Buffer('时')
 console.log(buffer.length) // 3
 ```
 
-### 更改 buffer
+### 更改 `buffer`
 
-想更改 buffer，可以通过索引，但是想更改 buffer 的大小，是无法更改的，可以通过声明一个新空间将结果拷贝进去。
+想更改 `buffer`，可以通过索引，但是想更改 `buffer` 的大小，是无法更改的，可以通过声明一个新空间将结果拷贝进去。
 
-buffer 提供了两个方法：copy、concat。
+`buffer` 提供了两个方法：`copy`、`concat`。
 
 ```js
 let buffer = Buffer.alloc(12)
@@ -158,9 +158,9 @@ let buffer1 = Buffer.from('明年')
 let buffer2 = Buffer.from('加油')
 ```
 
-#### copy
+#### `copy`
 
-对应的参数（要复制到的 buffer，buffer 内开始写入的位置，buffer1 的开始复制位置，buffer1 停止复制位置）
+对应的参数（要复制到的 `buffer`，`buffer` 内开始写入的位置，`buffer1` 的开始复制位置，`buffer1` 停止复制位置）
 
 ```js
 buffer1.copy(buffer, 0, 0, 6)
@@ -172,7 +172,7 @@ Buffer.prototype.copy = function (target, targetStart, sourceStart = 0, sourceEn
 }
 ```
 
-#### concat
+#### `concat`
 
 ```js
 const newBuffer = buffer.concat([buffer1, buffer2], 100)
@@ -191,4 +191,4 @@ Buffer.prototype.concat = function (
 }
 ```
 
-### isBuffer 判断是否是 buffer
+### `isBuffer` 判断是否是 `buffer`

@@ -2,13 +2,13 @@
 
 ## 介绍
 
-1. node 是基于事件的，内部自己实现了一个发布订阅模式。
-2. events 的常用事件：
-   1. on，订阅事件。
-   2. emit，发布事件。
-   3. once，只触发一次，触发后删除。
-   4. off，删除事件。
-   5. newListener，用来监听用户绑定了那些事件。
+1. `node` 是基于事件的，内部自己实现了一个发布订阅模式。
+2. `events` 的常用事件：
+   1. `on`，订阅事件。
+   2. `emit`，发布事件。
+   3. `once`，只触发一次，触发后删除。
+   4. `off`，删除事件。
+   5. `newListener`，用来监听用户绑定了那些事件。
 
 ```js
 const EventEmitter = require('events')
@@ -18,10 +18,10 @@ function Girl() {}
 
 ### 常用的继承原型方法：
 
-- Object.create()
-- Girl.prototype.**proto** = EventEmitter.prorotype
-- Object.setPrototypeOf(Girl.prototype, EventEmitter.prototype)
-- exetends
+- `Object.create()`
+- `Girl.prototype.proto = EventEmitter.prorotype`
+- `Object.setPrototypeOf(Girl.prototype, EventEmitter.prototype)`
+- `exetends`
 
 ```js
 const util = require('util')
@@ -47,7 +47,7 @@ girl.emit('Steins Gate')
 'Steins Gate' undefined undefined undefined
 ```
 
-## 自己实现 EventEmitter
+## 自己实现 `EventEmitter`
 
 ```js
 function EventEmitter () {

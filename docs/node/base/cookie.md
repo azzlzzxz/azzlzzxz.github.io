@@ -2,17 +2,17 @@
 
 ## Cookie
 
-### cookie 设置
+### `cookie` 设置
 
-- 服务端设置的响应头是 set-cookie，客户端设置的请求头是 cookie。
-- 服务端设置 cookie 后会带给客户端，之后客户端的每次请求都会带上 cookie 给服务端。
-- cookie 里的字段：
-  - max-age（多少秒生效）/ Expries（绝对时间）。
-  - domain 针对那个域名生效，（ a.zhufeng.com b.zhufeng.com ：二级域名一样，一级域名不同（可以让这两个域名共享 cookie，原则上来说它们俩是同一个网站）） 通过设置 .zhufeng.com 表示不管是 a 还是 b 都能访问，如果写死 a.zhufeng.com 就表示只能在这个里访问。
-  - path 限制只能在某个路径来访问 cookie。
-  - httpOnly 可以实现相对安全一些 防止浏览器随便更改。
-- 设置 cookie 时要避免重名。
-- cookie 是由多个由空格分号隔开的字段所组成。
+- 服务端设置的响应头是 `set-cookie`，客户端设置的请求头是 `cookie`。
+- 服务端设置 `cookie` 后会带给客户端，之后客户端的每次请求都会带上 `cookie` 给服务端。
+- `cookie` 里的字段：
+  - `max-age`（多少秒生效）/ `Expries（绝对时间）`。
+  - `domain` 针对那个域名生效，（ `a.zhufeng.com b.zhufeng.com` ：二级域名一样，一级域名不同（可以让这两个域名共享 `cookie`，原则上来说它们俩是同一个网站）） 通过设置 `.zhufeng.com `表示不管是 `a` 还是 `b` 都能访问，如果写死 `a.zhufeng.com` 就表示只能在这个里访问。
+  - `path` 限制只能在某个路径来访问 `cookie`。
+  - `httpOnly` 可以实现相对安全一些 防止浏览器随便更改。
+- 设置 `cookie` 时要避免重名。
+- `cookie` 是由多个由空格分号隔开的字段所组成。
 
 ```js
 const http = require('http')
@@ -72,9 +72,9 @@ server.listen(3000)
 
 ### 加盐算法
 
-1. 加盐算法是可以使 cookie 更安全：可以通过服务端设置 cookie 时对应一个标识，如果客户端更改了 cookie，那么再请求时，客户端带的 cookie 就对应不上服务端 cookie 的标识了，这样就提高了安全性。
+1. 加盐算法是可以使 `cookie` 更安全：可以通过服务端设置 `cookie` 时对应一个标识，如果客户端更改了 `cookie`，那么再请求时，客户端带的 `cookie` 就对应不上服务端 `cookie` 的标识了，这样就提高了安全性。
 2. 加盐算法：放入不同的密钥，产生的结果不同，并且不可逆，密钥就是盐值（别人不知道盐值多少，就不能签出同样的值）。
-3. 为什么不用 md5：这样的话别人可以通过改 cookie 值，在生成对应的 md5，来骗过服务器）（服务器返回 5->1（有 4->2），客户端知道是 md5 就改成 4->2 骗服务器。
+3. 为什么不用 `md5`：这样的话别人可以通过改 `cookie` 值，在生成对应的 `md5`，来骗过服务器）（服务器返回 5->1（有 4->2），客户端知道是 `md5` 就改成 4->2 骗服务器。
 
 ```js
 const http = require('http')
@@ -153,9 +153,9 @@ const server = http.createServer((req, res) => {
 server.listen(3000)
 ```
 
-## session
+## `session`
 
-session 里储存着映射关系：就是服务端存在客户端里的标识对应，服务端的用户敏感数据。
+`session` 里储存着映射关系：就是服务端存在客户端里的标识对应，服务端的用户敏感数据。
 
 ```js
 const Koa = require('koa')
@@ -196,8 +196,8 @@ app.listen(3000)
 
 ## 区别
 
-1. Cookie 可以在客户端、服务端设置，但是 cookie 在每次请求都会携带上，不安全，因为放在客户端浏览器里了，那么用户就可以随便更改 cookie。
-2. session 是基于 cookie 来使用的，每次给用户注册一个唯一标识，用户可以通过唯一标识去找到对应的数据，去更改，核心数据是存在服务器端的，客户端是不能随便更改的。
-3. localStorage sessionStorage 只能在本地访问 不能超过 5M (不会在请求中携带)
-4. cookie http 无状态协议 （用来识别请求的） 客户端和服务端都可以使用 , 每次请求会自动携带 cookie， 跨域默认不能携带 cookie (cookie 是存放在客户端 安全问题 csrf) (合理设置 cookie 否则每次请求都会携带 cookie 4k)
-5. session 是基于 cookie 的 session 只是一个对象存放在服务端中，通过一个唯一标识可以找到对应的信息，标识是通过 cookie 来发送的 （理论上没有限制的：代表的是服务器的内存）
+1. `Cookie` 可以在客户端、服务端设置，但是 `cookie` 在每次请求都会携带上，不安全，因为放在客户端浏览器里了，那么用户就可以随便更改 `cookie`。
+2. `session` 是基于 `cookie` 来使用的，每次给用户注册一个唯一标识，用户可以通过唯一标识去找到对应的数据，去更改，核心数据是存在服务器端的，客户端是不能随便更改的。
+3. `localStorage` `sessionStorage` 只能在本地访问 不能超过 `5M` (不会在请求中携带)
+4. `cookie` `http` 无状态协议 （用来识别请求的） 客户端和服务端都可以使用 , 每次请求会自动携带 `cookie`， 跨域默认不能携带 `cookie` (`cookie` 是存放在客户端 安全问题 `csrf`) (合理设置 `cookie` 否则每次请求都会携带 `cookie` 4k)
+5. `session` 是基于 `cookie` 的 `session` 只是一个对象存放在服务端中，通过一个唯一标识可以找到对应的信息，标识是通过 `cookie` 来发送的 （理论上没有限制的：代表的是服务器的内存）

@@ -1,6 +1,6 @@
 # Http
 
-## http 模块的基本用法
+## `http` 模块的基本用法
 
 ```js
 const http = require('http')
@@ -60,7 +60,7 @@ server.on('error', function (err) {
 
 ![http_console](image/http_console.png)
 
-服务端代码改变后必须要重新执行：可以使用 nodemon（监控文件变化，重启服务）
+服务端代码改变后必须要重新执行：可以使用 `nodemon（监控文件变化，重启服务）`
 
 ```sh
 # 安装
@@ -132,9 +132,9 @@ new StaticServer().start(3000, function () {
 })
 ```
 
-## 实现一个 http-server 工具
+## 实现一个 `http-server` 工具
 
-要实现 http-server 命令行工具，就需要把它写成一个 npm 包，发布上去。
+要实现 `http-server` 命令行工具，就需要把它写成一个 `npm` 包，发布上去。
 
 ![server_fs](image/server_fs.png)
 
@@ -170,7 +170,7 @@ npm init -y
 }
 ```
 
-执行 npm link 把 bin 里的指令做成全局的链接，方便测试。
+执行 `npm link` 把 `bin` 里的指令做成全局的链接，方便测试。
 
 ![npm_link](image/npm_link.png)
 

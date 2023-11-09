@@ -1,6 +1,6 @@
 # Electron 简单应用
 
-一个 Electron 应用的目录结构如下：
+一个 `Electron` 应用的目录结构如下：
 
 ```lua
 your-app/
@@ -9,7 +9,7 @@ your-app/
 └── index.html
 ```
 
-package.json 的格式和 Node 的完全一致，并且那个被  main  字段声明的脚本文件是你的应用的启动脚本，它运行在主进程上。你应用里的  package.json  看起来应该像：
+`package.json` 的格式和 `Node` 的完全一致，并且那个被 ` main ` 字段声明的脚本文件是你的应用的启动脚本，它运行在主进程上。你应用里的  `package.json`  看起来应该像：
 
 ```json
 {
@@ -29,9 +29,9 @@ package.json 的格式和 Node 的完全一致，并且那个被  main  字段
 }
 ```
 
-注意：如果  main  字段没有在  package.json  声明，Electron 会优先加载  index.js。
+注意：如果 ` main ` 字段没有在  `package.json`  声明，`Electron `会优先加载  `index.js`。
 
-main.js  应该用于创建窗口和处理系统时间，一个典型的例子如下：
+`main.js`  应该用于创建窗口和处理系统时间，一个典型的例子如下：
 
 ```js
 const app = require('app') // 控制应用生命周期的模块。
@@ -69,7 +69,7 @@ app.on('activate', () => {
 })
 ```
 
-最后，你想展示的  index.html ：
+最后，你想展示的  `index.html` ：
 
 ```html
 <!DOCTYPE html>

@@ -2,18 +2,18 @@
 
 ## 介绍
 
-- 我们可以通过某些调度策略合理分配 CPU 资源，从而提高用户的响应速度。
-- 通过 Fiber 架构，让渲染过程变成可被中断、暂停、恢复的过程。 适时地让出 CPU 执行权，除了可以让浏览器及时地响应用户的交互。
+- 我们可以通过某些调度策略合理分配 `CPU` 资源，从而提高用户的响应速度。
+- 通过 Fiber 架构，让渲染过程变成可被中断、暂停、恢复的过程。 适时地让出 `CPU` 执行权，除了可以让浏览器及时地响应用户的交互。
 
-## Fiber 是一个执行单元
+## `Fiber` 是一个执行单元
 
-Fiber 是一个执行单元,每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去。
+`Fiber` 是一个执行单元,每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去。
 
 ![fiber_task](image/fiber_task.jpeg)
 
-## Fiber 是一个数据结构
+## `Fiber` 是一个数据结构
 
-- React 目前的做法是使用链表, 每个虚拟节点内部表示为一个 Fiber
+- React 目前的做法是使用链表, 每个虚拟节点内部表示为一个 `Fiber`
 - 从顶点开始遍历
 - 如果有第一个儿子，先遍历第一个儿子
 - 如果没有第一个儿子，标志着此节点遍历完成
@@ -21,7 +21,7 @@ Fiber 是一个执行单元,每次执行完一个执行单元, React 就会检�
 - 如果有没有下一个弟弟，返回父节点标识完成父节点遍历，如果有叔叔遍历叔叔
 - 没有父节点遍历结束
 
-### 创建根 Fiber
+### 创建根 `Fiber`
 
 ![fiber_root](image/Fiber_root.jpeg)
 
@@ -41,7 +41,7 @@ console.log(root)
 
 ![root_node](image/root_node.png)
 
-#### createRoot
+#### `createRoot`
 
 ```js
 // ReactDOMRoot
@@ -59,7 +59,7 @@ export function createRoot(container) {
 }
 ```
 
-#### createContainer(创建根容器)
+#### `createContainer`(创建根容器)
 
 ```js
 // ReactFiberReconciler
@@ -70,9 +70,9 @@ export function createContainer(containerInfo) {
 }
 ```
 
-#### createFiberRoot(创建 Fiber 根)
+#### `createFiberRoot`(创建 `Fiber` 根)
 
-> FiberRoot 是真实的 DOM 节点（根节点）
+> `FiberRoot` 是真实的 `DOM` 节点（根节点）
 
 ```js
 // ReactFiberRoot
@@ -97,7 +97,7 @@ export function createFiberRoot(containerInfo) {
 }
 ```
 
-#### createHostRootFiber(创建根 Fiber)
+#### `createHostRootFiber`(创建根 `Fiber`)
 
 ```js
 // ReactFiber
@@ -110,7 +110,7 @@ export function createHostRootFiber() {
 }
 ```
 
-#### FiberNode(Fiber 节点)
+#### `FiberNode`(`Fiber` 节点)
 
 > 源码地址 [function FiberNode](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiber.old.js#L118)
 
@@ -157,7 +157,7 @@ export function FiberNode(tag, pendingProps, key) {
 }
 ```
 
-#### Fiber 类型
+#### `Fiber` 类型
 
 > 源码地址 [ReactWorkTags](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactWorkTags.js)
 
@@ -172,7 +172,7 @@ export const HostComponent = 5 // 原生节点 div span
 export const HostText = 6 // 纯文本节点
 ```
 
-#### Fiber 更新标识代表的二进制
+#### `Fiber` 更新标识代表的二进制
 
 > 源码地址 [ReactFiberFlags](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberFlags.js)
 
@@ -185,7 +185,7 @@ export const Update = 0b0000000000000000000000000100
 
 #### 初始化更新队列
 
-> 每个 Fiber 上都可能会有更新队列，存放它的更新（不同类型的 Fiber，存放的更新都不一样）。
+> 每个 `Fiber` 上都可能会有更新队列，存放它的更新（不同类型的 `Fiber`，存放的更新都不一样）。
 
 ![initializeUpdateQueue](image/initializeUpdateQueue.png)
 
@@ -212,7 +212,7 @@ export function initializeUpdateQueue(fiber) {
 
 ![fiber_tree](image/fiber_tree.jpg)
 
-#### Render
+#### `Render`
 
 ```js
 // ReactDOMRoot
@@ -236,7 +236,7 @@ export function createRoot(container) {
 }
 ```
 
-#### updateContainer 更新容器
+#### `updateContainer` 更新容器
 
 ```js
 // ReactFiberReconciler
@@ -314,7 +314,7 @@ export function initializeUpdateQueue(fiber) {
 
 ![enqueueUpdate](image/enqueueUpdate.png)
 
-#### markUpdateLaneFromFiberToRoot (找根节点)
+#### `markUpdateLaneFromFiberToRoot` (找根节点)
 
 ```js
 // ReactFiberCocurrentUpdates
@@ -340,7 +340,7 @@ export function markUpdateLaneFromFiberToRoot(sourceFiber) {
 }
 ```
 
-#### scheduleUpdateOnFiber(任务调度与创建 Fiber 树)
+#### `scheduleUpdateOnFiber`(任务调度与创建 `Fiber` 树)
 
 > 源码地址 [scheduleUpdateOnFiber](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberWorkLoop.new.js#L533)
 
@@ -418,7 +418,7 @@ function performUnitOfWork(unitOfWork) {
 
 ![prepareFreshStack](image/prepareFreshStack.png)
 
-#### scheduleCallback(任务调度回调)
+#### `scheduleCallback`(任务调度回调)
 
 ```js
 # scheduler/src/forks
@@ -429,7 +429,7 @@ export function scheduleCallback(callback) {
 }
 ```
 
-#### createWorkInProgress(基于老的 fiber 和新的属性，创建新的 fiber)
+#### `createWorkInProgress`(基于老的 `fiber` 和新的属性，创建新的 `fiber`)
 
 ![fiber_tree_double](image/fiber_tree_double.jpg)
 
@@ -521,7 +521,7 @@ export function createHostRootFiber() {
 +}
 ```
 
-### BeginWork
+### `BeginWork`
 
 > 源码地址 [BeginWork](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberBeginWork.new.js#L3685C20-L3685C20)
 

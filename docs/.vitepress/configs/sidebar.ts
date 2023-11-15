@@ -134,6 +134,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: '基础知识', link: '/node/nest/base' },
         { text: 'IOC', link: '/node/nest/ioc' },
+        { text: 'AOP', link: '/node/nest/aop' },
       ],
     },
     // {

@@ -19,3 +19,19 @@ $ git add <文件路径>
 ```
 
 ## `git commit`
+
+## git 大小写敏感
+
+查看 git 的设置
+
+```sh
+git config --get core.ignorecase
+```
+
+> 发现默认是不区分大小的，因此当你修改了文件名的大小写后，git 并不会认为你有修改哦
+
+更改设置
+
+```sh
+git config core.ignorecase false
+```

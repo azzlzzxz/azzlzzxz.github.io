@@ -54,11 +54,12 @@ export const nav: DefaultTheme.Config['nav'] = [
     items: [{ text: '构建工具', link: '/capital/construct/webpack/base' }],
   },
   {
-    text: 'work',
+    text: '工作',
     items: [
       { text: '实用工具', link: '/work/utility/ni' },
       { text: '日常问题记录', link: '/work/question/npm' },
       { text: '其他', link: '/work/command/command' },
+      { text: '微信相关', link: '/wx/qw/side' },
     ],
   },
 ]

@@ -190,6 +190,16 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         // },
       ],
     },
+    {
+      text: '部署',
+      collapsed: false,
+      items: [
+        {
+          text: '前端发布策略',
+          link: '/capital/deploy/release.md',
+        },
+      ],
+    },
   ],
   '/work/': [
     {
@@ -217,6 +227,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '其他',
       collapsed: false,
       items: [{ text: '命令', link: '/work/command/command' }],
+    },
+  ],
+  '/wx/': [
+    {
+      text: '企业微信',
+      collapsed: false,
+      items: [{ text: '企微侧边栏', link: '/wx/qw/side' }],
     },
   ],
 }

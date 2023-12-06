@@ -10,6 +10,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '执行上下文', link: '/base/javaScript/context' },
         { text: '作用域', link: '/base/javaScript/scope' },
         { text: '闭包', link: '/base/javaScript/closure' },
+        { text: '函数式编程', link: '/base/javaScript/function' },
       ],
     },
     {

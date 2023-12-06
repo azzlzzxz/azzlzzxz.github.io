@@ -75,7 +75,7 @@ a === b
 
 要想写出好的函数式代码，就需要确保数据的不可变性。
 
-### const
+### `const`
 
 `const` 只能够保证值类型数据的不变性，却不能够保证引用类型数据的不变性。
 
@@ -109,13 +109,13 @@ console.log(my)
 
 > 注：由于纯函数只能通过参数获取数据，因此如果需要使用外部数据，就必须将其作为参数传递给函数。
 
-### Immutable.js
+### `Immutable.js`
 
 持久化数据结构的精髓同样在于“数据共享”。
 
 数据共享意味着将“变与不变”分离，确保只有变化的部分被处理，而不变的部分则将继续留在原地、被新的数据结构所复用。
 
-不同的是，在 git 世界里，这个“变与不变”的区分是文件级别的；而在 Immutable.js 的世界里，这个“变与不变”可以细化到数组的某一个元素、对象的某一个字段。
+不同的是，在 `git` 世界里，这个“变与不变”的区分是文件级别的；而在 `Immutable.js` 的世界里，这个“变与不变”可以细化到数组的某一个元素、对象的某一个字段。
 
 举个 🌰：
 
@@ -136,3 +136,129 @@ const dataB = dataA.set({
 ```
 
 ![Immutable](images/Immutable.jpg)
+
+为了达到这种“数据共享”的效果，持久化数据结构在底层依赖了一种经典的基础数据结构，那就是 `Trie`(字典树）
+
+### `Immer.js`
+
+**API**
+
+```js
+import produce from 'immer'
+
+// 这是我的源数据
+const baseState = [
+  {
+    name: 'steins gate',
+    age: 99,
+  },
+  {
+    name: 'azzlzzxz',
+    age: 100,
+  },
+]
+
+// 定义数据的写逻辑
+const recipe = (draft) => {
+  draft.push({ name: 'person', age: 101 })
+  draft[1].age = 102
+}
+
+// 借助 produce，执行数据的写逻辑
+const nextState = produce(baseState, recipe)
+```
+
+- `(base)state`：源数据，是我们想要修改的目标数据
+- `recipe`：一个函数，我们可以在其中描述数据的写逻辑
+- ` draft` ：`recipe ` 函数的默认入参，它是对源数据的代理，我们可以把想要应用在源数据的变更应用在 `draft` 上
+- `produce`：入口函数，它负责把上述要素串起来。具体逻辑请看下文分解。
+
+---
+
+`Immer.js` 实现 `Immutability` 的姿势非常有趣——它使用 `Proxy`，对目标对象的行为进行“元编程”。
+
+> `Proxy` 对象用于创建一个对象的代理，从而实现基本操作的拦截和自定义（如属性查找、赋值、枚举、函数调用等）。 ——MDN
+
+`Immer.js` 的一切奥秘都蕴含在 `produce` 里，包括其对 `Proxy` 的运用。
+
+那么 `produce` 是如何工作的呢？
+
+`Immer.js` 的源代码虽然简洁，但整个读完也是个力气活。这里我们只关注 `produce` 函数的核心逻辑，我将其提取为如下的极简版本：
+
+```js
+function produce(base, recipe) {
+  // 预定义一个 copy 副本
+  let copy
+  // 定义 base 对象的 proxy handler
+  const baseHandler = {
+    set(obj, key, value) {
+      // 先检查 copy 是否存在，如果不存在，创建 copy
+      if (!copy) {
+        copy = { ...base }
+      }
+      // 如果 copy 存在，修改 copy，而不是 base
+      copy[key] = value
+      return true
+    },
+  }
+
+  // 被 proxy 包装后的 base 记为 draft
+  const draft = new Proxy(base, baseHandler)
+  // 将 draft 作为入参传入 recipe
+  recipe(draft)
+  // 返回一个被“冻结”的 copy，如果 copy 不存在，表示没有执行写操作，返回 base 即可
+  // “冻结”是为了避免意外的修改发生，进一步保证数据的纯度
+  return Object.freeze(copy || base)
+}
+```
+
+```js
+// 这是我的源对象
+const baseObj = {
+  a: 1,
+  b: {
+    name: 'azzlzzxz',
+  },
+}
+
+// 这是一个执行写操作的 recipe
+const changeA = (draft) => {
+  draft.a = 2
+}
+
+// 这是一个不执行写操作、只执行读操作的 recipe
+const doNothing = (draft) => {
+  console.log('doNothing function is called, and draft is', draft)
+}
+
+// 借助 produce，对源对象应用写操作，修改源对象里的 a 属性
+const changedObjA = produce(baseObj, changeA)
+
+// 借助 produce，对源对象应用读操作
+const doNothingObj = produce(baseObj, doNothing)
+
+// 顺序输出3个对象，确认写操作确实生效了
+console.log(baseObj)
+console.log(changedObjA)
+console.log(doNothingObj)
+
+// 【源对象】 和 【借助 produce 对源对象执行过读操作后的对象】 还是同一个对象吗？
+// 答案为 true
+console.log(baseObj === doNothingObj)
+// 【源对象】 和 【借助 produce 对源对象执行过写操作后的对象】 还是同一个对象吗？
+// 答案为 false
+console.log(baseObj === changedObjA)
+// 源对象里没有被执行写操作的 b 属性，在 produce 执行前后是否会发生变化？
+// 输出为 true，说明不会发生变化
+console.log(baseObj.b === changedObjA.b)
+```
+
+:::tip
+`Produce` 工作原理：将拷贝操作精准化，只要写操作没执行，拷贝动作就不会发生，逐层拷贝。
+
+`produce` 借助 `Proxy`，将拷贝动作发生的时机和 `setter` 函数的触发时机牢牢绑定，确保了拷贝动作的精确性。 而逐层的浅拷贝，则间接地实现了数据在新老对象间的共享。
+
+在 `Immer.js` 中，完整版 `produce` 的浅拷贝其实是可递归的。
+:::
+
+## 高阶函数 `HOF`

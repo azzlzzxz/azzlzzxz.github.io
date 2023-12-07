@@ -262,3 +262,55 @@ console.log(baseObj.b === changedObjA.b)
 :::
 
 ## 高阶函数 `HOF`
+
+高阶函数，指的就是接收函数作为入参（回调），或者将函数作为出参返回的函数（闭包）。
+
+```js
+// 装饰器模式  （对原本的功能进行包装）  切片编程
+function core(a, b, c) {
+  console.log('core。。。。', a, b, c)
+}
+
+// 每个类都有一个原型， 所有实例都有一个属性__proto__
+Function.prototype.before = function (beforeFn) {
+  // this = core // this的指向 就是看调用者
+  // 这里return的就是newFn函数
+  return (...args) => {
+    // 箭头函数中没有this 没有arguments 没有prototype
+    beforeFn() // 先调用() => {console.log('core before')} 从而不会影响core的逻辑
+    this(...args) // 用箭头函数是为了让，这里this指向core
+  }
+}
+
+let newFn = core.before(() => {
+  console.log('core before')
+})
+
+newFn(1, 2, 3)
+// core before
+// core。。。。 1 2 3
+```
+
+:::tip
+闭包：定义函数的作用域 和 调用的作用域不是同一个。
+
+在 Function.prototype.before 里定义了函数（return 的函数），但是在外面调用（newFn），就形成闭包。
+:::
+
+---
+
+**实现声明式的数据流，除了借助链式调用，还可以借助函数组合。**
+
+## 链式调用
+
+`map()`、`reduce()`、`filter()` 这些方法之间，之所以能够进行链式调用，是因为：
+
+- 它们都挂载在 `Array` 原型的 `Array.prototype` 上。
+- 它们在计算结束后都会 `return` 一个新的 `Array`。
+- 既然 `return` 出来的也是 `Array`，那么自然可以继续访问原型 `Array.prototype` 上的方法。
+
+也就是说，链式调用是有前提的。
+
+链式调用的本质 ，是通过在方法中返回对象实例本身的 `this`/ 与实例 `this` 相同类型的对象，达到多次调用其原型（链）上方法的目的。
+
+要对函数执行链式调用，前提是函数挂载在一个靠谱的宿主 `Object` 上。

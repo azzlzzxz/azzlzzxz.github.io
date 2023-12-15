@@ -314,3 +314,47 @@ newFn(1, 2, 3)
 链式调用的本质 ，是通过在方法中返回对象实例本身的 `this`/ 与实例 `this` 相同类型的对象，达到多次调用其原型（链）上方法的目的。
 
 要对函数执行链式调用，前提是函数挂载在一个靠谱的宿主 `Object` 上。
+
+## 函数组合
+
+### `pipe`
+
+```js
+function pipe(funcs) {
+  function callback(input, func) {
+    return func(input)
+  }
+
+  return function (param) {
+    return funcs.reduce(callback, param)
+  }
+}
+```
+
+简化后 👇
+
+```js
+function pipe(...fns) {
+  return function (param) {
+    return fns.reduce((acc, cur) => cur(acc), param)
+  }
+}
+```
+
+### `compose`
+
+```js
+function compose(...funcs) {
+  function callback(input, func) {
+    return func(input)
+  }
+
+  return function (param) {
+    return funcs.reduceRight(callback, param)
+  }
+}
+```
+
+## 函数柯里化
+
+## 偏函数

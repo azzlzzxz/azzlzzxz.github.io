@@ -317,6 +317,8 @@ newFn(1, 2, 3)
 
 ## 函数组合
 
+![reduce](images/reduce.png)
+
 ### `pipe`
 
 ```js
@@ -357,4 +359,40 @@ function compose(...funcs) {
 
 ## 函数柯里化
 
+柯里化函数在偏函数的基础上，不仅减少了函数入参个数，还改变了函数执行次数。其含义就是将一个接收 `N` 个入参的函数，改写为接受一个入参，并返回接受剩余 `N-1 `个参数的函数。也就是：
+
+```js
+fn(1,2,3) => fn(1)(2)(3)
+```
+
+实现一个柯里化函数也是面试高频内容，其实如果规定了函数入参个数，那么是很容易实现的。例如对于入参个数为 3 的函数，实现如下：
+
+```js
+const curry = (fn) => (arg1) => (arg2) => (arg3) => fn(arg1, arg2, arg3)
+
+const fn = (a, b, c) => console.log(a, b, c)
+
+curry(fn)(1)(2)(3) // 1 2 3
+```
+
+那么实现通用的 `curry` 函数的关键就在于：
+
+- 自动判断函数入参
+- 自我递归调用
+
+```js
+const curry = (fn) => {
+  const argLen = fn.length // 原函数的入参个数
+  const recursion = (args) =>
+    args.length >= argLen ? fn(...args) : (newArg) => recursion([...args, newArg])
+  return recursion([])
+}
+```
+
 ## 偏函数
+
+偏函数的定义简单来说就是，将函数转换为参数更少的函数，也就是为其预设参数。
+
+```sh
+从 fn(arg1, arg2) 到 fn(arg1)
+```

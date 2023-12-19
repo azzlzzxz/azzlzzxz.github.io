@@ -13,7 +13,9 @@
 
 函数副作用指当调用函数时，除了返回可能的函数值之外，还对主调用函数产生附加的影响
 
-> 如果一个函数除了计算之外，还对它的执行上下文、执行宿主等外部环境造成了一些其它的影响，那么这些影响就是所谓的”副作用”。
+:::tip
+如果一个函数除了计算之外，还对它的执行上下文、执行宿主等外部环境造成了一些其它的影响，那么这些影响就是所谓的”副作用”。
+:::
 
 ## 函数的`纯`与`不纯`
 
@@ -395,4 +397,25 @@ const curry = (fn) => {
 
 ```sh
 从 fn(arg1, arg2) 到 fn(arg1)
+```
+
+```js
+function multiply(x, y) {
+  return x * y
+}
+
+// 定义一个包装函数，专门用来处理偏函数逻辑
+function wrapFunc(func, fixedValue) {
+  // 包装函数的目标输出是一个新的函数
+  function wrappedFunc(input) {
+    // 这个函数会固定 fixedValue，然后把 input 作为动态参数读取
+    const newFunc = func(input, fixedValue)
+    return newFunc
+  }
+  return wrappedFunc
+}
+const multiply3 = wrapFunc(multiply, 3)
+
+// 输出6
+multiply3(2)
 ```

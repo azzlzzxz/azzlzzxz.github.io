@@ -51,7 +51,10 @@ export const nav: DefaultTheme.Config['nav'] = [
   },
   {
     text: '基建',
-    items: [{ text: '构建工具', link: '/capital/construct/webpack/base' }],
+    items: [
+      { text: '构建', link: '/capital/construct/webpack/base' },
+      { text: '部署', link: '/capital/deploy/release' },
+    ],
   },
   {
     text: '工作',

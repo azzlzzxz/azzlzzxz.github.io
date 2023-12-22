@@ -199,6 +199,14 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           text: '前端发布策略',
           link: '/capital/deploy/release.md',
         },
+        {
+          text: 'Docker',
+          collapsed: false,
+          items: [
+            { text: 'Docker基础', link: '/capital/deploy/docker/base' },
+            // { text: 'Docker常用命令', link: '/capital/deploy/docker/command' },
+          ],
+        },
       ],
     },
   ],

@@ -25,3 +25,5 @@
 - ` Docker File：` `Docker` 镜像构建文件，用来定义 `Docker` 镜像的内容。
 
 ## 通过 Docker Destop 直观学习 Docker
+
+![docker_desktop](../image/docker_desktop.png)

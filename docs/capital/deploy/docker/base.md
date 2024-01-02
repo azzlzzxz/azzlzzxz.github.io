@@ -26,4 +26,4 @@
 
 ## 通过 Docker Destop 直观学习 Docker
 
-![docker_desktop](../image/docker_desktop.png)
+![docker_desktop](../image/docker_desktop.jpg)

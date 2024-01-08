@@ -27,3 +27,36 @@
 ## 通过 Docker Destop 直观学习 Docker
 
 ![docker_desktop](../image/docker_desktop.jpg)
+
+`images` 是本地的所有镜像，`containers` 是镜像跑起来的容器。
+
+`docker desktop` `pull` 一个镜像试试看。
+
+![pull_nginx](../image/pull_nginx.png)
+
+我们点击 `pull` 按钮，就相当于执行了 `docker pull`
+
+```sh
+docker pull nginx:latest
+```
+
+![run_nginx](../image/run_nginx.png)
+
+我们点击 `run` 按钮，填了个表单，就相当于执行了 `docker run`
+
+![docker_run](../image/docker_run.png)
+
+```sh
+docker run --name nginx-test2 -p 80:80 -v /tmp/aaa:/usr/share/nginx/html -e KEY1=VALUE1 -d nginx:latest
+```
+
+- `-p` 是端口映射
+  - 端口：这个是宿主机的端口，比如你要访问宿主机的 80 端口，那你就要映射到容器的 80 端口，容器内跑的 `nginx` 服务是在 80 端口，你要把宿主机的某个端口映射到容器的 80 端口才可以访问。
+- `-v` 是指定数据卷挂载目录
+  - 数据卷 `volume`：这个是把宿主机某个目录挂到容器内。因为容器是镜像跑起来的，下次再用这个镜像跑的还是同样的容器，那你在容器内保存的数据就会消失。所以我们都是把某个宿主机目录，挂载到容器内的某个保存数据的目录，这样数据是保存在宿主机的，下次再用镜像跑一个新容器，只要把这个目录挂载上去就行。
+- `-e` 是指定环境变量
+- `-d `是后台运行
+
+点击 run，可以看到容器内的 nginx 服务跑起来了。
+
+![run](../image/run.png)

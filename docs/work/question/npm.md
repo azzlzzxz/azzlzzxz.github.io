@@ -72,3 +72,28 @@ brew switch python 3.8
 
 [参考链接-切换 sass](https://stackoverflow.com/questions/68095626/node-sass-with-apple-m1-big-sur-and-arm64)
 :::
+
+## [pnpm v7] crashes "add --global" with "ERROR  Unable to find the global bin directory"
+
+pnpm 升级遇到的问题
+
+```sh
+pnpm add -g pnpm
+```
+
+![pnpm_error_1](image.png)
+
+![pnpm_error_2](image-1.png)
+
+![pnpm_error_3](image-2.png)
+
+```sh
+# 全局卸载pnpm
+npm rm -g pnpm
+
+# 删除全局内容可寻址存储
+rm -rf $(pnpm store path)
+
+# 重新安装pnpm
+npm install -g pnpm
+```

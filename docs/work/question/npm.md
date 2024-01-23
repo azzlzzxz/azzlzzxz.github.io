@@ -81,11 +81,11 @@ pnpm 升级遇到的问题
 pnpm add -g pnpm
 ```
 
-![pnpm_error_1](image.png)
+![pnpm_error_1](./images/pnpm_error_1.png)
 
-![pnpm_error_2](image-1.png)
+![pnpm_error_2](./images/pnpm_error_2.png)
 
-![pnpm_error_3](image-2.png)
+![pnpm_error_3](./images/pnpm_error_3.png)
 
 ```sh
 # 全局卸载pnpm

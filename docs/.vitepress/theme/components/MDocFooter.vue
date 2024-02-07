@@ -3,8 +3,10 @@ import { inject, Ref } from 'vue'
 
 const DEV = inject('DEV') as Ref<boolean>
 </script>
+
 <template>
   <div class="copyright">
+    <div>如有转载或 CV 的请标注本站原文地址</div>
     <img
       v-if="!DEV"
       class="visitor"
@@ -17,6 +19,8 @@ const DEV = inject('DEV') as Ref<boolean>
 
 <style scoped>
 .copyright {
+  display: flex;
+  flex-direction: column;
   margin-top: 24px;
   border-top: 1px solid var(--vp-c-gutter);
   padding: 32px 24px;

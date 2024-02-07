@@ -26,6 +26,7 @@ const DEV = inject('DEV') as Ref<boolean>
   margin-top: 24px;
   border-top: 1px solid var(--vp-c-gutter);
   padding: 32px 24px;
+  font-size: 14px;
   background-color: var(--vp-c-bg);
 }
 

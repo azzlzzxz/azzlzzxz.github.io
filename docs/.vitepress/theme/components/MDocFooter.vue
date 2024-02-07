@@ -7,7 +7,7 @@ const DEV = inject('DEV') as Ref<boolean>
 <template>
   <div class="copyright">
     <div>如有转载或 CV 的请标注本站原文地址</div>
-    <div>
+    <div class="copy">
       <img
         v-if="!DEV"
         class="visitor"
@@ -27,6 +27,12 @@ const DEV = inject('DEV') as Ref<boolean>
   border-top: 1px solid var(--vp-c-gutter);
   padding: 32px 24px;
   background-color: var(--vp-c-bg);
+}
+
+.copy {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
 }
 
 .visitor {

@@ -7,13 +7,15 @@ const DEV = inject('DEV') as Ref<boolean>
 <template>
   <div class="copyright">
     <div>如有转载或 CV 的请标注本站原文地址</div>
-    <img
-      v-if="!DEV"
-      class="visitor"
-      src="https://visitor-badge.laobi.icu/badge?page_id=azzlzzxz.azzlzzxz.github.io"
-      onerror="this.style.display='none'"
-    />
-    Copyright © 2021-present azzlzzxz
+    <div>
+      <img
+        v-if="!DEV"
+        class="visitor"
+        src="https://visitor-badge.laobi.icu/badge?page_id=azzlzzxz.azzlzzxz.github.io"
+        onerror="this.style.display='none'"
+      />
+      Copyright © 2021-present azzlzzxz
+    </div>
   </div>
 </template>
 

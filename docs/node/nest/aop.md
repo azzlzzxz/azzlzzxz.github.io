@@ -117,3 +117,93 @@ export class AppController {
 ![m_test](./images/m_test.png)
 
 ### `Guard` 路由守卫
+
+`Guard` 是路由守卫的意思，可以用于在调用某个 `Controller` 之前判断权限，返回 `true` 或者 `false` 来决定是否放行，它们根据运行时出现的某些条件（例如权限，角色，访问控制列表等）来确定给定的请求是否由路由处理程序处理。这通常称为授权。
+
+![guard](./images/guard.png)
+
+创建 `guard`
+
+```shell
+nest g guard login --no-spec --flat
+```
+
+生成代码：
+
+```ts
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
+import { Observable } from 'rxjs'
+
+@Injectable()
+export class LoginGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    // console信息
+    console.log('guard...')
+
+    return true
+  }
+}
+```
+
+守卫是一个使用 `@Injectable()` 装饰器的类。 守卫要实现 `CanActivate` 接口，实现 `canActivate` 方法，可以从 `context` 拿到请求的信息，然后做一些权限验证等处理之后返回 `true` 或者 `false`。
+
+```ts
+// app.controller.ts
+import {UseGuards} from '@nestjs/common';
+
+  @Get('/aaa')
+  @UseGuards(LoginGuard)
+  aaa(): string {
+    console.log('aaa...');
+    return 'aaa';
+  }
+```
+
+![guard_test](./images/guard_test.png)
+
+`Controller` 本身不需要做啥修改，却透明的加上了权限判断的逻辑，这就是 `AOP` 架构的好处。
+
+**<font color="FF9D00">全局路由守卫</font>**
+
+- 方式一：`main.ts` 里`app.useGlobalGuards`
+
+```ts
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
+import { LoginGuard } from './login.guard'
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule)
+
+  app.useGlobalGuards(new LoginGuard())
+
+  await app.listen(3000)
+}
+bootstrap()
+```
+
+这种方式是手动 `new` 的 `Guard` 实例，不在 `IoC` 容器里。
+
+- 方式二：用 `provider` 的方式声明的 `Guard` 是在 `IoC` 容器里的，可以注入别的 `provider`
+
+```ts
+// app.module.ts
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { LoginGuard } from './login.guard';
+
+@Module({
+  imports: [],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_GUARD',
+      useClass: LoginGuard,
+    },
+  ],
+})
+```
+
+当需要注入别的 `provider` 的时候，就要用第二种全局 `Guard` 的声明方式。

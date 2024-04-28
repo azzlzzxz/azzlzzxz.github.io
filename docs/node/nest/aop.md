@@ -245,3 +245,101 @@ export class DataInterceptor implements NestInterceptor {
   }
 }
 ```
+
+`Interceptor` 要实现 `NestInterceptor` 接口，实现 `intercept` 方法，调用 `next.handle()` 就会调用目标 `Controller`，可以在之前和之后加入一些处理逻辑。
+
+`Controller` 之前之后的处理逻辑可能是异步的。`Nest` 里通过 `rxjs` 来组织它们，所以可以使用 `rxjs` 的各种 `operator`。
+
+![interceptor](./images/interceptor.jpg)
+
+添加代码：
+
+```ts
+// date.interceptor
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
+import { Observable, tap } from 'rxjs'
+
+@Injectable()
+export class DataInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle().pipe(
+      tap(() => {
+        console.log('time: ', Date.now())
+      }),
+    )
+  }
+}
+
+// Interceptor 支持每个路由单独启用，只作用于某个 handler：
+// app.controller.ts
+  @Get('/bbb')
+  @UseInterceptors(DataInterceptor)
+  bbb(): string {
+    console.log('bbb...');
+    return 'bbb';
+  }
+
+// 也同样支持全局启用，作用于全部 controller：
+@Controller()
+@UseInterceptors(DataInterceptor)
+export class AppController {}
+```
+
+也同样支持全局启用，作用于全部 controller：
+
+```ts
+// main.ts
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule)
+
+  app.useGlobalInterceptors(new DataInterceptor())
+
+  await app.listen(3000)
+}
+bootstrap()
+
+// app.module.ts
+@Module({
+  imports: [],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: DataInterceptor,
+    },
+  ],
+})
+```
+
+:::tip
+
+`interceptor` 与 `middleware` 其实是有区别的，主要在于参数的不同。
+
+`interceptor` 可以从`(context: ExecutionContext)`拿到调用的 `controller` 和 `handler`。
+
+:::
+
+### `Pipe` 管道
+
+`Pipe` 是管道的意思，用来对参数做一些检验和转换。
+
+![pipe](./images/pipe.png)
+
+管道有两个典型的应用场景:
+
+- 转换：管道将输入数据转换为所需的数据输出(例如，将字符串转换为整数)。
+- 验证：对输入数据进行验证，如果验证成功继续传递; 验证失败则抛出异常。
+
+`Nest` 自带九个开箱即用的管道，即：
+
+- ValidationPipe
+- ParseIntPipe
+- ParseFloatPipe
+- ParseBoolPipe
+- ParseArrayPipe
+- ParseUUIDPipe
+- ParseEnumPipe
+- DefaultValuePipe
+- ParseFilePipe
+  他们从 `@nestjs/common` 包中导出。

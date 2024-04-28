@@ -118,6 +118,8 @@ export class AppController {
 
 ### `Guard` 路由守卫
 
+![guard](./images/guard.jpg)
+
 `Guard` 是路由守卫的意思，可以用于在调用某个 `Controller` 之前判断权限，返回 `true` 或者 `false` 来决定是否放行，它们根据运行时出现的某些条件（例如权限，角色，访问控制列表等）来确定给定的请求是否由路由处理程序处理。这通常称为授权。
 
 ![guard](./images/guard.png)
@@ -207,3 +209,39 @@ import { LoginGuard } from './login.guard';
 ```
 
 当需要注入别的 `provider` 的时候，就要用第二种全局 `Guard` 的声明方式。
+
+### `Interceptor` 拦截器
+
+`Interceptor` 拦截器，可以在目标 Controller 方法前后加入一些逻辑。
+
+![interceptor](./images/interceptor.png)
+
+拦截器具有一系列有用的功能，它们可以：
+
+- 在函数执行之前/之后绑定额外的逻辑
+- 转换从函数返回的结果
+- 转换从函数抛出的异常
+- 扩展基本函数行为
+- 根据所选条件完全重写函数 (例如, 缓存目的)
+
+**拦截器是使用 `@Injectable()` 装饰器注解的类。拦截器应该实现 `NestInterceptor` 接口。**
+
+创建个 `Interceptor`
+
+```shell
+nest g interceptor data --no-spec --flat
+```
+
+生成代码：
+
+```ts
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
+import { Observable } from 'rxjs'
+
+@Injectable()
+export class DataInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle()
+  }
+}
+```

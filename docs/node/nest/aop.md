@@ -333,13 +333,66 @@ bootstrap()
 
 `Nest` 自带九个开箱即用的管道，即：
 
-- ValidationPipe
-- ParseIntPipe
-- ParseFloatPipe
-- ParseBoolPipe
-- ParseArrayPipe
-- ParseUUIDPipe
-- ParseEnumPipe
-- DefaultValuePipe
-- ParseFilePipe
+- `ValidationPipe`
+- `ParseIntPipe`
+- `ParseFloatPipe`
+- `ParseBoolPipe`
+- `ParseArrayPipe`
+- `ParseUUIDPipe`
+- `ParseEnumPipe`
+- `DefaultValuePipe`
+- `ParseFilePipe`
   他们从 `@nestjs/common` 包中导出。
+
+`nest cli` 创建个 `pipe`
+
+```shell
+nest g pipe validate --no-spec --flat
+```
+
+生成代码：
+
+```ts
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common'
+
+@Injectable()
+export class ValidatePipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    return value
+  }
+}
+```
+
+`Pipe` 要实现 `PipeTransform` 接口，实现 `transform` 方法，里面可以对传入的参数值 `value` 做参数验证，比如格式、类型是否正确，不正确就抛出异常。也可以做转换，返回转换后的值。
+
+实现一下：
+
+```ts
+// validate.pipe.ts
+@Injectable()
+export class ValidatePipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    if (Number.isNaN(parseInt(value))) {
+      throw new BadRequestException(`参数${metadata.data}错误`)
+    }
+
+    return typeof value === 'number' ? value * 10 : parseInt(value) * 10
+  }
+}
+
+// app.controller.ts
+import { ValidatePipe } from './validate.pipe';
+@Get('/ccc')
+  @UseFilters(TestFilter)
+  ccc(@Query('num', ValidatePipe) num: number): number {
+    return num + 1;
+  }
+```
+
+同样，`Pipe` 可以只对某个参数生效，或者整个 `Controller` 都生效,或者全局生效。
+
+### ExceptionFilter 异常过滤器
+
+`ExceptionFilter` 可以对抛出的异常做处理，返回对应的响应。
+
+![ExceptionFilter](./images/ExceptionFilter.png)

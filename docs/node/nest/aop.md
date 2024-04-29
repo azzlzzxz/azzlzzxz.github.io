@@ -369,6 +369,13 @@ export class ValidatePipe implements PipeTransform {
 
 ```ts
 // validate.pipe.ts
+import {
+  ArgumentMetadata,
+  BadRequestException,
+  Injectable,
+  PipeTransform,
+} from '@nestjs/common';
+
 @Injectable()
 export class ValidatePipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
@@ -382,6 +389,7 @@ export class ValidatePipe implements PipeTransform {
 
 // app.controller.ts
 import { ValidatePipe } from './validate.pipe';
+
 @Get('/ccc')
   @UseFilters(TestFilter)
   ccc(@Query('num', ValidatePipe) num: number): number {
@@ -396,3 +404,64 @@ import { ValidatePipe } from './validate.pipe';
 `ExceptionFilter` 可以对抛出的异常做处理，返回对应的响应。
 
 ![ExceptionFilter](./images/ExceptionFilter.png)
+
+创建一个 filter
+
+```shell
+nest g filter test --no-spec --flat
+```
+
+生成代码：
+
+```ts
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter } from '@nestjs/common'
+import { Response } from 'express'
+
+@Catch()
+export class TestFilter<T> implements ExceptionFilter {
+  catch(exception: BadRequestException, host: ArgumentsHost) {}
+}
+```
+
+实现 `ExceptionFilter` 接口，实现 `catch` 方法，就可以拦截异常了。
+
+拦截什么异常用 `@Catch` 装饰器来声明，然后在 `catch` 方法返回对应的响应，给用户更友好的提示。
+
+```ts
+// test.filter.ts
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter } from '@nestjs/common'
+import { Response } from 'express'
+
+@Catch(BadRequestException)
+export class TestFilter implements ExceptionFilter {
+  catch(exception: BadRequestException, host: ArgumentsHost) {
+    const response: Response = host.switchToHttp().getResponse()
+
+    response.status(400).json({
+      statusCode: 400,
+      message: 'test: ' + exception.message,
+    })
+  }
+}
+
+// app.controller.ts
+import { TestFilter } from './test.filter';
+
+@Get('/ccc')
+  @UseFilters(TestFilter)
+  ccc(@Query('num', ValidatePipe) num: number): number {
+    return num + 1;
+  }
+```
+
+`Nest` 通过这样的方式实现了异常到响应的对应关系，代码里只要抛出不同的异常，就会返回对应的响应，很方便。
+
+## 总结
+
+`Middleware`、`Guard`、`Pipe`、`Interceptor`、`ExceptionFilter` 都可以透明的添加某种处理逻辑到某个路由或者全部路由，AOP 是把通用逻辑抽离出来，通过切面的方式添加到某个地方，可以复用和动态增删切面逻辑，这就是 `AOP` 的好处。
+
+但是它们之间的顺序关系是什么呢？
+
+![aop_sort](./images/aop_sort.jpg)
+
+`Middleware` 是 `Express` 的概念，在最外层，到了某个路由之后，会先调用 `Guard`，`Guard `用于判断路由有没有权限访问，然后会调用 `Interceptor`，对 `Contoller` 前后扩展一些逻辑，在到达目标 `Controller` 之前，还会调用 `Pipe` 来对参数做检验和转换。所有的 `HttpException` 的异常都会被 `ExceptionFilter` 处理，返回不同的响应。

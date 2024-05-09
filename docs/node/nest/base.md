@@ -210,3 +210,32 @@ npm i -D @types/multer
 `json：` `json` 格式的数据。`Nest` 中使用 `@Body` 来取，`axios` 中不需要单独指定 `content type`，`axios` 内部会处理。
 
 `form data：`通过 ----- 作为 `boundary` 分隔的数据。主要用于传输文件，`Nest` 中要使用 `FilesInterceptor` 来处理其中的 `binary` 字段，用 `@UseInterceptors` 来启用，其余字段用 `@Body` 来取。`axios` 中需要指定 `content type` 为 `multipart/form-data`，并且用 `FormData` 对象来封装传输的内容。
+
+## `Nest` 装饰器
+
+- `@Module`： 声明 `Nest` 模块
+- `@Controller`：声明模块里的 `controller`
+  > 控制器的目的是接收应用的特定请求。路由机制控制哪个控制器接收哪些请求。通常，每个控制器有多个路由，不同的路由可以执行不同的操作。
+- `@Injectable`：声明模块里可以注入的 `provider`
+- `@Inject`：通过 `token` 手动指定注入的 `provider`，`token` 可以是 `class` 或者 `string`
+- `@Optional`：声明注入的 `provider` 是可选的，可以为空
+- `@Global`：声明全局模块
+- `@Catch`：声明 `exception filter` 处理的 `exception` 类型
+- `@UseFilters`：路由级别使用 `exception filter`
+- `@UsePipes`：路由级别使用 `pipe`
+- `@UseInterceptors`：路由级别使用 `interceptor`
+- `@SetMetadata`：在 `class` 或者 `handler` 上添加 `metadata`
+- `@Get`、`@Post`、`@Put`、`@Delete`、`@Patch`、`@Options`、`@Head`：声明 `get`、`post`、`put`、`delete`、`patch`、`options`、`head` 的请求方式
+- `@Param`：取出 `url` 中的参数，比如 `/aaa/:id` 中的 `id`
+- `@Query`: 取出 `query` 部分的参数，比如 `/aaa?name=xx` 中的 `name`
+- `@Body`：取出请求 `body`，通过 `dto class` 来接收
+- `@Headers`：取出某个或全部请求头
+- `@Session`：取出 `session` 对象，需要启用 `express-session` 中间件
+- `@HostParm`： 取出 `host` 里的参数
+- `@Req`、`@Request`：注入 `request` 对象
+- `@Res`、`@Response`：注入 `response` 对象，一旦注入了这个 Nest 就不会把返回值作为响应了，除非指定 `passthrough` 为 `true`
+- `@Next`：注入调用下一个 `handler` 的 `next` 方法
+- `@HttpCode`： 修改响应的状态码
+- `@Header`：修改响应头
+- `@Redirect`：指定重定向的 `url`
+- `@Render`：指定渲染用的模版引擎

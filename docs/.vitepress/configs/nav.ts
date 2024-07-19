@@ -30,6 +30,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         text: '框架',
         items: [
           { text: 'React', link: '/frame/react/base/jsx' },
+          { text: 'ReactNative', link: '/frame/react-native/init' },
           { text: 'Electron', link: '/frame/electron/introduce' },
         ],
       },

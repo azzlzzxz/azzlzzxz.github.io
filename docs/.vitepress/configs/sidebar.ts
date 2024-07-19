@@ -155,6 +155,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+  '/frame/react-native/': [
+    {
+      text: 'ReactNative',
+      collapsed: false,
+      items: [{ text: '环境配置', link: '/frame/react-native/init' }],
+    },
+  ],
   '/frame/electron/': [
     {
       text: 'Electron',

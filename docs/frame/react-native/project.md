@@ -397,7 +397,7 @@ MYAPP_RELEASE_KEY_PASSWORD=*****
 
 编辑你项目目录下的`android/app/build.gradle`，添加如下的签名配置：
 
-```gradle
+```txt
 ...
 android {
     ...

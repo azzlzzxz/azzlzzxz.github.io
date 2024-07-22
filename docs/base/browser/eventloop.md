@@ -147,7 +147,7 @@ new Promise((resolve) => {
 console.log(2)
 ```
 
-```log
+```shell
 1
 2
 3

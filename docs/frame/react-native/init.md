@@ -11,7 +11,7 @@
 
 ### 安装 `nodejs`
 
-如果你 `node` 装过了，这一步跳过。注意检查下版本号，`node` 最好需要 18 或者 18+，你可以使用 `node -v` 先检查下版本号。如果低于这个版本，建议升级或者重装，可以使用 `nvm` 等 `node` 版本控制工具来切换 `node` 版本([可以看这篇文章来安装`nvm`](../../../../work/utility/nvm.md))。
+如果你 `node` 装过了，这一步跳过。注意检查下版本号，`node` 最好需要 18 或者 18+，你可以使用 `node -v` 先检查下版本号。如果低于这个版本，建议升级或者重装，可以使用 `nvm` 等 `node` 版本控制工具来切换 `node` 版本([可以看这篇文章来安装`nvm`](/work/utility/nvm.md))。
 
 ```shell
 brew install node
@@ -33,7 +33,7 @@ npm install -g react-native-cli
 
 ### 安装`Java Development Kit`
 
-推荐使用 `Homebrew`(如何安装 `Homebrew` 可以看这篇文章[Homebrew 安装](../../work/utility/nvm.md)) 来安装由 `Azul` 提供的 名为 `Zulu` 的 `OpenJDK` 发行版。此发行版同时为 `Intel` 和 `M1` 芯片提供支持。在 `M1` 芯片架构的 `Mac` 上相比其他 `JDK` 在编译时有明显的性能优势。
+推荐使用 `Homebrew`(如何安装 `Homebrew` 可以看这篇文章[Homebrew 安装](/work/utility/nvm.md)) 来安装由 `Azul` 提供的 名为 `Zulu` 的 `OpenJDK` 发行版。此发行版同时为 `Intel` 和 `M1` 芯片提供支持。在 `M1` 芯片架构的 `Mac` 上相比其他 `JDK` 在编译时有明显的性能优势。
 
 ```shell
 brew install --cask zulu@17

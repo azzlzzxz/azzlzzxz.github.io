@@ -225,7 +225,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'Git',
       collapsed: false,
-      items: [{ text: 'Git常用命令', link: '/work/git/command' }],
+      items: [
+        { text: 'Git常用命令', link: '/work/git/command' },
+        { text: 'Git浅析', link: '/work/git/principle' },
+      ],
     },
     {
       text: '实用工具',

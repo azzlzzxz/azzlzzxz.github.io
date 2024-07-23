@@ -1,5 +1,15 @@
 # Git 常用命令
 
+`git`的一些基础知识解释：
+
+- 工作区`（Workspace）`：本地编辑器里的代码，基本上我们开发操作的就是工作区。
+- 暂存区`（Index / Stage）`：暂时存储文件的地方，`git add` 操作之后的文件就是存在这里。
+- 本地仓库`（Repository）`：`git commit` 操作之后就是将暂存区的代码存放到本地仓库。
+- 远程仓库`（Remote）`：远程存储文件的地方。
+  它们之间的关系如下图所示：
+
+![git_relation](images/git_relation.png)
+
 ## `git add`
 
 把要提交的文件的信息添加到暂存区中。当使用 `git commit` 时，将依据暂存区中的内容来进行文件的提交。

@@ -56,7 +56,6 @@ allprojects {
       maven {
           url "https://mvn.getui.com/nexus/content/repositories/releases/"
       }
-      maven { url 'https://developer.huawei.com/repo/' }
   }~
 }
 ```
@@ -111,10 +110,19 @@ dependencies {
 ...
 import android.os.Bundle
 import com.getui.reactnativegetui.GetuiModule;
+import com.getui.reactnativegetui.GetuiPackage;
 
 
 class MainApplication : Application(), ReactApplication {
 
+  override val reactNativeHost: ReactNativeHost =
+      object : DefaultReactNativeHost(this) {
+        override fun getPackages(): List<ReactPackage> =
+          PackageList(this).packages.apply {
+              add(GetuiPackage());
+            }
+      ...
+      }
   ...
 
   override fun onCreate() {
@@ -160,4 +168,23 @@ class MainApplication : Application(), ReactApplication {
   </application>
 </manifest>
 
+```
+
+5. 使用
+
+```jsx
+import Getui from 'react-native-getui'
+
+const Home = () => {
+  useEffect(() => {
+    Getui.turnOnPush()
+    Getui.clientId((param: string) => {
+      getStorageUser().then((res: any) => {
+        Getui.bindAlias(res.id, param)
+      })
+    })
+  }, [])
+
+  return <div>Home</div>
+}
 ```

@@ -93,6 +93,7 @@ function Child(props: ChildProps) {
   const isFirstRender = useRef(true)
 
   useEffect(() => {
+    // 第一次渲染时候，props.value 已经在useState里赋值给stateValue了，不需要再次赋值。
     // 当不是首次渲染，但 value 变为 undefined 的情况，也就是从受控模式切换到了非受控模式，要同步设置 state 为 propsValue
     if (propsValue === undefined && !isFirstRender.current) {
       setValue(propsValue)

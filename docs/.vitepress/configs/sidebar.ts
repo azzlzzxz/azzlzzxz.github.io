@@ -147,11 +147,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   ],
   '/frame/react/': [
     {
-      text: 'React基础',
+      text: 'React',
       collapsed: false,
       items: [
         { text: 'jsx', link: '/frame/react/base/jsx' },
         { text: '虚拟DOM', link: '/frame/react/base/virtualDOM' },
+        { text: '受控与非受控', link: '/frame/react/base/control' },
       ],
     },
   ],

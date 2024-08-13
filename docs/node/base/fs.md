@@ -138,7 +138,7 @@ fs.readdir('a', (err, dirs) => {
 
 ### 异步删除文件夹
 
-![fs_async1](<[image/fs_async1.png](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fs_async1.png)>)
+![fs_async1](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fs_async1.png)
 
 ![fs_async2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fs_async2.png)
 

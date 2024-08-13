@@ -1,6 +1,6 @@
 # 浏览器缓存机制
 
-![cache](images/cache.jpg)
+![cache](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/cache.jpg)
 
 ## 介绍一下浏览器缓存位置和优先级
 
@@ -20,7 +20,7 @@
 
 `ServiceWorker` 拥有对缓存流程丰富灵活的控制能力，当页面请求到 `ServiceWorker` 时，`ServiceWorker` 同时请求缓存和网络，把缓存的内容直接给用户，而后覆盖缓存。
 
-![server_worker](images/server_worker.png)
+![server_worker](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/server_worker.png)
 
 **注意：需要`HTTPS`才可以使用` ServiceWorker`**
 
@@ -57,7 +57,7 @@
 3. 如果硬盘中未查找到，那就进行网络请求；
 4. 加载到的资源缓存到硬盘和内存；
 
-![memory_cache](images/memory_cache.png)
+![memory_cache](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/memory_cache.png)
 
 ### 设置 `Expires(HTTP1.0)`
 
@@ -83,7 +83,7 @@
 
 协商缓存，顾名思义是经过浏览器与服务器之间协商过之后，在决定是否读取本地缓存，如果服务器通知浏览器可以读取本地缓存，会返回 304 状态码，并且协商过程很简单，只会发送头信息，不会发送响应体
 
-![304](images/304.png)
+![304](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/304.png)
 
 #### `Last-Modified(HTTP1.0)`
 

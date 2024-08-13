@@ -6,7 +6,7 @@
 
 每个节点都有`next`属性，指向下一个节点，最后的节点指向`null`，当前的指针（head）指向第一个。
 
-![unidirectional](image/unidirectional.jpg)
+![unidirectional](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/unidirectional.jpg)
 
 #### Demo
 
@@ -103,9 +103,9 @@ ll.add(300) // 末尾添加
 
 ### 递归
 
-![recursion](image/recursion.png)
+![recursion](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/recursion.png)
 
-![reverse](image/reverse.jpeg)
+![reverse](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/reverse.jpeg)
 
 #### Demo
 
@@ -153,11 +153,11 @@ console.log(reverseList)
 // 想变成 head --> 300 next --> 100 next --> 200
 ```
 
-![jb_link](image/jb_link.png)
+![jb_link](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/jb_link.png)
 
 ### 创建一个新链表
 
-![create](image/create.jpeg)
+![create](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/create.jpeg)
 
 #### Demo
 

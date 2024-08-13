@@ -8,7 +8,7 @@
 - `requestIdleCallback` 使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。
 - 正常帧任务完成后没超过 16.6 ms，说明时间有富余，此时就会执行 `requestIdleCallback` 里注册的任务。
 
-![requestIdleCallback](images/requestIdleCallback.jpeg)
+![requestIdleCallback](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/requestIdleCallback.jpeg)
 
 缺点：
 

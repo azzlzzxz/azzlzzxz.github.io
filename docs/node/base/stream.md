@@ -196,7 +196,7 @@ ws.end() // 后续可以调end方法（传参数就会报错：write after end�
 
 **核心原则是将多个异步任务进行排队依次执行，（write 是异步，但是同一时间只能有一个来操作文件，其他的放入缓存区），（用链表实现的缓存区）。**
 
-![write_stream](image/write_stream.jpg)
+![write_stream](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/write_stream.jpg)
 
 比较常见的数据结构有：数组、栈、队列、[链表](../../base/structure/linkList.md)、[树](../../base/structure/tree.md)。
 

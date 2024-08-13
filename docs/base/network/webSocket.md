@@ -15,7 +15,7 @@
 `HTTP`、`WebSocket` 等应用层协议，都是基于 `TCP` 协议来传输数据的，因此其连接和断开，都要遵循 `TCP` 协议中的三次握手和四次挥手 ，只是在连接之后发送的内容不同，或者是断开的时间不同。
 
 **WebSocket 兼容性：**
-![websocket_compatible](images/websocket_compatible.png)
+![websocket_compatible](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/websocket_compatible.png)
 
 ## 为什么需要 `WebSocket` 呢
 
@@ -37,7 +37,7 @@
 
 `http/1.1 keep-alive` 的确可以实现长链接，但它的本质还是客户端主动发起-服务端应答的模式，是没法做到服务端主动发送通知给客户端的。
 
-![keep-alive](images/keep-alive.jpg)
+![keep-alive](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/keep-alive.jpg)
 
 在 `WebSocket` 中，只需要服务器和浏览器通过 `TCP` 协议进行一个握手的动作，然后单独建立一条 `TCP`的通信通道进行数据的传送。`WebSocket`同 `HTTP` 一样也是应用层的协议，但是它是一种双向通信协议，是建立在`TCP` `之上的。websocket` 的流程大概是以下几步:
 
@@ -48,7 +48,7 @@
 
 也就是说 `WebSocket` 在建立握手时，数据是通过 `HTTP` 传输的。但是建立之后，在真正传输时候是不需要 `TCP` 协议的。
 
-![websocket](images/websocket.jpg)
+![websocket](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/websocket.jpg)
 
 ## `WebSocket` 的特点
 
@@ -67,14 +67,14 @@
 在 `WebSocket` 开始通信之前，通信双方需要先进行握手，`WebSocket` 复用了 `HTTP` 的握手通道，即客户端通过 `HTTP` 请求与 `WebSocket` 服务端协商升级协议。协议升级完成后，后续的数据交换则遵照 `WebSocket` 的协议。
 利用 `HTTP` 完成握手有什么好处呢？一是可以让 `WebSocket` 和 `HTTP` 基础设备兼容（运行在 80 端口 或 443 端口），二是可以复用 `HTTP` 的 `Upgrade` 机制，完成升级协议的协商过程。
 
-![websocket_status](images/websocket_status.png)
+![websocket_status](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/websocket_status.png)
 
 - 101 状态码，表示协议切换；
 - `Connection:` `Upgrade` 表示要升级协议； -` Upgrade: websocket` 表示要升级到 `websocket` 协议；
 - `Sec-WebSocket-Key：`与服务端响应头部的 `Sec-WebSocket-Accept `是配套的，提供基本的防护，比如恶意的连接，或者无意的连接；这里的“配套”指的是：`Sec-WebSocket-Accept `是根据请求头部的 `Sec-WebSocket-Key` 计算而来，计算过程大致为基于 `SHA1` 算法得到摘要并转成 `base64` 字符串。
 
 完成 🤝，服务端返回数据：
-![websocket_msg](images/websocket_msg.png)
+![websocket_msg](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/websocket_msg.png)
 
 ### 如何交换数据
 

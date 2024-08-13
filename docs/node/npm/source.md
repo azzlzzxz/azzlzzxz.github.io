@@ -236,7 +236,7 @@ npm install 待安装包的相对路径
 为什么我们直接执行 `hello` 找不到命令，使用 `npm run` 来执行却可以？
 原因是 `npm run` 执行脚本时会先去 `node_modules/.bin` 中查找是否存在要运行的命令，如果不存在则查找 `../node_modules/.bin`，如果全都找不到才会去按系统的环境变量查找。
 
-![hello.js](./image/hello.jpg)
+![hello.js](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/hello.jpg)
 
 好在现在 `node` 给我们提供了 `npx` 命令来解决这个问题。运行 `npx hello` 即可运行 `hello` 命令。当然你也可以直接运行 `node_modules/.bin/hello`
 
@@ -343,7 +343,7 @@ console.log('Hello NPM')
 3. 查找该模块依赖，如果有依赖则回到第 1 步，如果没有则停止。
 
 最终会得到一个类似下图中的依赖树:
-![npm](./image/npm.jpg)
+![npm](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/npm.jpg)
 
 > 如果项目中存在 `npm` 的 `lock` 文件（例如 `package-lock.json`），则不会从头开始构建依赖树，而是对 `lock` 中依赖树中存储冲突的依赖进行调整即可
 
@@ -354,7 +354,7 @@ console.log('Hello NPM')
 ​ 从 `npm3` 开始默认加入了一个 `dedupe` 的过程。它会遍历所有节点，逐个将模块放在根节点下面，也就是 `node_modules` 的第一层。当发现有重复模块时，则将其丢弃。
 
 经过优化后的依赖树就是变成了下面这样:
-![npm_opt](./image/npm_opt.jpg)
+![npm_opt](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/npm_opt.jpg)
 
 > 而 `lock` 文件中存储的正是这颗被优化后的依赖树。
 
@@ -397,7 +397,7 @@ node_modules
 
 这一步将会按照依赖树下载/解压包，并更新工程中的 `node_modules`。
 
-![update_node_modules](./image/update_node_modules.jpg)
+![update_node_modules](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/update_node_modules.jpg)
 
 ### `npm ci`
 
@@ -459,15 +459,15 @@ node_modules
 
 假如项目依赖两个包 `express` 和 `koa`，这两个包的依赖又是这样的:
 
-![depend_one](./image/depend_one.jpg)
+![depend_one](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/depend_one.jpg)
 
 那么 `npm install` 的时候，通过扁平化处理之后，究竟是这样:
 
-![depend_second](./image/depend_second.jpg)
+![depend_second](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/depend_second.jpg)
 
 还是这样:
 
-![depend_three](./image/depend_three.jpg)
+![depend_three](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/depend_three.jpg)
 
 答案是: 都有可能。取决于 `express` 和 `koa` 在 `package.json` 中的位置，如果 `express` 声明在前面，那么就是前面的结构，否则是后面的结构。
 这就是为什么会产生依赖结构的不确定问题，也是 `lock` 文件诞生的原因之一，无论是 `package-lock.json(npm 5.x 才出现)`还是 `yarn.lock`，都是为了保证 `install` 之后都产生确定的 `node_modules` 结构。
@@ -511,7 +511,7 @@ const cookie = require("cookie");  // ???
 
 `npm` 在分析依赖树的时候会先并行发出项目顶级的依赖解析请求，当某一个请求回来时，在去请求起所有的子依赖，直到不存在依赖为止，由于每一个树都需要根节点的依赖解析请求后才能开始解析其子树，如果依赖树深度比较深就会导致等待时间过长
 
-![deped_four](./image/depend_four.jpg)
+![deped_four](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/depend_four.jpg)
 
 递归的分析依赖树需要非常大量的 `http` 请求，这也会导致依赖树构建时间过长
 

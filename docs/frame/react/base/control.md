@@ -14,7 +14,7 @@
 
 代码设置表单的初始 `value`，但是能改变 `value` 的只有用户，代码通过监听 `onChange` 来拿到最新的值，或者通过 `ref` 拿到 `dom` 之后读取 `value`。
 
-![no_contorl](./image/no_contorl.jpg)
+![no_contorl](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/no_contorl.jpg)
 
 ## 受控模式
 

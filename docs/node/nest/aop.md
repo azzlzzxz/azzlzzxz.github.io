@@ -12,7 +12,7 @@
 
 一个请求过来，可能会经过 `Controller`（控制器）、`Service`（服务）、`Repository`（数据库访问） 的逻辑，如果想在这个调用链路里加入一些通用逻辑该怎么加呢？比如日志记录、异常处理等，通过 `AOP` 透明的给业务逻辑加上通用逻辑。
 
-![aop](./images/aop.jpg)
+![aop](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/aop.jpg)
 
 ## `Nest`实现`AOP`的方式
 
@@ -20,7 +20,7 @@
 
 中间件是在路由处理程序 之前 调用的函数。 中间件函数可以访问请求和响应对象，以及应用程序请求响应周期中的 `next()` 中间件函数。 `next()` 中间件函数通常由名为 `next` 的变量表示。
 
-![middle_ware](./images/middle_ware.png)
+![middle_ware](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/middle_ware.png)
 
 中间件函数可以执行以下任务:
 
@@ -34,7 +34,7 @@
 
 在 `main.ts` 里通过 `app.use` 使用：
 
-![middleware](./images/middleware.png)
+![middleware](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/middleware.png)
 
 ```ts
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -44,7 +44,7 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
 })
 ```
 
-![m_run](./images/m_run.png)
+![m_run](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/m_run.png)
 
 **<font color="FF9D00">路由中间件</font>**
 
@@ -114,15 +114,15 @@ export class AppController {
 }
 ```
 
-![m_test](./images/m_test.png)
+![m_test](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/m_test.png)
 
 ### `Guard` 路由守卫
 
-![guard](./images/guard.jpg)
+![guard](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/guard.jpg)
 
 `Guard` 是路由守卫的意思，可以用于在调用某个 `Controller` 之前判断权限，返回 `true` 或者 `false` 来决定是否放行，它们根据运行时出现的某些条件（例如权限，角色，访问控制列表等）来确定给定的请求是否由路由处理程序处理。这通常称为授权。
 
-![guard](./images/guard.png)
+![guard](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/guard.png)
 
 创建 `guard`
 
@@ -161,7 +161,7 @@ import {UseGuards} from '@nestjs/common';
   }
 ```
 
-![guard_test](./images/guard_test.png)
+![guard_test](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/guard_test.png)
 
 `Controller` 本身不需要做啥修改，却透明的加上了权限判断的逻辑，这就是 `AOP` 架构的好处。
 
@@ -214,7 +214,7 @@ import { LoginGuard } from './login.guard';
 
 `Interceptor` 拦截器，可以在目标 Controller 方法前后加入一些逻辑。
 
-![interceptor](./images/interceptor.png)
+![interceptor](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/interceptor.png)
 
 拦截器具有一系列有用的功能，它们可以：
 
@@ -250,7 +250,7 @@ export class DataInterceptor implements NestInterceptor {
 
 `Controller` 之前之后的处理逻辑可能是异步的。`Nest` 里通过 `rxjs` 来组织它们，所以可以使用 `rxjs` 的各种 `operator`。
 
-![interceptor](./images/interceptor.jpg)
+![interceptor](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/interceptor.jpg)
 
 添加代码：
 
@@ -324,7 +324,7 @@ bootstrap()
 
 `Pipe` 是管道的意思，用来对参数做一些检验和转换。
 
-![pipe](./images/pipe.png)
+![pipe](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pipe.png)
 
 管道有两个典型的应用场景:
 
@@ -403,7 +403,7 @@ import { ValidatePipe } from './validate.pipe';
 
 `ExceptionFilter` 可以对抛出的异常做处理，返回对应的响应。
 
-![ExceptionFilter](./images/ExceptionFilter.png)
+![ExceptionFilter](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/ExceptionFilter.png)
 
 创建一个 filter
 
@@ -462,6 +462,6 @@ import { TestFilter } from './test.filter';
 
 但是它们之间的顺序关系是什么呢？
 
-![aop_sort](./images/aop_sort.jpg)
+![aop_sort](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/aop_sort.jpg)
 
 `Middleware` 是 `Express` 的概念，在最外层，到了某个路由之后，会先调用 `Guard`，`Guard `用于判断路由有没有权限访问，然后会调用 `Interceptor`，对 `Contoller` 前后扩展一些逻辑，在到达目标 `Controller` 之前，还会调用 `Pipe` 来对参数做检验和转换。所有的 `HttpException` 的异常都会被 `ExceptionFilter` 处理，返回不同的响应。

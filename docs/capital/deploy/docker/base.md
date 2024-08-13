@@ -4,7 +4,7 @@
 
 `Docker` 容器是完全使用沙箱机制，相互之间不会有任何接口。更重要的是，容器性能开销极低。
 
-![docker](../image/docker.png)
+![docker](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/docker.png)
 
 ## Docker 的应用场景
 
@@ -26,13 +26,13 @@
 
 ## 通过 Docker Destop 直观学习 Docker
 
-![docker_desktop](../image/docker_desktop.jpg)
+![docker_desktop](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/docker_desktop.jpg)
 
 `images` 是本地的所有镜像，`containers` 是镜像跑起来的容器。
 
 `docker desktop` `pull` 一个镜像试试看。
 
-![pull_nginx](../image/pull_nginx.png)
+![pull_nginx](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pull_nginx.png)
 
 我们点击 `pull` 按钮，就相当于执行了 `docker pull`
 
@@ -40,11 +40,11 @@
 docker pull nginx:latest
 ```
 
-![run_nginx](../image/run_nginx.png)
+![run_nginx](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/run_nginx.png)
 
 我们点击 `run` 按钮，填了个表单，就相当于执行了 `docker run`
 
-![docker_run](../image/docker_run.png)
+![docker_run](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/docker_run.png)
 
 ```sh
 docker run --name nginx-test2 -p 80:80 -v /tmp/aaa:/usr/share/nginx/html -e KEY1=VALUE1 -d nginx:latest
@@ -59,4 +59,4 @@ docker run --name nginx-test2 -p 80:80 -v /tmp/aaa:/usr/share/nginx/html -e KEY1
 
 点击 run，可以看到容器内的 nginx 服务跑起来了。
 
-![run](../image/run.png)
+![run](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/run.png)

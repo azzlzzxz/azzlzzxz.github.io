@@ -4,7 +4,7 @@ TypeScript，简称 ts，是微软开发的一种静态的编程语言，它是 
 
 - 简单来说，js 有的 ts 都有，所有 js 代码都可以在 ts 里面运行。
 - ts 支持类型支持，ts = type +JavaScript
-  ![image](./image/ts.png)
+  ![image](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/ts.png)
 - tsconfig.json 配置
 
 ```json

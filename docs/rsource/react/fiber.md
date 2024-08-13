@@ -9,7 +9,7 @@
 
 `Fiber` 是一个执行单元,每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去。
 
-![fiber_task](image/fiber_task.jpeg)
+![fiber_task](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fiber_task.jpeg)
 
 ## `Fiber` 是一个数据结构
 
@@ -23,7 +23,7 @@
 
 ### 创建根 `Fiber`
 
-![fiber_root](image/Fiber_root.jpeg)
+![fiber_root](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/Fiber_root.jpeg)
 
 ```js
 // main.jsx
@@ -39,7 +39,7 @@ const root = createRoot(document.getElementById('root'))
 console.log(root)
 ```
 
-![root_node](image/root_node.png)
+![root_node](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/root_node.png)
 
 #### `createRoot`
 
@@ -187,7 +187,7 @@ export const Update = 0b0000000000000000000000000100
 
 > 每个 `Fiber` 上都可能会有更新队列，存放它的更新（不同类型的 `Fiber`，存放的更新都不一样）。
 
-![initializeUpdateQueue](image/initializeUpdateQueue.png)
+![initializeUpdateQueue](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/initializeUpdateQueue.png)
 
 ```js
 // ReactFiberClassUpdateQueue
@@ -206,11 +206,11 @@ export function initializeUpdateQueue(fiber) {
 
 双缓冲技术是在内存或显存中开辟一块与屏幕一样大小的储存空间，作为缓冲屏幕。将下一帧要显示的图像绘制到这个缓冲屏幕上，在显示的时候将虚拟屏幕中的数据复制到可见区域里去。
 
-![double_buffering](image/double_buffering.jpg)
+![double_buffering](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/double_buffering.jpg)
 
 ### 构建 Fiber Tree
 
-![fiber_tree](image/fiber_tree.jpg)
+![fiber_tree](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fiber_tree.jpg)
 
 #### `Render`
 
@@ -270,7 +270,7 @@ export function createContainer(containerInfo) {
 
 #### 更新队列(单向循环链表)
 
-![update_queue](image/update_queue.jpg)
+![update_queue](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/update_queue.jpg)
 
 ```js
 // ReactFiberClassUpdateQueue
@@ -312,7 +312,7 @@ export function initializeUpdateQueue(fiber) {
 +}
 ```
 
-![enqueueUpdate](image/enqueueUpdate.png)
+![enqueueUpdate](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/enqueueUpdate.png)
 
 #### `markUpdateLaneFromFiberToRoot` (找根节点)
 
@@ -416,7 +416,7 @@ function performUnitOfWork(unitOfWork) {
 
 > workInProgress(新的 HostRootFiber)
 
-![prepareFreshStack](image/prepareFreshStack.png)
+![prepareFreshStack](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/prepareFreshStack.png)
 
 #### `scheduleCallback`(任务调度回调)
 
@@ -431,7 +431,7 @@ export function scheduleCallback(callback) {
 
 #### `createWorkInProgress`(基于老的 `fiber` 和新的属性，创建新的 `fiber`)
 
-![fiber_tree_double](image/fiber_tree_double.jpg)
+![fiber_tree_double](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fiber_tree_double.jpg)
 
 ```js
 import { HostRoot } from './ReactWorkTags'
@@ -525,7 +525,7 @@ export function createHostRootFiber() {
 
 > 源码地址 [BeginWork](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberBeginWork.new.js#L3685C20-L3685C20)
 
-![begin_work](image/begin_work.jpg)
+![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
 
 ```js
 // ReactFiberBeginWork

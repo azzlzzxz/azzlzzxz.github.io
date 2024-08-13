@@ -62,7 +62,7 @@
 
 `http/2` 是二进制协议，他采用二进制格式传输数据而不是 1.x 的文本格式。
 
-![http2](images/http2.png)
+![http2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/http2.png)
 
 👆 的图中很清晰的表达了 `http/1.1` 的响应和 2.0 的区别。
 1.1 响应是文本格式，而 2.0 把响应划分成了两个帧，图中的 `HEADERS（首部`）和`DATA（消息负载` 是帧的类型。也就是说一条 `http`响应，划分成了两个帧来传输，并且采用二进制来编码。
@@ -87,7 +87,7 @@
 
 `http2` 的静态字典是长这个样子的（只截取了部分）：
 
-![header_zip](images/header_zip.png)
+![header_zip](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/header_zip.png)
 
 所以我们在传输首部字段的时候，例如要传输 `method:GET`,那我们只需要传输静态字典里面 `method:GET` 对应的索引值就可以了，一个字节搞定。
 
@@ -109,7 +109,7 @@
 - 并行交错地发送多个请求/响应，请求/响应之间互不影响。
 - 在 `http/2` 中，每个请求都可以带一个 `31bit` 的优先值，0 表示最高优先级， 数值越大优先级越低。有了这个优先值，客户端和服务器就可以在处理不同的流时采取不同的策略，以最优的方式发送流、消息和帧。
 
-![http2](images/http2.jpg)
+![http2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/http2.jpg)
 
 :::tip
 多路复用的技术可以只通过一个 `TCP` 连接就可以传输所有的请求数，但是还是会有请求排队现象。
@@ -141,7 +141,7 @@
 
 也就是说，互联网上通常所能见到的 `http/2` 都是使用`"https”`协议名，跑在 `TLS` 上面。`http/2` 协议定义了两个字符串标识符：`“h2"`表示加密的 `http/2`，`“h2c”`表示明文的 `http/2`。
 
-![http2_construct](images/http2_construct.png)
+![http2_construct](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/http2_construct.png)
 
 ### `http2` 的问题
 
@@ -184,7 +184,7 @@
 
 而这个`“http over QUIC”`就是`http`协议的下一个大版本，`http/3`。它在`http/2`的基础上又实现了质的飞跃，真正“完美”地解决了“队头阻塞”问题。
 
-![http3](images/http3.jpeg)
+![http3](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/http3.jpeg)
 
 `QUIC` 虽然基于 `UDP`，但是在原本的基础上新增了很多功能，接下来我们重点介绍几个 `QUIC` 新功能。不过`http/3`目前还处于草案阶段，正式发布前可能会有变动，所以本文尽量不涉及那些不稳定的细节。
 

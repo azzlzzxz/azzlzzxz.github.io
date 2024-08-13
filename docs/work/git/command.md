@@ -8,7 +8,7 @@
 - 远程仓库`（Remote）`：远程存储文件的地方。
   它们之间的关系如下图所示：
 
-![git_relation](images/git_relation.png)
+![git_relation](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_relation.png)
 
 ## `git add`
 

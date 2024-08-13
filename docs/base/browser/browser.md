@@ -8,11 +8,11 @@
 4. GPU 进程：3d 绘制,提高性能。
 5. 插件进程： chrome 中安装的一些插件。
 
-![browser](images/browser.png)
+![browser](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/browser.png)
 
 ## 渲染流程
 
-![render](images/render.png)
+![render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/render.png)
 
 1. 浏览器无法直接使用` HTML`，需要将`HTML`转化成`DOM`树`（document）`。
 2. 浏览器无法解析纯文本的`CSS`样式，需要对`CSS`进行解析,解析成 `styleSheets`。`CSSOM（document.styleSeets）`。
@@ -23,7 +23,7 @@
 
 ## `DOM` 如何生成的
 
-![dom](images/dom.png)
+![dom](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/dom.png)
 
 1. 当服务端返回的类型是`text/html`时，浏览器会将收到的数据通过`HTMLParser`进行解析 (边下载边解析)
 2. 在解析前会执行预解析操作，会预先加载`JS、CSS`等文件
@@ -71,15 +71,15 @@
 
 **css 放在头部的渲染流程：**
 
-![ques1](images/ques1.png)
+![ques1](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/ques1.png)
 
-![ques2](images/ques2.png)
+![ques2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/ques2.png)
 
-![ques3](images/ques3.png)
+![ques3](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/ques3.png)
 
 **css 放在底部的渲染流程：**
 
-![css_b_1](images/css_b_1.png)
+![css_b_1](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/css_b_1.png)
 
 ```html
 <!DOCTYPE html>
@@ -110,7 +110,7 @@
 </html>
 ```
 
-![css_b_2](images/css_b_2.png)
+![css_b_2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/css_b_2.png)
 
 ```html
 <!DOCTYPE html>
@@ -133,7 +133,7 @@
 </html>
 ```
 
-![css_b_3](images/css_b_3.png)
+![css_b_3](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/css_b_3.png)
 
 ## 经典面试题
 
@@ -162,7 +162,7 @@
 
 通过 `network Timing`  观察请求发出的流程：
 
-![netWork_jd](images/netWork_jd.png)
+![netWork_jd](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/netWork_jd.png)
 
 > 蓝色：` DOMContentLoaded:`DOM 构建完成的时间。
 > 红色：`Load:`浏览器所有资源加载完毕。

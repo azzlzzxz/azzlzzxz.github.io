@@ -15,7 +15,7 @@
 
 因此，您在磁盘上节省了大量空间，这与项目和依赖项的数量成正比，并且安装速度要快得多！
 
-![pnpm_one](./image/pnpm_one.jpg)
+![pnpm_one](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_one.jpg)
 
 ### 硬链接
 
@@ -24,14 +24,14 @@
 3. 硬链接的数量没有限制，可以为同一个文件产生多个硬链接
 4. 硬链接的概念来自于 Unix 操作系统，它是指将一个文件 `A` 指针复制到另一个文件 `B` 指针中，文件 `B` 就是文件 `A` 的硬链接
 
-![hard_link](./image/hard_link.jpg)
+![hard_link](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/hard_link.jpg)
 
 ### 软连接(符号链接)
 
 1. 软链接就是快捷方式，是一个单独文件。就像我们电脑桌面上的快捷方式，大小只有几字节，指向源文件，点击快捷方式，其实执行的就是源文件。
 2. 符号链接又称为软连接，如果为某个文件或文件夹 `A` 创建符号连接 `B`，则 `B` 指向 `A`。
 
-![symbol_link](./image/symbol_link.jpg)
+![symbol_link](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/symbol_link.jpg)
 
 ### 符号链接和硬链接的区别
 
@@ -49,7 +49,7 @@
 
 该策略会将包安装在系统的全局 `store` 中，依赖的每个版本只会在系统中安装一次。
 
-![pnpm_store](image/pnpm_store.jpg)
+![pnpm_store](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_store.jpg)
 
 在引用项目 `node_modules` 的依赖时，会通过硬链接与符号链接在全局 `store` 中找到这个文件。
 
@@ -70,7 +70,7 @@ node_modules
                 └── package.json
 ```
 
-![pnpm_pj](./image/pnpm_pj.jpg)
+![pnpm_pj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_pj.jpg)
 
 这是` node_modules` 中的唯一的“真实”文件。 一旦所有包都硬链接到` node_modules`，就会创建符号链接来构建嵌套的依赖关系图结构。
 
@@ -93,7 +93,7 @@ node_modules
             └── bar -> ../../bar@1.0.0/node_modules/bar
 ```
 
-![pnpm_form-data](./image/pnpm_form-data.jpg)
+![pnpm_form-data](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_form-data.jpg)
 
 接下来，处理直接依赖关系。 `foo` 将被符号链接至根目录的` node_modules` 文件夹，因为 `foo` 是项目的依赖项：
 
@@ -110,7 +110,7 @@ node_modules
             └── bar -> ../../bar@1.0.0/node_modules/bar
 ```
 
-![pnpm_axios](./image/pnpm_axios.jpg)
+![pnpm_axios](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_axios.jpg)
 
 这是一个非常简单的例子。 但是，无论依赖项的数量和依赖关系图的深度如何，布局都会保持这种结构。
 

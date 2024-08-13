@@ -14,7 +14,7 @@
 
 ## 浏览器中的事件循环
 
-![browser_eventLoop](./images/browser_EventLoop.jpeg)
+![browser_eventLoop](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/browser_EventLoop.jpeg)
 
 - 整体`script`作为第一个宏任务进入主线程。
 - 同步任务被放到执行栈，异步任务会进入`Event Table`并注册函数，其回调函数按类别被放到宏任务队列和微任务队列中。
@@ -51,7 +51,7 @@
 
 如图：
 
-![task](images/task.jpg)
+![task](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/task.jpg)
 
 ### 宏任务和微任务
 
@@ -59,11 +59,11 @@
 
 1. `MacroTask（宏任务）`包括`script`全部代码、`setTimeout`、`setInterval`、`I/O`、`UI Rendering` 等；
 
-![macro](images/macro.png)
+![macro](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/macro.png)
 
-2. `MicroTask（微任务`）包括 `Process.nextTick（Node 独有）`、`Promise.then`、`Object.observe(废弃)`等。
+1. `MicroTask（微任务`）包括 `Process.nextTick（Node 独有）`、`Promise.then`、`Object.observe(废弃)`等。
 
-![micro](images/micro.png)
+![micro](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/micro.png)
 
 #### 浅析宏任务与微任务的区别：
 

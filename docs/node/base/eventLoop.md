@@ -1,6 +1,6 @@
 # Node 的事件循环机制
 
-![node_eventLoop](image/Node_EventLoop.jpg)
+![node_eventLoop](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/Node_EventLoop.jpg)
 
 ## `event loop` 是一个独立的线程
 
@@ -211,4 +211,4 @@ timeout
 - `Node` 端，`microtask（微任务）` 在事件循环的各个阶段之间执行。
 - 浏览器端，`microtask（微任务）` 在事件循环的 `macrotask（宏任务）`执行完之后执行。
 
-![diff](image/diff.png)
+![diff](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/diff.png)

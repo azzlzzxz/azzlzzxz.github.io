@@ -56,9 +56,9 @@ server.on('error', function (err) {
 // curl -h 指定头
 ```
 
-![http](image/http.png)
+![http](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/http.png)
 
-![http_console](image/http_console.png)
+![http_console](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/http_console.png)
 
 服务端代码改变后必须要重新执行：可以使用 `nodemon（监控文件变化，重启服务）`
 
@@ -136,7 +136,7 @@ new StaticServer().start(3000, function () {
 
 要实现 `http-server` 命令行工具，就需要把它写成一个 `npm` 包，发布上去。
 
-![server_fs](image/server_fs.png)
+![server_fs](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/server_fs.png)
 
 ```sh
 # 生成package.json
@@ -172,7 +172,7 @@ npm init -y
 
 执行 `npm link` 把 `bin` 里的指令做成全局的链接，方便测试。
 
-![npm_link](image/npm_link.png)
+![npm_link](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/npm_link.png)
 
 ```js
 // util.js
@@ -225,9 +225,9 @@ let server = new Server(finalConfig); // 传入开启服务的必备参数
 server.start(); // 开启服务
 ```
 
-![server_port](image/server_port.png)
+![server_port](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/server_port.png)
 
-![server_help](image/server_help.png)
+![server_help](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/server_help.png)
 
 ```js
 // bin/serverConfig.js

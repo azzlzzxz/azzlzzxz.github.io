@@ -13,4 +13,4 @@ let element = (
 console.log(element)
 ```
 
-![virtual_dom](./image/virtual_dom.jpg)
+![virtual_dom](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/virtual_dom.jpg)

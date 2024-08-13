@@ -2,11 +2,11 @@
 
 `OSI` 分层：应用层、表示层、会话层、传输层、网络层、数据链路层、物理层。
 
-![osi_seven](images/osi_seven.png)
+![osi_seven](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/osi_seven.png)
 
 `TCP/IP` 模型：应用层、传输层、网络层、网络接口层。
 
-![tcp](images/tcp.png)
+![tcp](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tcp.png)
 
 应用层协议(常用)：`HTTP`、`RTSP`、`FTP`。
 
@@ -21,7 +21,7 @@
 - 网络群组：物理层、数据链路层、网络层
 - 使用者群组：传输层、会话层、表示层、应用层
 
-![OSI](images/OSI.png)
+![OSI](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/OSI.png)
 
 其中高层（7、6、5、4 层）定义了应用程序的功能，下面三层（3、2、1 层）主要面向通过网络的端到端的数据流。
 
@@ -41,7 +41,7 @@
 
 ### `TCP` 三次握手&四次挥手
 
-![tcp_3_4](images/tcp_3_4.jpg)
+![tcp_3_4](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tcp_3_4.jpg)
 
 #### **3 次握手**
 

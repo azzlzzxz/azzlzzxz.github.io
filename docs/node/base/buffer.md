@@ -11,7 +11,7 @@ const arrayBuffer = new ArrayBuffer(4)
 console.log(arrayBuffer)
 ```
 
-![array_buffer](image/array_buffer.png)
+![array_buffer](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/array_buffer.png)
 
 1. 开头字母 I 和 U 的区别：有无符号位，U 代表无符号位，I 代表有符号位。
 2. Int8、Int16、Int32 的区别：分别代表单字节、双字节、四字节。
@@ -39,7 +39,7 @@ let x3 = Uint32Array(arrayBuffer) // 32 * 1
 console.log(x3) // [65281] （四个组成一个）
 ```
 
-![buffer](image/buffer.png)
+![buffer](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/buffer.png)
 
 ## `node` 中的 `Buffer`
 

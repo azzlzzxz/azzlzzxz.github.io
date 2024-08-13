@@ -3,7 +3,7 @@
 ## `mac OS M1` 跑老项目安装 `node-sass` 遇到的一系列问题
 
 :::tip
-![node_sass](images/node_sass.png)
+![node_sass](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/node_sass.png)
 
 项目初始化 `install`，会报错，因为本地 `node` 版本太高了。
 
@@ -81,11 +81,11 @@ pnpm 升级遇到的问题
 pnpm add -g pnpm
 ```
 
-![pnpm_error_1](./images/pnpm_error_1.png)
+![pnpm_error_1](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_error_1.png)
 
-![pnpm_error_2](./images/pnpm_error_2.png)
+![pnpm_error_2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_error_2.png)
 
-![pnpm_error_3](./images/pnpm_error_3.png)
+![pnpm_error_3](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_error_3.png)
 
 ```sh
 # 全局卸载pnpm

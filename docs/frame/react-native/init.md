@@ -58,7 +58,7 @@ brew info --cask zulu@17
 
 在 `Android Studio` 的欢迎界面中找到 `seetings`。点击`seetings`。
 
-![settings](images/seettings.png)
+![settings](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/seettings.png)
 
 在`Languages & Frameworks` 里找到 `Android SDK` ，选择`"SDK Platforms"`选项卡，然后在右下角勾选`"Show Package Details"`，展开 `Android 14 (UpsideDownCake)` 选项，确保勾选了下面这些组件（如果看不到这个界面，则需要使用稳定的代理软件）：
 
@@ -66,11 +66,11 @@ brew info --cask zulu@17
 - `Sources for Android 34`
 - `Intel x86 Atom_64 System Image`（官方模拟器镜像文件，使用非官方模拟器不需要安装此组件）或是 `Google APIs ARM 64 v8a System Image`（针对 `Apple Silicon` 系列机型）或是 `Google APIs ARM 64 v8a System Image`。
 
-![Android SDK Platform](images/sdk.png)
+![Android SDK Platform](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/sdk.png)
 
 然后点击`"SDK Tools"`选项卡，同样勾中右下角的`"Show Package Details"`。展开"`Android SDK Build-Tools"`选项，确保选中了 `React Native` 所必须的 `34.0.0` 版本。你可以同时安装多个其他版本。
 
-![tools](images/tools.png)
+![tools](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tools.png)
 
 点击`"Apply"`来下载和安装选中的这些组件。
 
@@ -87,7 +87,7 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 **<font color="FF9D00">具体操作为：在终端输入`open ~/.zshrc`然后在弹出的文件里加入以上命令之后，关闭文件即可。</font>**
 
-![ANDROID_HOME](images/android_home.png)
+![ANDROID_HOME](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/android_home.png)
 
 ## `ios`环境搭建(`mac`)
 
@@ -103,22 +103,22 @@ brew install watchman
 
 你可以通过 `App Store` 或是到`Apple` 开发者官网上下载。这一步骤会同时安装 `Xcode IDE`、`Xcode` 的命令行工具和 `iOS` 模拟器。
 
-![settings](images/ios_settings.png)
+![settings](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/ios_settings.png)
 
 ### `Xcode` 的命令行工具
 
 启动 `Xcode`，并在 `Xcode | settings | Locations` 菜单中检查一下是否装有某个版本的 `Command Line Tools`。
 
-![command](images/command.png)
+![command](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/command.png)
 
 ### 选择平台
 
-![platform](images/platform.png)
+![platform](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/platform.png)
 
 ### `ios` 模拟器
 
 选择你想用的模拟器
-![simulator](images/simulator.png)
+![simulator](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/simulator.png)
 
 ### 安装 CocoaPods
 

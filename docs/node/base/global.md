@@ -65,9 +65,9 @@ if (process.env.NODE_ENV === 'production') {
 console.log(process.env.A) // 123 // 当前系统环境变量
 ```
 
-![process_env](image/process_env.png)
+![process_env](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_env.png)
 
-5. `process.argv` 用途：运行代码时传入参数，可以获取到当前用户传的所有参数 `--port(简写：-p)`，`--config`
+1. `process.argv` 用途：运行代码时传入参数，可以获取到当前用户传的所有参数 `--port(简写：-p)`，`--config`
 
 ```js
 console.log(process.argv)
@@ -75,7 +75,7 @@ console.log(process.argv)
 // 第二个指代的是当前执行文件
 ```
 
-![process_argv](image/process_argv.png)
+![process_argv](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_argv.png)
 
 ```js
 // 那如何取出用户传入的参数呢
@@ -96,7 +96,7 @@ const program = require('commander')
 program.parse(process.argv)
 ```
 
-![commnder](image/commnder.png)
+![commnder](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/commnder.png)
 
 ```js
 const program = require('commander') // 解析用户传递的参数
@@ -106,7 +106,7 @@ program.option('-p, --port <v>', 'set server port') // <v>表示-p --port 后面
 program.parse(process.argv)
 ```
 
-![zf](image/zf.png)
+![zf](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/zf.png)
 
 ```js
 const program = require('commander')
@@ -117,7 +117,7 @@ program.parse(process.argv)
 console.log(program.port) // 3000
 ```
 
-![process_port](image/process_port.png)
+![process_port](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_port.png)
 
 ### `commander` 识别一些命令
 
@@ -131,7 +131,7 @@ program.command('rm').action(() => {
 program.prase(process.argv)
 ```
 
-![commander_rm](image/commander_rm.png)
+![commander_rm](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/commander_rm.png)
 
 ## `path`
 

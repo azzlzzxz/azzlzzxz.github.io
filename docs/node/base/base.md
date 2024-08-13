@@ -8,7 +8,7 @@
 
 异步式 `I/O` 是这样实现的：由于大多数现代内核都是多线程的，所以它们可以处理在后台执行的多个操作。
 
-![node_async](image/node_async.jpg)
+![node_async](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/node_async.jpg)
 
 `Node.js` 在执行的过程中会维护一个事件队列，程序在执行时进入 事件循环 等待下一个事件到来。
 
@@ -16,7 +16,7 @@
 
 ## `Nodejs` 的架构
 
-![node](image/node.png)
+![node](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/node_1.png)
 
 `Node.js` 使用 `V8` 作为 `JavaScript` 引擎，使用高效的 `libev` 和 `libeio` 库支持事件驱动和异步式 `I/O`。
 
@@ -24,7 +24,7 @@
 
 ## `Nodejs` 的运行机制
 
-![node_system](image/node_system.jpg)
+![node_system](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/node_system.jpg)
 
 1. `V8` 引擎解析 `JavaScript` 脚本。
 2. 解析后的代码，调用 `Node API`。
@@ -48,12 +48,12 @@
 
 10. `node` 高并发都是单线程异步的，`node` 本身有个 `libuv` 库，内部是用多线程实现异步的。
 
-![java](image/java.png)
+![java](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/java.png)
 
-11. `node` 没有锁的概念，就是一个主线程（内存消耗小），如果主线程工作量大就会有阻塞的问题，所以 `node` 不适合做 `cpu` 密集的操作，适合 `i/o(input/output，文件读写)`操作。
+1.  `node` 没有锁的概念，就是一个主线程（内存消耗小），如果主线程工作量大就会有阻塞的问题，所以 `node` 不适合做 `cpu` 密集的操作，适合 `i/o(input/output，文件读写)`操作。
     `node` 可以开子进程，多个进程就可以充分利用 `cpu` 内核。
 
-12. 异步非阻塞，同步阻塞（阻塞和非阻塞针对的是 调用方 异步同步指的是被调用方）
+2.  异步非阻塞，同步阻塞（阻塞和非阻塞针对的是 调用方 异步同步指的是被调用方）
 
 ```lua
 处理时，是异步的。

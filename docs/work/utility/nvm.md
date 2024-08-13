@@ -48,7 +48,7 @@ source .bash_profile
 3. 设置默认版本并切换：`nvm alias default` 指定版本
 4. 查看安装的 `node` 列表：`nvm ls`
 
-![nvm](images/nvm.png)
+![nvm](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/nvm.png)
 
 ## `fnm`
 

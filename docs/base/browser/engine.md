@@ -2,7 +2,7 @@
 
 ## V8 如何执行一段 JS 代码
 
-![v8](images/v8.png)
+![v8](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/v8.png)
 
 1. 预解析：检查语法错误但不生成` AST`。
 2. 生成` AST`：经过词法/语法分析，生成抽象语法树。
@@ -33,7 +33,7 @@
 
 `JS `引擎中对变量的存储主要有两种位置，栈内存和堆内存，栈内存存储基本类型数据以及引用类型数据的内存地址，堆内存储存引用类型的数据。
 
-![stack](images/stack.png)
+![stack](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/stack.png)
 
 - 栈内存的回收：
   栈内存调用栈上下文切换后就被回收，比较简单
@@ -41,7 +41,7 @@
 - 堆内存的回收：
   `V8 `的堆内存分为新生代内存和老生代内存，新生代内存是临时分配的内存，存在时间短，老生代内存存在时间长
 
-![mechanism](images/mechanism.png)
+![mechanism](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/mechanism.png)
 
 ### 新生代内存回收机制：
 
@@ -57,7 +57,7 @@
 
 `Cheney `算法将内存一分为二，叫做` semispace`，一块处于使用状态，一块处于闲置状态。
 
-![Cheney](images/cheney.png)
+![Cheney](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/cheney.png)
 
 处于使用状态的`semispace`称为`From`空间，处于闲置状态的`semispace`称为`To`空间。
 
@@ -65,43 +65,43 @@
 
 1. **在`From`空间中分配了 3 个对象 A、B、C**
 
-![from](images/from.png)
+![from](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from.png)
 
-2. **`GC` 进来判断对象 B 没有其他引用，可以回收，对象 A 和 C 依然为活跃对象**
+1. **`GC` 进来判断对象 B 没有其他引用，可以回收，对象 A 和 C 依然为活跃对象**
 
-![from_B](images/from_B.png)
+![from_B](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_B.png)
 
-3. **将活跃对象 A、C 从 From 空间复制到`To`空间**
+1. **将活跃对象 A、C 从 From 空间复制到`To`空间**
 
-![from_toAC](images/from_toAC.png)
+![from_toAC](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_toAC.png)
 
-4. **清空`From`空间的全部内存**
+1. **清空`From`空间的全部内存**
 
-![from_clear](images/from_clear.png)
+![from_clear](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_clear.png)
 
-5. **交换`From`空间和`To`空间**
+1. **交换`From`空间和`To`空间**
 
-![interchange_from_to](images/interchange_from_to.png)
+![interchange_from_to](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/interchange_from_to.png)
 
-6. **在`From`空间中又新增了 2 个对象 D、E**
+1. **在`From`空间中又新增了 2 个对象 D、E**
 
-![from_add](images/from_add.png)
+![from_add](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_add.png)
 
-7. **下一轮`GC`进来发现对象 D 没有引用了，做标记**
+1. **下一轮`GC`进来发现对象 D 没有引用了，做标记**
 
-![from_next](images/from_next.png)
+![from_next](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_next.png)
 
-8. **将活跃对象 A、C、E 从 From 空间复制到`To`空间**
+1. **将活跃对象 A、C、E 从 From 空间复制到`To`空间**
 
-![from_CE](images/from_CE.png)
+![from_CE](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_CE.png)
 
-9. **清空`From`空间全部内存**
+1. **清空`From`空间全部内存**
 
-![from_clear_again](images/from_clear_again.png)
+![from_clear_again](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_clear_again.png)
 
-10. **继续交换`From`空间和`To`空间，开始下一轮**
+1.  **继续交换`From`空间和`To`空间，开始下一轮**
 
-![from_to_next](images/from_to_next.png)
+![from_to_next](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_to_next.png)
 
 通过上面的流程图，我们可以很清楚的看到，进行`From`和`To`交换，就是为了让活跃对象始终保持在一块`semispace`中，另一块 `semispace` 始终保持空闲的状态。
 
@@ -147,15 +147,15 @@
 
 1. **老生代中有对象 A、B、C、D、E、F**
 
-![old_obj](images/old_obj.png)
+![old_obj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_obj.png)
 
-2. **`GC` 进入标记阶段，将 A、C、E 标记为存活对象**
+1. **`GC` 进入标记阶段，将 A、C、E 标记为存活对象**
 
-![old_mark](images/old_mark.png)
+![old_mark](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_mark.png)
 
-3. **`GC` 进入清除阶段，回收掉死亡的 B、D、F 对象所占用的内存空间**
+1. **`GC` 进入清除阶段，回收掉死亡的 B、D、F 对象所占用的内存空间**
 
-![old_clear](images/old_clear.png)
+![old_clear](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_clear.png)
 
 **可以看到，`Mark-Sweep` 最大的问题就是，在进行一次清除回收以后，内存空间会出现不连续的状态。这种内存碎片会对后续的内存分配造成问题。**
 
@@ -169,19 +169,19 @@
 
 1. **老生代中有对象 A、B、C、D、E、F（和`Mark—Sweep`一样）**
 
-![old_obj](images/old_obj.png)
+![old_obj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_obj.png)
 
-2. **`GC`进入标记阶段，将 A、C、E 标记为存活对象（和`Mark—Sweep`一样）**
+1. **`GC`进入标记阶段，将 A、C、E 标记为存活对象（和`Mark—Sweep`一样）**
 
-![compact_old_mark](images/compact_old_mark.png)
+![compact_old_mark](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/compact_old_mark.png)
 
-3. **`GC` 进入整理阶段，将所有存活对象向内存空间的一侧移动，灰色部分为移动后空出来的空间**
+1. **`GC` 进入整理阶段，将所有存活对象向内存空间的一侧移动，灰色部分为移动后空出来的空间**
 
-![compact_tidy](images/compact_tidy.png)
+![compact_tidy](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/compact_tidy.png)
 
-4. **`GC` 进入清除阶段，将边界另一侧的内存一次性全部回收**
+1. **`GC` 进入清除阶段，将边界另一侧的内存一次性全部回收**
 
-![compact_old_clear](images/compact_old_clear.png)
+![compact_old_clear](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/compact_old_clear.png)
 
 ## 两者结合
 
@@ -203,11 +203,11 @@
 
 在 NodeJS 环境中，我们可以通过**process.memoryUsage()**来查看内存分配
 
-![process](images/process.png)
+![process](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process.png)
 
 `process.memoryUsage `返回一个对象，包含了`Node`进程的内存占用信息。该对象包含四个字段，含义如下:
 
-![process_memoryUsage](images/process_memoryUsage.png)
+![process_memoryUsage](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_memoryUsage.png)
 
 - `rss（resident set size）：`所有内存占用，包括指令区和堆栈
 - `heapTotal：`V8 引擎可以分配的最大堆内存，包含下面的 `heapUsed`
@@ -218,7 +218,7 @@
 
 如果说想要扩大`Node`可用的内存空间，可以使用`Buffer`等堆外内存内存:
 
-![node](images/node.png)
+![node](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/node.png)
 
 `Node Standard Library:` 是我们每天都在用的标准库，如 `Http`,`Buffer` 模块。
 

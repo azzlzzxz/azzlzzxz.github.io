@@ -2,7 +2,7 @@
 
 ## PerformanceAPI
 
-![performance](images/performance.png)
+![performance](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/performance.png)
 
 | 关键时间节点 | 描述                                   | 含义                                                               |
 | ------------ | -------------------------------------- | ------------------------------------------------------------------ |
@@ -111,7 +111,7 @@ Etag/if-none-match/last-modified/if-modified-since
 3. 避免重定向，重定向会降低响应速度 (301、302)。
 4. 使用 `dns-prefetch`，进行`DNS`预解析。
 
-![dns-prefetch](images/dns_prefetch.png)
+![dns-prefetch](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/dns_prefetch.png)
 
 1. 采用域名分片技术，将资源放到不同的域名下。接触同一个域名最多处理 6 个`TCP`链接问题。
 2. 采用`CDN`加速加快访问速度(指派最近、高度可用)。
@@ -129,7 +129,7 @@ Content-Encoding: gzip
 
 ## 关键渲染路径
 
-![critical_render](images/critical_render.png)
+![critical_render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/critical_render.png)
 
 ### 什么是重排和重绘？
 
@@ -154,7 +154,7 @@ Content-Encoding: gzip
 
 `JavaScript` 强制将计算样式和布局操作提前到当前的任务中。
 
-![async_lay](images/async_lay.png)
+![async_lay](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/async_lay.png)
 
 ```html
 <!DOCTYPE html>
@@ -188,7 +188,7 @@ Content-Encoding: gzip
 
 优化后：
 
-![async_opt](images/async_opt.png)
+![async_opt](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/async_opt.png)
 
 ### 布局抖动问题
 
@@ -210,7 +210,7 @@ window.addEventListener('load', function () {
 })
 ```
 
-![reflow](images/reflow.png)
+![reflow](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/reflow.png)
 
 ### 减少回流和重绘
 
@@ -276,7 +276,7 @@ window.addEventListener('load', function () {
 
 图层优点：脱离文档流，其变化不会影响其他。
 
-![layer](images/layer.png)
+![layer](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/layer.png)
 
 ## 静态文件优化策略
 
@@ -351,7 +351,7 @@ background-color: expression((new Date()) .getHours() %2 ? 'red': 'yellow');
    1. `defer`是 `html` 解析时加载 `js`，等 `html` 解析完执行 `js`，`defer` 是有序的。
    2. `async` 是 `html` 解析时加载 `js`，`js` 加载完毕就立即执行 `js`，会阻塞 `html` 解析，`async` 是无序的。
 
-![async_defer](images/async_defer.png)
+![async_defer](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/async_defer.png)
 
 1. 减少 `DOM` 操作，缓存访问过的元素。
 2. 操作不直接应用到 `DOM` 上，而应用到虚拟 `DOM` 上。最后一次性的应用到 `DOM` 上。

@@ -6,7 +6,7 @@
 
 `git` 版本库的内容都是存储在`.git` 这个隐藏目录中，一般默认是被隐藏的，如果想要显示，那么需要在 `exclude` 中把`\*\*/.git` 这个配置删除，这样就可以看到啦，展开`.git` 目录文件如下所示：
 
-![catalogue](images/catalogue.png)
+![catalogue](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/catalogue.png)
 
 `.git` 目录下有很多文件
 
@@ -53,11 +53,11 @@ git cat-file -p c200
 
 简单的以下面几个图形来表示 `git` 的几个 `object`：
 
-![git_obj](images/git_obj.png)
+![git_obj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_obj.png)
 
 此时的版本库包含两个 `blob` 对象，分别存储 `a.txt`，`b.txt `的内容。
 
-![git_blob](images/git_blob.png)
+![git_blob](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_blob.png)
 
 ```shell
 # 创建一个commit
@@ -85,7 +85,7 @@ git cat-file -p 277f
 当执行完 `commit` 之后，`git` 版本库里又多出了两个 `object`，我们使用 `git cat-file` 查看之后，发现它们的类型分别是 `tree object` 和 `commit object`，首先我们看 `tree` 这种 `object` 类型，从打印的内容我们可以看出，它存储的是 `a.txt` 和 `b.txt` 这两个 `blob` 的内容，即一个目录结构（相当于一个文件夹），以及文件模式，`object` 类型，通过 `SHA-1` 算法计算出的二进制哈希值 ，文件名等。
 此时的版本库如下所示，这个待提交的 `tree` 对象包含 `a.txt` 和 `b.txt` 这两个 `blob`：
 
-![git_txt](images/git_txt.png)
+![git_txt](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_txt.png)
 
 接下来我们再来看 `commit` 这种 `object` 类型，它存储的是一个提交信息，包括：
 
@@ -96,7 +96,7 @@ git cat-file -p 277f
 
 此时我们看 `git` 仓库是这样的，`commit` 对象指向暂存区待提交的 `tree` 对象的快照：
 
-![git_tree](images/git_tree.png)
+![git_tree](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_tree.png)
 
 以上就是关于 `git` 怎么存储一个提交信息的过程了，不过这里没有涉及到关于分支的存储，接下来简单看一下在 `git` 版本库中分支是怎么存储的
 
@@ -110,7 +110,7 @@ cat .git/refs/heads/master
 
 在 `git` 版本库中，`HEAD`，分支，`tag` 可以简单理解成一个指针，指向所提交的哈希值，如下所示：我们的提交在 `master` 分支，且 `master` 分支指向的是这次提交所对应的哈希值。
 
-![git_head](images/git_head.png)
+![git_head](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_head.png)
 
 ## `git add` 底层执行原理
 
@@ -149,7 +149,7 @@ $ find .git/objects
 # .git/objects/info
 ```
 
-![git_add](images/git_add.png)
+![git_add](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_add.png)
 
 可以看到，初始化 `git` 版本库之后，`git` 对 `objects` 目录进行了初始化，创建了两个空的 `info` 和 `pack` 子目录。
 
@@ -180,7 +180,7 @@ $ find .git/objects -type f
 
 在上述创建的对象中，`git hash-object`会接受你传给它的内容，并只会返回可以存储在 `Git` 仓库中的唯一键，同时在 `objects` 目录下可以找到与新内容对应的文件，如下所示：
 
-![git_hash](images/git_hash.png)
+![git_hash](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_hash.png)
 
 查看一下执行`git hash-object`之后在 `git` 版本库中存储的内容及其类型，如下所示，我们可以看到这里拿到的 key 和上文中使用 `git add` 执行命令的 `key` 是一样的。
 
@@ -238,7 +238,7 @@ git cat-file -p 4caa
 
 此时 `git` 版本库的结构如下所示：
 
-![git_commit](images/git_commit.png)
+![git_commit](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_commit.png)
 
 通过 `git commit-tree`提交 `4caa` 这个 `tree` 对象
 
@@ -260,7 +260,7 @@ git cat-file -p 810c
 
 此时 `git` 版本库的结构如下所示：
 
-![write-tree](images/write-tree.png)
+![write-tree](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/write-tree.png)
 
 我们可以知道此时的 `git` 版本库结构和上文中我们执行 `git commit` 之后是一样的，即 `git commit` 的底层执行原理其实也是执行了两步：
 
@@ -270,7 +270,7 @@ git cat-file -p 810c
 `Git` 所做的工作实质就是将被改写的文件保存为数据对象， 更新暂存区，记录树对象，最后创建一个指明了顶层树对象和父提交的提交对象。 这三种主要的 `Git` 对象（数据对象、树对象、提交对象）最初均以单独文件的形式保存在 `.git/objects` 目录下。
 以上就是执行 `git add` 和 `git commit` 命令时，`git` 所做的工作实质。用一个图来表示大概就是如下这样：
 
-![library](images/library.png)
+![library](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/library.png)
 
 - `git add files` 命令将文件放入暂存区
 - `git commit` 命令给暂存区生成快照并提交
@@ -281,7 +281,7 @@ git cat-file -p 810c
 
 接上文中的示例，此时三个分区的状态如下所示：
 
-![work](images/work.png)
+![work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/work.png)
 
 接下来我们通过更新一个文件内容看一下这个过程是怎样的
 
@@ -290,7 +290,7 @@ git cat-file -p 810c
 echo "333" > a.txt
 ```
 
-![work_1](images/work_1.png)
+![work_1](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/work_1.png)
 
 从上图中我们可以看到，修改 `a.txt` 的内容后，`git` 版本库和暂存区都没有发生改变，此时我们执行 `git add a.txt` 命令，将其添加进暂存区，如下图所示，`git add a.txt` 命令执行之后，在 `git` 版本库中新增了一个 `blob object`，同时更新了索引的指向，即 `a.txt` 指向了新建的 `blob（55bd)`
 
@@ -301,7 +301,7 @@ git add a.txt
 # 55bd0ac4c42e46cd751eb7405e12a35e61425550
 ```
 
-![work_2](images/work_2.png)
+![work_2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/work_2.png)
 
 最后我们提交这次更改，再看一下版本库是如何变化的：
 
@@ -311,7 +311,7 @@ git commit -m 'update'
 # 新增一个commit  59604511bc4a0e258fd54b784d38db1d0df63d7e
 ```
 
-![work_3](images/work_3.png)
+![work_3](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/work_3.png)
 
 由上图可以看到，执行 `git commit -m 'update'`提交这次更改之后，`git` 版本库的过程如下：
 

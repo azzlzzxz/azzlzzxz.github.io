@@ -10,9 +10,9 @@
 
 `Electron` 开发团队通过继承不同系统的 `chromium` 和 `nodejs`，提供一些桌面应用依赖的系统级别 `api`，实现了 `Electron` 的跨平台。
 
-![electron](images/electron.png)
+![electron](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/electron.png)
 
-![electron_detail](images/electron_detail.png)
+![electron_detail](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/electron_detail.png)
 
 :::tip
 什么是进程和线程?
@@ -23,7 +23,7 @@
 
 :::
 
-![process](images/process.png)
+![process](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_electron.png)
 
 ## `Electron` 的主进程
 
@@ -71,7 +71,7 @@
 - `ipcMain`，`ipcRender`
 - `Remote` 模块
 
-![electron_api](images/electron_api.png)
+![electron_api](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/electron_api.png)
 
 ## `GUI` 是什么？
 

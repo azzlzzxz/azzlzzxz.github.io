@@ -138,9 +138,9 @@ fs.readdir('a', (err, dirs) => {
 
 ### 异步删除文件夹
 
-![fs_async1](image/fs_async1.png)
+![fs_async1](<[image/fs_async1.png](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fs_async1.png)>)
 
-![fs_async2](image/fs_async2.png)
+![fs_async2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fs_async2.png)
 
 #### 异步串行方式删除，儿子一个一个删除，再删除父亲，后序遍历。
 

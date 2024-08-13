@@ -6,15 +6,15 @@
 npx react-native@latest init AwesomeProject
 ```
 
-![react-native-project](./images/react-native-project.jpg)
+![react-native-project](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react-native-project.jpg)
 
 ## `Android` 目录
 
-![react-native-android](./images/react-native-andriod.jpg)
+![react-native-android](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react-native-andriod.jpg)
 
 ## `ios` 目录
 
-![react-native-ios](./images/react-native-ios.jpg)
+![react-native-ios](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react-native-ios.jpg)
 
 ## 路由
 
@@ -279,7 +279,7 @@ module.exports = {
   },
 ```
 
-![env](images/env.png)
+![env](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/env.png)
 
 使用
 

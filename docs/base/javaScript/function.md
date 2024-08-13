@@ -137,7 +137,7 @@ const dataB = dataA.set({
 })
 ```
 
-![Immutable](images/Immutable.jpg)
+![Immutable](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/Immutable.jpg)
 
 为了达到这种“数据共享”的效果，持久化数据结构在底层依赖了一种经典的基础数据结构，那就是 `Trie`(字典树）
 
@@ -319,7 +319,7 @@ newFn(1, 2, 3)
 
 ## 函数组合
 
-![reduce](images/reduce.png)
+![reduce](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/reduce.png)
 
 ### `pipe`
 

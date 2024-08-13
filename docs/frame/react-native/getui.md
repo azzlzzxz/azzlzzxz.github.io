@@ -12,23 +12,23 @@
 
 1. 登录个推开发者中心，点击首页的”立即开通“。
 
-![getui_add](images/getui_add.png)
+![getui_add](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/getui_add.png)
 
 2. 上传应用图片，填写应用名称、应用类型、`android` 包名、`ios bundleID` 等信息，点击【下一步】按钮
 
-![getui_up](images/getui_up.png)
+![getui_up](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/getui_up.png)
 
 3. 集成使用
 
 查看应用信息，记录 `appId`、`appKey`、`appSecret`、`masterSecret` 等信息，根据【集成指南】的步骤，集成 `SDK`。
 
-![getui_jc](images/getui_jc.png)
+![getui_jc](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/getui_jc.png)
 
 ## 集成
 
 [react-native-getui 个推客户端插件](https://github.com/GetuiLaboratory/react-native-getui)
 
-![getui_native](images/getui_native.png)
+![getui_native](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/getui_native.png)
 
 安装插件
 

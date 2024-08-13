@@ -49,7 +49,7 @@
 
 ### 实现二叉搜索树
 
-![tree_one](image/tree_one.png)
+![tree_one](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tree_one.png)
 
 ```js
 class Node {
@@ -117,7 +117,7 @@ arr.forEach((item) => {
 console.dir(bst, { depth: 10 })
 ```
 
-![tree_log](image/tree_log.png)
+![tree_log](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tree_log.png)
 
 ## 数的遍历
 
@@ -130,7 +130,7 @@ console.dir(bst, { depth: 10 })
 - 后续遍历  `Postorder Traversal`(后序遍历左子树、后续遍历右子树、根节点)（左 --> 右 --> 父）
 - 层序遍历  `Level Order Traversal` (从上到下，从左到右依次访问每一个节点)
 
-![tree_for](image/tree_for.png)
+![tree_for](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tree_for.png)
 
 ```js
 class Node {
@@ -243,14 +243,14 @@ bst.preorderTraversal({
 - `React` 虚拟 `DOM` 的构建
 - `React` 的 `fiber` 树构建
 
-![DFS](image/DFS.jpg)
+![DFS](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/DFS.jpg)
 
 ### 广度优先（BFS）
 
 宽度优先搜索算法（又称广度优先搜索），其英文全称是 Breadth First Search。
 算法首先搜索距离为 k 的所有顶点，然后再去搜索距离为 k+l 的其他顶点。
 
-![BFS](image/BFS.jpg)
+![BFS](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/BFS.jpg)
 
 ### 二叉树的翻转
 

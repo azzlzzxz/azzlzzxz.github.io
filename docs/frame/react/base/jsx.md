@@ -8,7 +8,7 @@
 
 用户编写 `jsx` 到生成真实 `DOM` 的流程：
 
-![jsx](./image/jsx.jpg)
+![jsx](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/jsx.jpg)
 
 ## react18 对于 `jsx` 的变化
 

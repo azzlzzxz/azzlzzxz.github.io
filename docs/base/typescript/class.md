@@ -1,50 +1,20 @@
 # 类
 
-## 定义存取器
-
-TS 里可以通过存取器来改变一个类中属性的读取和赋值操作
+## 定义类
 
 ```ts
-class User {
-  myName: string
-  constructor(myName: string) {
-    this.myName = myName
-  }
-
-  // ---> 等价于
-
-  constructor(public myName: string) {
-    this.myName = myName
-  }
-
-  get name() {
-    return this.myName
-  }
-
-  set name(val) {
-    this.myName = val
+class Pointer {
+  x!: number // 实例上的属性必须先声明
+  y!: number
+  constructor(x: number, y?: number, ...args: number[]) {
+    this.x = x
+    this.y = y as number
   }
 }
-
-let user = new User('ws') // ws 给了constructor
-user.name = 'steins' // steins 给了set
-console.log(user.name) // get方法
+let p = new Pointer(100, 200)
 ```
 
-## readonly 只读
-
-```ts
-class Animal {
-  public readonly name: string
-  constructor(name: string) {
-    // public readonly 的属性只能在constructor里赋值
-    this.name = name
-  }
-  changeName(name: string) {
-    // this.name = name //无法分配到 "name" ，因为它是只读属性。
-  }
-}
-```
+实例上的属性需要先声明在使用，构造函数中的参数可以使用可选参数和剩余参数。
 
 ## 继承
 
@@ -78,6 +48,31 @@ class Student extends Person {
 let s1 = new Student('czp', '11', 1)
 console.log(s1.getStuNo()) // 1
 console.log(s1.name) // 'czp'
+```
+
+## Super
+
+```ts
+class Animal {
+  say(message: string) {
+    console.log(message)
+  }
+  static getType() {
+    return '动物'
+  }
+}
+class Cat extends Animal {
+  say() {
+    // 原型方法中的super指代的是父类的原型
+    super.say('猫猫叫')
+  }
+  static getType() {
+    // 静态方法中的super指代的是父类
+    return super.getType()
+  }
+}
+let cat = new Cat()
+console.log(Cat.getType())
 ```
 
 ## 类里的修饰符
@@ -136,6 +131,50 @@ child.toString() // father child
 father.toString() // father
 ```
 
+TS 里可以通过存取器来改变一个类中属性的读取和赋值操作
+
+```ts
+class User {
+  myName: string
+  constructor(myName: string) {
+    this.myName = myName
+  }
+
+  // ---> 等价于
+
+  constructor(public myName: string) {
+    this.myName = myName
+  }
+
+  get name() {
+    return this.myName
+  }
+
+  set name(val) {
+    this.myName = val
+  }
+}
+
+let user = new User('ws') // ws 给了constructor
+user.name = 'steins' // steins 给了set
+console.log(user.name) // get方法
+```
+
+## readonly 只读
+
+```ts
+class Animal {
+  public readonly name: string
+  constructor(name: string) {
+    // public readonly 的属性只能在constructor里赋值
+    this.name = name
+  }
+  changeName(name: string) {
+    // this.name = name //无法分配到 "name" ，因为它是只读属性。
+  }
+}
+```
+
 ## export
 
 ```ts
@@ -157,6 +196,40 @@ let p1 = new Person()
 p1.name = 'sxx'
 p1.getName()
 ```
+
+## 抽象类
+
+1. 抽象描述的是一种抽象的概念，无法被实例化，只能继承。
+2. 抽象方法不能在抽象类中实现，只能在抽象类的具体子类中实现，且必须实现。
+
+```ts
+abstract class Animal {
+  //抽象类 abstract
+  name: string
+  abstract speak(): void // 抽象方法
+}
+
+class Cat extends Animal {
+  speak(): void {
+    // 抽象方法实现
+    console.log('111')
+  }
+}
+
+class Dog extends Animal {
+  speak(): void {
+    console.log('222')
+  }
+}
+```
+
+### 抽象类 vs 接口
+
+1. 不同类之间共有的属性或方法，可以抽象成一个接口。
+2. 而抽象类是提供其他类继承的基类，抽象类不允许被实例话，抽象类中的抽象方法必须在子类中实现。
+3. 抽象类本质是一个无法被实例化的类，其中能够实现方法和初始化属性，而接口仅能用于描述，既不提供方法的实现，也不为属性进行初始化。
+4. 一个类可以继承一个类或抽象类，但可以实现多个接口。
+5. 抽象类也可以实现接口
 
 ## 类的 TS 转 JS
 
@@ -263,37 +336,3 @@ function Child(...args) {
 
 return Child
 ```
-
-## 抽象类
-
-1. 抽象描述的是一种抽象的概念，无法被实例化，只能继承。
-2. 抽象方法不能在抽象类中实现，只能在抽象类的具体子类中实现，且必须实现。
-
-```ts
-abstract class Animal {
-  //抽象类 abstract
-  name: string
-  abstract speak(): void // 抽象方法
-}
-
-class Cat extends Animal {
-  speak(): void {
-    // 抽象方法实现
-    console.log('111')
-  }
-}
-
-class Dog extends Animal {
-  speak(): void {
-    console.log('222')
-  }
-}
-```
-
-### 抽象类 vs 接口
-
-1. 不同类之间共有的属性或方法，可以抽象成一个接口。
-2. 而抽象类是提供其他类继承的基类，抽象类不允许被实例话，抽象类中的抽象方法必须在子类中实现。
-3. 抽象类本质是一个无法被实例化的类，其中能够实现方法和初始化属性，而接口仅能用于描述，既不提供方法的实现，也不为属性进行初始化。
-4. 一个类可以继承一个类或抽象类，但可以实现多个接口。
-5. 抽象类也可以实现接口

@@ -274,4 +274,19 @@ a?.[x]
 // a?.[x]()
 ```
 
-## 类型推断
+## 类型推导
+
+- 声明变量没有赋予值时默认变量是 any 类型
+
+```ts
+let name // 类型为any
+name = 'steins gate'
+name = 30
+```
+
+- 声明变量赋值时则以赋值类型为准
+
+```ts
+let name = 'steins gate' // name被推导为字符串类型
+name = 30
+```

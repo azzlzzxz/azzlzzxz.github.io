@@ -118,5 +118,3 @@ class Child extends Father {
   }
 }
 ```
-
-## 函数的协变与逆变

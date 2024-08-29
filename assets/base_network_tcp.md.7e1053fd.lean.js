@@ -1,1 +1,0 @@
-import{_ as e,o,c,Q as d}from"./chunks/framework.a5035e6c.js";const T=JSON.parse('{"title":"OSI & TCP","description":"","frontmatter":{},"headers":[],"relativePath":"base/network/tcp.md","lastUpdated":1724827728000}'),a={name:"base/network/tcp.md"},t=d("",41),i=[t];function l(p,s,r,n,h,C){return o(),c("div",null,i)}const u=e(a,[["render",l]]);export{T as __pageData,u as default};

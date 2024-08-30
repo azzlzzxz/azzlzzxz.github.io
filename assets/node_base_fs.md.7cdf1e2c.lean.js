@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,Q as l}from"./chunks/framework.a5035e6c.js";const A=JSON.parse('{"title":"FS","description":"","frontmatter":{},"headers":[],"relativePath":"node/base/fs.md","lastUpdated":1725000266000}'),p={name:"node/base/fs.md"},o=l("",25),e=[o];function r(c,t,y,F,D,i){return n(),a("div",null,e)}const b=s(p,[["render",r]]);export{A as __pageData,b as default};

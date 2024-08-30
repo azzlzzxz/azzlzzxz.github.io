@@ -1,1 +1,0 @@
-import{_ as s,o as n,c as a,Q as l}from"./chunks/framework.a5035e6c.js";const b=JSON.parse('{"title":"PNPM","description":"","frontmatter":{},"headers":[],"relativePath":"node/npm/pnpm.md","lastUpdated":1724914295000}'),p={name:"node/npm/pnpm.md"},e=l("",73),o=[e];function c(r,t,d,i,B,y){return n(),a("div",null,o)}const u=s(p,[["render",c]]);export{b as __pageData,u as default};

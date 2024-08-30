@@ -78,8 +78,8 @@ namespace c {
 ## 属性装饰器(装饰属性、装饰方法)
 
 1. 属性装饰器在运行时可能会被当作函数被调用，它可能传入以下参数:
-   target 如果装饰的是实例属性的话，target 是构造函数的原型
-   propertyKey
+   `target` 如果装饰的是实例属性的话，`target` 是构造函数的原型
+   `propertyKey`
 
 ```ts
 function upperCase(target: any, propertyKey: string) {
@@ -140,7 +140,7 @@ console.log(p.sum('1', '2', '3')) // 不使用装饰器，sum返回0123
 
 ## 参数装饰器
 
-1. 用处，在 IOC 容器里大放异彩，Nest.js 大量用到了参数装饰器
+1. 用处，在 `IOC` 容器里大放异彩，`Nest.js` 大量用到了参数装饰器
 
 ```ts
 // target 静态成员就是构造函数，非静态成员就是构造函数的原型 methodName 方法名称 paramIndex参数索引
@@ -169,7 +169,7 @@ p.login('1', '2')
 3. 方法和属性装饰器，先走属性装饰器
 
 规律：一般从内往外执行 （先内后外）
-类比 react componentDidMount 先上后下 先内后外
+类比 `react componentDidMount` 先上后下 先内后外
 
 ```ts
 function ClassDecorator1() {

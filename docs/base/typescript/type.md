@@ -290,3 +290,82 @@ name = 30
 let name = 'steins gate' // name被推导为字符串类型
 name = 30
 ```
+
+## 类型推断
+
+### 赋值推断
+
+赋值时推断，类型从右像左流动,会根据赋值推断出变量类型。
+
+```ts
+let name = 'steins gate'
+let age = 18
+let boolean = true
+```
+
+### 返回值推断
+
+自动推断函数返回值类型
+
+```ts
+function sum(a: string, b: string) {
+  return a + b
+}
+sum('a', 'b')
+```
+
+### 函数推断
+
+函数从左到右进行推断
+
+```ts
+type Sum = (a: string, b: string) => string
+const sum: Sum = (a, b) => a + b
+```
+
+### 属性推断
+
+可以通过属性值,推断出属性的类型
+
+```ts
+let person = {
+  name: 'steins gate',
+  age: 18,
+}
+let { name, age } = person
+```
+
+### 类型反推
+
+可以使用`typeof`关键字反推变量类型。
+
+```ts
+let person = {
+  name: 'steins gate',
+  age: 18,
+}
+type Person = typeof person
+```
+
+### 索引访问操作符
+
+```ts
+interface IPerson {
+  name: string
+  age: number
+  job: {
+    address: string
+  }
+}
+type job = IPerson['job']
+```
+
+### 类型映射
+
+```ts
+interface IPerson {
+  name: string
+  age: number
+}
+type MapPerson = { [key in keyof IPerson]: IPerson[key] }
+```

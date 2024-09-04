@@ -241,6 +241,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'node版本管理', link: '/work/utility/nvm' },
         { text: 'vscode配置', link: '/work/utility/vscode' },
         { text: 'zsh配置', link: '/work/utility/zsh' },
+        { text: '图床搭建', link: '/work/utility/picgo' },
       ],
     },
     {

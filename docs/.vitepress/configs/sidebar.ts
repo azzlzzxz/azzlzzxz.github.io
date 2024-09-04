@@ -240,6 +240,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'ni包管理器工具', link: '/work/utility/ni' },
         { text: 'node版本管理', link: '/work/utility/nvm' },
         { text: 'vscode配置', link: '/work/utility/vscode' },
+        { text: 'zsh配置', link: '/work/utility/zsh' },
       ],
     },
     {

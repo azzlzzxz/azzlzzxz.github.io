@@ -7,7 +7,7 @@
 | 插件名                                                                                               | 插件描述     |
 | ---------------------------------------------------------------------------------------------------- | ------------ |
 | [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) | 图标美化     |
-| [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)   | 图标美化     |
+| [Vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)   | 图标美化     |
 | [One Dark Pro](https://marketplace.visualstudio.com/items?itemName=zhuangtongfa.Material-theme)      | 暗黑风格主题 |
 | [background](https://marketplace.visualstudio.com/items?itemName=shalldie.background)                | 自定义背景图 |
 

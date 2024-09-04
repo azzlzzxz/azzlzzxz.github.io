@@ -1,1 +1,0 @@
-import{_ as e,o as a,c as t}from"./chunks/framework.a5035e6c.js";const l=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"capital/deploy/docker/command.md","lastUpdated":1725000266000}'),o={name:"capital/deploy/docker/command.md"};function c(r,d,n,s,p,m){return a(),t("div")}const _=e(o,[["render",c]]);export{l as __pageData,_ as default};

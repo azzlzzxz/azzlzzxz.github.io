@@ -24,9 +24,9 @@
 ### CSS 相关
 
 | 插件名                                                                                                     | 插件描述                   |
-| ---------------------------------------------------------------------------------------------------------- | -------------------------- | --- |
+| ---------------------------------------------------------------------------------------------------------- | -------------------------- |
 | [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)                | CSS / LESS / SCSS 代码检查 |
-| [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) | Tailwind CSS 智能提示      |     |
+| [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) | Tailwind CSS 智能提示      |
 | [px to rem](https://marketplace.visualstudio.com/items?itemName=sainoba.px-to-rem)                         | `px` 和 `rem` 互相转换     |
 
 ### NPM 相关

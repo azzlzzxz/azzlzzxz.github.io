@@ -237,8 +237,9 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '实用工具',
       collapsed: false,
       items: [
-        { text: 'ni', link: '/work/utility/ni' },
+        { text: 'ni包管理器工具', link: '/work/utility/ni' },
         { text: 'node版本管理', link: '/work/utility/nvm' },
+        { text: 'vscode配置', link: '/work/utility/vscode' },
       ],
     },
     {

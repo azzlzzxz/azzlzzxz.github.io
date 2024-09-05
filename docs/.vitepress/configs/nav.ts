@@ -60,6 +60,8 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: '工作',
     items: [
+      { text: '编程规范', link: '/work/standard/code' },
+      { text: 'Git', link: '/work/git/command' },
       { text: '实用工具', link: '/work/utility/ni' },
       { text: '日常问题记录', link: '/work/question/npm' },
       { text: '其他', link: '/work/command/command' },

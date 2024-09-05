@@ -226,3 +226,9 @@ module.exports = {
   },
 }
 ```
+
+## 发布、引用
+
+把插件发布到 npm 上，然后就可以在项目中引用了。
+
+![eslint_use](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/eslint_use.jpg)

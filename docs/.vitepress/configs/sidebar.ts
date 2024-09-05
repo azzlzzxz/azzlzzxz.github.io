@@ -228,6 +228,15 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         },
       ],
     },
+    {
+      text: '插件开发',
+      collapsed: false,
+      items: [
+        { text: 'ESLint', link: '/capital/plugins/eslint' },
+        // { text: 'commitlint', link: '/capital/plugins/commitlint' },
+        // { text: 'husky', link: '/capital/plugins/husky' },
+      ],
+    },
   ],
   '/work/': [
     {

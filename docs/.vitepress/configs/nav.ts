@@ -55,6 +55,7 @@ export const nav: DefaultTheme.Config['nav'] = [
     items: [
       { text: '构建', link: '/capital/construct/webpack/base' },
       { text: '部署', link: '/capital/deploy/release' },
+      { text: '插件开发', link: '/capital/plugins/eslint' },
     ],
   },
   {

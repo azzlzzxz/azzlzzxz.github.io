@@ -236,7 +236,8 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: '代码规范', link: '/work/standard/code' },
         { text: '命名规范', link: '/work/standard/name' },
-        // { text: '工程规范', link: '/work/standard/project' },
+        { text: 'Git规范', link: '/work/standard/git' },
+        { text: '工程规范', link: '/work/standard/Prettier' },
       ],
     },
     {

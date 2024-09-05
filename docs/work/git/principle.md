@@ -55,7 +55,7 @@ git cat-file -p c200
 
 ![git_obj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_obj.png)
 
-此时的版本库包含两个 `blob` 对象，分别存储 `a.txt`，`b.txt `的内容。
+此时的版本库包含两个 `blob` 对象，分别存储 `a.txt`，`b.txt`的内容。
 
 ![git_blob](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/git_blob.png)
 

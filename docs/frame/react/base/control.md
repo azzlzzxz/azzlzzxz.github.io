@@ -56,8 +56,7 @@ export default App
 
 ![no_controll_render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/no_controll_render.gif)
 
-:::tip
-哪什么时候使用受控模式呢？
+:::tip 哪什么时候使用受控模式呢
 
 **当你需要对输入的值做处理之后设置到表单的时候，或者是想实时同步状态值到父组件。**
 

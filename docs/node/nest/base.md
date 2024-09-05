@@ -4,11 +4,11 @@
 
 `Nest (NestJS)` 是一个用于构建高效、可扩展的 `Node.js` 服务器端应用程序的框架。它使用渐进式 `JavaScript`，使用 `TypeScript` 构建并完全支持 `TypeScript`（但仍然允许开发人员使用纯 `JavaScript` 进行编码），并结合了 `OOP（面向对象编程）`、`FP（函数式编程）`和 `FRP（函数式反应式编程）`的元素。
 
-在底层，`Nest `使用强大的 `HTTP` 服务器框架，如 `Express（默认`），并且也可以选择配置为使用 `Fastify！`
+在底层，`Nest`使用强大的 `HTTP` 服务器框架，如 `Express（默认`），并且也可以选择配置为使用 `Fastify！`
 
-`Nest `提供了高于这些常见 `Node.js` 框架`（Express/Fastify）`的抽象级别，而且还直接向开发人员公开其 `API`。这使开发人员可以自由地使用可用于底层平台的无数第三方模块。
+`Nest`提供了高于这些常见 `Node.js` 框架`（Express/Fastify）`的抽象级别，而且还直接向开发人员公开其 `API`。这使开发人员可以自由地使用可用于底层平台的无数第三方模块。
 
-## `nest `相关命令
+## `nest`相关命令
 
 ```sh
 # 安装nest cli
@@ -88,6 +88,7 @@ src
 | `app.module.ts` | 应用程序的根模块。 |
 | `app.service.ts` | 带有单个方法的基本服务。 |
 | `main.ts` | 应用程序入口文件。它使用 `NestFactory` 用来创建 `Nest` 应用实例。 |
+
 :::
 
 ## 5 种 `Http` 数据传输方式

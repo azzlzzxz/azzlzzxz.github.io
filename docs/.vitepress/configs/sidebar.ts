@@ -47,6 +47,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
+      text: 'Html/Css',
+      collapsed: false,
+      items: [{ text: 'Css知识点', link: '/base/css/css' }],
+    },
+    {
       text: '浏览器相关知识',
       collapsed: false,
       items: [
@@ -225,6 +230,15 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     },
   ],
   '/work/': [
+    {
+      text: '编程规范',
+      collapsed: false,
+      items: [
+        { text: '代码规范', link: '/work/standard/code' },
+        { text: '命名规范', link: '/work/standard/name' },
+        // { text: '工程规范', link: '/work/standard/project' },
+      ],
+    },
     {
       text: 'Git',
       collapsed: false,

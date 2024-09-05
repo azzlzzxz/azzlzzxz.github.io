@@ -1,6 +1,6 @@
 # WebSocket
 
-:::tip
+:::tip WebSocket
 
 [WebSocket MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)
 
@@ -86,7 +86,7 @@
 
 如果我们使用 `WebSocket` 进行通信，建立连接之后怎么判断连接正常没有断开或者服务是否可用呢？可以通过建立心跳机制，所谓心跳机制，就是定时发送一个数据包，让对方知道自己在线且正常工作，确保通信有效。如果对方无法响应，便可以弃用旧连接，发起新的连接了。
 
-:::tip
+:::tip `pingpong`
 
 需要重连的场景可能包括：网络问题或者机器故障导致连接断开、连接没断但不可用了或者连接对端的服务不可用了等等。
 

@@ -2,7 +2,7 @@
 
 ## 基础环境配置
 
-:::tip
+:::tip ReactNative
 [ReactNative 中文网](https://reactnative.cn/)
 
 [ReactNative 官网](https://reactnative.dev/)

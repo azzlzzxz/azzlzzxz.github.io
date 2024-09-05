@@ -1,6 +1,6 @@
 # React Native 集成个推消息推送
 
-:::tip
+:::tip 个推
 [个推官网](https://www.getui.com/)
 
 多通道一键下发：全面覆盖华为、小米、OPPO vivo、魅族、个推 UPS（坚果 索尼、海信等）系统级下发通道，合力提升多通道消息到达率

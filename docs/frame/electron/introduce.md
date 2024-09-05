@@ -14,8 +14,7 @@
 
 ![electron_detail](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/electron_detail.png)
 
-:::tip
-什么是进程和线程?
+:::tip 什么是进程和线程?
 
 对于操作系统来讲，一个任务就是一个`进程（Process）`，比如打开一个浏览器就是启动一个浏览器进程，打开一个记事本就启动了一个记事本进程，打开两个记事本就启动两个记事本进程，打开一个 `word` 就是启动一个 `word` 进程。
 

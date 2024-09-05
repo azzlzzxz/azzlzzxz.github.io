@@ -1,6 +1,6 @@
 # ni
 
-:::tip
+:::tip ni
 **[ni](https://github.com/antfu/ni#ni)** 根据你的项目使用对应的包管理工具。
 
 支持：`npm` · `yarn` · `pnpm` · `bun`

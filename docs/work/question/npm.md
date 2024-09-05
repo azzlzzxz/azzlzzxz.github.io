@@ -36,7 +36,7 @@ https://github.com/sass/node-sass/releases/tag/v4.14.1
 
 在我使用 `nvm` 安装低版本的 `node` 时，又报错了 ❗️
 
-原因是： 对于 `v15` 以下的任何内容，您需要使用 `Rosetta 2 `安装节点。
+原因是： 对于 `v15` 以下的任何内容，您需要使用 `Rosetta 2`安装节点。
 
 在我 `nvm use` 时又报错，`python` 版本 3.11 过高
 
@@ -63,7 +63,7 @@ brew switch python 3.8
 
 成功解决改问题 😄，项目顺利跑了起来。
 
-:::tip
+:::tip 参考链接
 [参考链接-starkoverflow 解决 nvm 安装问题](https://stackoverflow.com/questions/67254339/nvm-install-node-fails-to-install-on-macos-big-sur-m1-chip)
 
 [参考链接-nvm 的 python 版本问题](https://stackoverflow.com/questions/60038415/why-does-nvm-use-the-incorrect-version-of-python)

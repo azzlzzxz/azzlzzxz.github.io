@@ -6,10 +6,18 @@ export const nav: DefaultTheme.Config['nav'] = [
     text: '前端知识',
     items: [
       { text: 'JavaScript 基础知识', link: '/base/javaScript/dataType' },
-      { text: 'ES6 基础知识', link: '/base/es6/promise/promise' },
-      { text: 'TypeScript', link: '/base/typescript/ts' },
-      { text: '浏览器相关知识', link: '/base/browser/browser' },
-      { text: '网络相关知识', link: '/base/network/restFulAPI' },
+      { text: 'ES6 基础知识', link: '/base/es6/arrowFn' },
+      { text: 'HTML 基础知识', link: '/base/html/base' },
+      { text: 'CSS 基础知识', link: '/base/css/base' },
+      {
+        items: [{ text: 'TypeScript', link: '/base/typescript/ts' }],
+      },
+      {
+        items: [
+          { text: '浏览器相关知识', link: '/base/browser/browser' },
+          { text: '网络相关知识', link: '/base/network/restFulAPI' },
+        ],
+      },
       { text: '数据结构与算法', link: '/base/structure/linkList' },
     ],
     activeMatch: '^/base',
@@ -17,8 +25,9 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: 'Node',
     items: [
-      { text: 'Node基础', link: '/node/base/base' },
-      { text: 'NPM', link: '/node/npm/npm' },
+      { text: '模块&规范', link: '/node/norm/commonJs' },
+      { text: 'Node 相关知识', link: '/node/base/base' },
+      { text: 'NPM 相关知识', link: '/node/npm/npm' },
       { text: 'Nest', link: '/node/nest/base' },
     ],
     activeMatch: '^/node',

@@ -231,4 +231,6 @@ module.exports = {
 
 把插件发布到 npm 上，然后就可以在项目中引用了。
 
+在`.eslintrc.js` 文件中配置插件：
+
 ![eslint_use](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/eslint_use.jpg)

@@ -521,21 +521,30 @@ cursor：箭头可以变成需要的形状
 ### 容器的属性
 
 - `flex-direction`：决定主轴的方向（即子 `item` 的排列方法）。
-  ::: details `flex-direction`属性值
+
+::: details `flex-direction`属性值
+
 - `row` 表示从左向右排列
 - `row-reverse` 表示从右向左排列
 - `column` 表示从上向下排列
 - `column-reverse` 表示从下向上排列
   :::
+
 - `flex-wrap`：`Flex`项目都排在一条线（又称"轴线"）上。我们可以通过`flex-wrap`属性的设置，让`Flex`项目换行排列。
-  ::: details `flex-wrap`属性值
+
+::: details `flex-wrap`属性值
+
 - `nowrap`：所有`Flex`项目单行排列
 - `wrap`：所有`Flex`项目多行排列，按从上到下的顺序
 - `wrap-reverse`：所有`Flex`项目多行排列，按从下到上的顺序
   :::
+
 - `flex-flow`：`flex-direction` 和 `flex-wrap` 的简写，默认值为`row nowrap`。
+
 - `justify-content`：项目在主轴上的对其方式，水平主轴对齐方式。
-  ::: details `justify-content`属性值
+
+::: details `justify-content`属性值
+
 - `flex-start`：从启点线开始顺序排列
 - `flex-end`：相对终点线顺序排列
 - `center`：居中排列
@@ -543,16 +552,22 @@ cursor：箭头可以变成需要的形状
 - `space-around`：项目均匀分布，每一个项目两侧有相同的留白空间，相邻项目之间的距离是两个项目之间留白的和
 - `space-evenly`：项目均匀分布，所有项目之间及项目与边框之间距离相等
   :::
+
 - `align-items`：定义项目在交叉轴上的对齐方式。
-  ::: details `align-items` 属性值
+
+::: details `align-items` 属性值
+
 - `stretch`：交叉轴方向拉伸显示
 - `flex-start`：项目按交叉轴起点线对齐
 - `flex-end`：项目按交叉轴终点线对齐
 - `center`：交叉轴方向项目中间对齐
 - `baseline`：交叉轴方向按第一行文字基线对齐
   :::
+
 - `align-content`：定义在交叉轴方向的对齐方式及额外空间分配。
-  ::: details `align-content` 属性值
+
+::: details `align-content` 属性值
+
 - `stretch`：拉伸显示
 - `flex-start`：从启点线开始顺序排列
 - `flex-end`：相对终点线顺序排列

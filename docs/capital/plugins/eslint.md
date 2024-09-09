@@ -4,7 +4,9 @@
 
 ## 插件命名
 
-每个插件都是以 `eslint-plugin-<plugin-name>` 为名的 `npm` 模块，例如 `eslint-plugin-jquery`。你也可以使用 `@<scope>/eslint-plugin-<plugin-name>` 格式的范围包，如 `@jquery/eslint-plugin-jquery`以及 `@<scope>/eslint-plugin`，如 `@jquery/eslint-plugin`。
+每个插件都是以 `eslint-plugin-<plugin-name>` 为名的 `npm` 模块，例如 `eslint-plugin-jquery`。
+
+你也可以使用 `@<scope>/eslint-plugin-<plugin-name>` 格式的范围包，如 `@jquery/eslint-plugin-jquery`以及 `@<scope>/eslint-plugin`，如 `@jquery/eslint-plugin`。
 
 ## 创建插件
 

@@ -8,6 +8,8 @@
 
 ### 箭头函数的 `this` 指向规则
 
+---
+
 #### 箭头函数没有 `prototype(原型)`，所以箭头函数本身没有 `this`
 
 ```js
@@ -68,7 +70,6 @@ function foo() {
 
 ```js
 // 将bar普通函数的this指向barObj 然后内部的箭头函数也会指向barObj
-
 bar.call(barObj)
 ```
 
@@ -91,6 +92,8 @@ b = 2 // 不报错
 ```
 
 ### 箭头函数的 `arguments`
+
+---
 
 #### 箭头函数的 `this` 指向全局，使用 `arguments` 会报未声明的错误
 

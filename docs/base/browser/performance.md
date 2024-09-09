@@ -347,16 +347,15 @@ background-color: expression((new Date()) .getHours() %2 ? 'red': 'yellow');
 ## JS 优化
 
 1. 通过`async、defer`异步加载文件：
-
    1. `defer`是 `html` 解析时加载 `js`，等 `html` 解析完执行 `js`，`defer` 是有序的。
    2. `async` 是 `html` 解析时加载 `js`，`js` 加载完毕就立即执行 `js`，会阻塞 `html` 解析，`async` 是无序的。
 
 ![async_defer](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/async_defer.png)
 
-1. 减少 `DOM` 操作，缓存访问过的元素。
-2. 操作不直接应用到 `DOM` 上，而应用到虚拟 `DOM` 上。最后一次性的应用到 `DOM` 上。
-3. 使用 `webworker` 解决程序阻塞问题。
-4. `IntersectionObserver：`监控当前屏幕可视范围（性能比 `onscroll` 更高）。
+2. 减少 `DOM` 操作，缓存访问过的元素。
+3. 操作不直接应用到 `DOM` 上，而应用到虚拟 `DOM` 上。最后一次性的应用到 `DOM` 上。
+4. 使用 `webworker` 解决程序阻塞问题。
+5. `IntersectionObserver：`监控当前屏幕可视范围（性能比 `onscroll` 更高）。
 
 ```js
 <img src="./images/loading.jpg" data-src="./images/1.jpg" style="width: 200px;height:300px;" />

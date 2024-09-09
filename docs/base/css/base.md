@@ -564,14 +564,19 @@ cursor：箭头可以变成需要的形状
 ### 项目的属性（元素的属性）
 
 - `order`：`Flex`项目是按照在代码中出现的先后顺序排列的，然而`order`属性可以控制项目在容器中的排列顺序，顺序越小，排列越靠前，默认为 0。
+
 - `flex-grow`：定义项目的放大比例，`flex-grow` 值是一个单位的正整数，表示放大的比例。默认为 0，即如果存在额外空间，也不放大，负值无效。
 
 > 如果所有项目的`flex-grow`属性都为 1，则它们将等分剩余空间（如果有的话）。如果一个项目的`flex-grow`属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
 
 - `flex-shrink`：定义了项目的缩小比例，当空间不足的情况下会等比例的缩小，如果 定义个 `item` 的 `flow-shrink` 为 0，则为不缩小。
+
 - `flex-basis`：定义项目在分配额外空间之前的尺寸，属性值可以是长度（`200px`，`10rem`等）或者关键字`auto`，它的默认值为`auto`，即项目的本来大小。
+
 - `flex`：是 `flex-grow` 和 `flex-shrink`、`flex-basis` 的简写，默认值为 `0 1 auto`。
+
 - `align-self`：定义项目的对齐方式，可覆盖`align-items`属性。默认值为`auto`，表示继承父元素的`align-items`属性，如果没有父元素，则等同于`stretch`，`auto | flex-start | flex-end | center | baseline | stretch`。
+
 - `align-items`：默认属性为 `auto`，表示继承父元素的 `align-items`。
 
 ### `flex: 1` 代表什么？

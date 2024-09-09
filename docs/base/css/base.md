@@ -10,40 +10,6 @@
 - 优先级：是指不同类别样式的权重比较。
 - 层叠：是说当数量相同时，通过层叠(后者覆盖前者)的样式执行。
 
-## 盒模型
-
-::: tip 什么是盒模型？
-
-当对一个文档进行布局时，浏览器的渲染引擎会根据标准之一的 **`CSS` 基础框盒模型**（CSS basic box model），将所有元素表示为一个个矩形的盒子；`CSS` 决定这些盒子的大小、位置以及属性（如颜色、背景、边框尺寸等）
-
-每个盒子（即盒模型）从外到内由这四个部分组成
-
-- `margin` 外边距（不计入盒子的实际大小）
-- `border` 边框
-- `padding` 内边距
-- `content` 内容
-
-[CSS 基础框盒模型介绍 - CSS：层叠样式表 | MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-
-:::
-
-盒模型分为 **`W3C` 标准盒模型**和 **`IE` 盒模型**，其区别只有一个：**计算盒子实际大小（即总宽度/总高度）的方式不一样**
-
-> 以宽度计算来举例
-
-- `W3C` 标准盒模型（默认）
-  - **盒子实际宽 = `width` + `padding` + `border`**
-  - 其中 **`width` 只包含 `content`**（即内容区域的宽度）
-  - **通过 `box-sizing: content-box;` 来设置为 `W3C` 标准盒模型**
-- `IE` 盒模型
-  - **盒子实际宽 = `width`**
-  - 其中 **`width` = `content` + `border` + `padding`**
-  - **通过 `box-sizing: border-box;` 来设置为 `IE` 盒模型**
-
-|                                   `W3C` 标准盒模型                                   |                                  `IE` 盒模型                                   |
-| :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------: |
-| ![W3C 标准盒模型](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/box-model-w3c.png) | ![IE 盒模型](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/box-model-ie.png) |
-
 ## `CSS` 选择器
 
 ### 选择器种类
@@ -188,11 +154,11 @@ h1 + p {
 
 **优先级就近原则，同权重情况下样式定义最近者为准，载⼊样式以最后载⼊的定位为准。**
 
-### 继承属性
+## 继承
 
 在`CSS`中，继承是指的是给父元素设置一些属性，后代元素会自动拥有这些属性。
 
-#### 常用继承属性
+### 常用继承属性
 
 - 字体系列属性
 
@@ -254,13 +220,13 @@ quotes：设置嵌套引用的引号类型
 cursor：箭头可以变成需要的形状
 ```
 
-#### 继承中比较特殊的
+### 继承中比较特殊的
 
 - `a`标签的字体颜色不能被继承
 
 - `h1-h6`标签字体的大下也是不能被继承的
 
-#### 无继承的属性
+### 无继承的属性
 
 - `display`
 
@@ -278,6 +244,40 @@ cursor：箭头可以变成需要的形状
 
 - 页面样式属性：`size`、`page-break-before`、`page-break-after`
 
+## 盒模型
+
+::: tip 什么是盒模型？
+
+当对一个文档进行布局时，浏览器的渲染引擎会根据标准之一的 **`CSS` 基础框盒模型**（CSS basic box model），将所有元素表示为一个个矩形的盒子；`CSS` 决定这些盒子的大小、位置以及属性（如颜色、背景、边框尺寸等）
+
+每个盒子（即盒模型）从外到内由这四个部分组成
+
+- `margin` 外边距（不计入盒子的实际大小）
+- `border` 边框
+- `padding` 内边距
+- `content` 内容
+
+[CSS 基础框盒模型介绍 - CSS：层叠样式表 | MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+
+:::
+
+盒模型分为 **`W3C` 标准盒模型**和 **`IE` 盒模型**，其区别只有一个：**计算盒子实际大小（即总宽度/总高度）的方式不一样**
+
+> 以宽度计算来举例
+
+- `W3C` 标准盒模型（默认）
+  - **盒子实际宽 = `width` + `padding` + `border`**
+  - 其中 **`width` 只包含 `content`**（即内容区域的宽度）
+  - **通过 `box-sizing: content-box;` 来设置为 `W3C` 标准盒模型**
+- `IE` 盒模型
+  - **盒子实际宽 = `width`**
+  - 其中 **`width` = `content` + `border` + `padding`**
+  - **通过 `box-sizing: border-box;` 来设置为 `IE` 盒模型**
+
+|                                   `W3C` 标准盒模型                                   |                                  `IE` 盒模型                                   |
+| :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------: |
+| ![W3C 标准盒模型](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/box-model-w3c.png) | ![IE 盒模型](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/box-model-ie.png) |
+
 ## `BFC`
 
 > 先了解一些前置知识：格式化上下文（Formatting Context）
@@ -292,7 +292,6 @@ cursor：箭头可以变成需要的形状
 >
 > - [Introduction to formatting contexts 格式化上下文简介 - CSS：层叠样式表 | MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
 > - [块格式化上下文 | MDN](https://developer.mozilla.org/zh-CN/docs/orphaned/Web/Guide/CSS/Block_formatting_context)
-> - [Block formatting contexts | W3C CSS2.1](https://www.w3.org/TR/CSS2/visuren.html#block-formatting)
 
 `BFC` 即块级格式化上下文（Block Formatting Context），是 `Web` 页面中一种渲染模式，用于确定块级元素如何排列、定位和与其他元素交互，其相当于一个独立的容器，里面的元素和外部的元素相互不影响
 
@@ -611,5 +610,190 @@ cursor：箭头可以变成需要的形状
 - [flex-basis](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis) 用于**设置 `flex` 项目在主轴方向上的初始大小**
   - 初始值为 `auto`
   - 省略时默认值为 `0`
+    :::
 
-:::
+## `link` 和 `@import` 加载样式的区别
+
+[`<link>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link) 是一个 `HTML` 标签，其规定了当前文档与外部资源的关系，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
+
+[`@import`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@import) 是一个 `CSS` 语法规则，用于从其他样式表导入样式规则。
+
+::: tip `link` 和 `@import` 加载样式的区别
+
+- 从属关系
+  - `<link>` 是一个 `HTML` 标签，只能出现在 `<head>` 标签中
+  - `@import` 是一个 `CSS` 语法规则，只能在 `<style>` 标签和 `CSS` 文件中使用
+- 应用范围
+  - `<link>` 标签用于链接各种类型的外部资源
+    - 加载 `CSS`：`<link rel="stylesheet" href="/index.css" />`
+    - 加载网站图标（`favicon`）：`<link rel="icon" href="favicon.ico" />`
+    - `DNS` 预解析：`<link rel="dns-prefetch" href="https://azzlzzxz.github.io">`
+  - `@import` 只能用于引入 `CSS`
+- 加载顺序
+  - `<link>` 会在浏览器加载页面时同时加载（多个 `<link>` 会并行加载）
+  - `@import` 会在浏览器解析到 `CSS` 中的 `@import` 时再加载（多个 `@import` 会串行加载）
+- `DOM` 可控性
+  - `<link>` 可以通过 `JavaScript` 操作 `DOM` 进行插入
+  - `@import` 没有 `DOM` 接口，无法通过 `JavaScript` 操作
+    :::
+
+## 媒体查询
+
+> [媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_media_queries/Using_media_queries)是利用浏览器的媒体类型和特性，对目标媒体（通常为桌面、平板等的显示器、移动设备等）的种类、尺寸、分辨率和支持的颜色深度等特性进行查询，从而根据这些特性设置相应的样式，进而决定其渲染的具体效果。
+
+媒体查询的核心由两个部分组成：媒体类型和媒体特性。
+
+### 媒体类型
+
+- `all` 匹配所有设备，默认。
+- `print` 匹配打印机和用于再现打印显示的设备，例如在`“打印预览”`中显示文档的 `Web` 浏览器。
+- `screen` 匹配所有与打印不匹配的设备。
+
+### 媒体特性
+
+> [媒体特性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media#%E5%AA%92%E4%BD%93%E7%89%B9%E6%80%A7)`（media feature`）描述了浏览器、输出设备或环境的具体特征。媒体特性表达式是完全可选的，其用于测试这些特征是否存在以及它们的值。每个媒体特性表达式都必须用括号括起来。
+
+常用媒体特性：
+
+- `width`：视口（包括纵向滚动条）的宽度。
+- `height`：视口高度。
+- `orientation`：屏幕`（viewport）`方向，`portrait`: 纵向，`landscape`: 横向。
+
+### 逻辑运算符
+
+[逻辑运算符](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6)` （logical operator）``not `、`and`、`only` 和 `or` 可用于联合构造复杂的媒体查询，你还可以通过用逗号分隔多个媒体查询，将它们组合为一个规则。
+
+- `and` ：用于将多个媒体查询规则组合成单条媒体查询，当每个查询规则都为真时则该条媒体查询为 `true`，它还用于将媒体功能与媒体类型结合在一起。
+
+```css
+@media (min-width: 800px) and (orientation: portrait) { 
+  ...
+}
+```
+
+- `not` ：用于否定媒体查询，如果不满足这个条件则返回 `true`，否则返回 `false`。如果出现在以逗号分隔的查询列表中，它将仅否定应用了该查询的特定查询。如果使用 `not` 运算符，则还必须指定媒体类型。
+
+- `only`： 仅在整个查询匹配时才用于应用样式，并且对于防止较早的浏览器应用所选样式很有用。当不使用`only`时，旧版本的浏览器会将  `screen and (max-width: 500px)`简单地解释为  `screen`，忽略查询的其余部分，并将其样式应用于所有`screen`。如果使用`only`运算符，则还必须指定媒体类型。通过它让选中的样式在老式浏览器中不被应用。
+
+```css
+/* 在老式浏览器中被解析为@media only，因为没有一个叫only的设备，所以实际上老式浏览器不会应用样式。*/
+@media only screen and (max-width: 500px) {
+  ...;
+}
+
+/* 在老式浏览器中被解析为@media screen，样式应用于所有screen。*/
+@media screen and (max-width: 500px) {
+  ...;
+}
+```
+
+`only`关键字可防止不支持带有媒体功能的媒体查询的旧版浏览器应用给定的样式，它对现代浏览器没有影响。
+
+- `,（逗号）` ：逗号用于将多个媒体查询合并为一个规则。逗号分隔列表中的每个查询都与其他查询分开处理。因此，如果列表中的任何查询为`true`，则整个媒体查询语句返回`true`。
+
+- `or`： 等价于`,`运算符。
+
+```css
+@media (min-width: 500px) or (orientation: landscape) { 
+  ...
+}
+
+/* 等价于 */
+
+@media (min-width: 500px), (orientation: landscape) { 
+  ...
+}
+```
+
+### 使用媒体查询
+
+- 使用`@media`在样式表中指定媒体类型和媒体特性。
+
+```css
+@media screen and (color) {
+  ...;
+}
+```
+
+- 使用`@import`在样式表中指定媒体类型和媒体特性。
+
+```css
+@import url(app.css) screen and (color);
+```
+
+- 使用`media`属性在`<style>`、`<link>`、`<source>`或其他元素中指定媒体类型和媒体特性。
+
+```css
+<link rel="stylesheet" media="screen and (min-width:500px)" href="example.css" />
+```
+
+### 设备屏幕宽度常用断点
+
+> 设备屏幕设备尺寸很多，一般写断点时以 `Apple` 设备的屏幕尺寸为标准
+
+- `min-width` 表示移动端优先
+  - 样式默认在所有屏幕尺寸下都有效
+  - 常用于先写移动端的场景
+- `max-width` 表示 `PC` 端优先
+  - 样式默认在指定屏幕尺寸下有效
+  - 常用于先写 `PC` 端的场景
+
+#### 移动端
+
+```css
+/* iPhone 4 / 5 等 */
+@media (min-width: 320px) {
+}
+
+/* iPhone 6 - 8 / X / XS 等 */
+@media (min-width: 375px) {
+}
+
+/* iPhone 6 - 8 Plus / XR 等 */
+@media (min-width: 414px) {
+}
+
+/* 常用断点（无特定机型） */
+@media (min-width: 640px) {
+}
+
+/* iPad mini 等 */
+@media (min-width: 768px) {
+}
+
+/* 常用断点（无特定机型） */
+@media (min-width: 960px) {
+}
+
+/* iPad Pro 12.9 */
+@media (min-width: 1024px) {
+}
+```
+
+#### PC 端
+
+```css
+@media (max-width: 1280px) {
+}
+
+@media (max-width: 1366px) {
+}
+
+@media (max-width: 1440px) {
+}
+
+@media (max-width: 1920px) {
+}
+
+@media (max-width: 2560px) {
+}
+```
+
+## `px`、`rem`、`vw`、`%`、`em`
+
+在`CSS`单位中，可以分为长度单位、绝对单位
+
+| `CSS`单位    |                                        |
+| :----------- | :------------------------------------- |
+| 相对长度单位 | em、ex、ch、rem、vw、vh、vmin、vmax、% |
+| 绝对长度单位 | cm、mm、in、px、pt、pc                 |

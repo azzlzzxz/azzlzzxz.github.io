@@ -187,17 +187,20 @@ x5-video-player-type="h5" 启用H5播放器,是wechat安卓版特性 x5-video-pl
 - `viewport`：适配移动端，可以控制视口的大小和比例
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta
+  name="viewport"
+  content="width=device-width; initial-scale=1.0; maximum-scale=1; user-scalable=no;"
+/>
 ```
 
 ::: tip viewport
 `content` 参数有以下几种：
 
-- `width viewport` ：宽度(数值/`device-width`)
-- `height viewport` ：高度(数值/`device-height`)
-- `initial-scale`：初始缩放比例
-- `maximum-scale` ：最大缩放比例
-- `minimum-scale`：最小缩放比例
+- `width viewport` ：布局视口的宽度(数值/`device-width`)
+- `height viewport` ：布局视口的高度(数值/`device-height`)
+- `initial-scale`：初始缩放比例，1 表示不缩放(取值[0, 10])
+- `maximum-scale` ：最大缩放比例(取值[0, 10])
+- `minimum-scale`：最小缩放比例(取值[0, 10])
 - `user-scalable` ：是否允许用户缩放`(yes/no)`
   :::
 

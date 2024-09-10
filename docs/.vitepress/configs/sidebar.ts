@@ -14,10 +14,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: 'ES6 常用知识点',
+      text: 'ES6 知识点',
       collapsed: false,
       items: [
-        { text: 'let&const', link: '/base/es6/let&const' },
+        { text: 'let & const', link: '/base/es6/let&const' },
         { text: '箭头函数', link: '/base/es6/arrowFn' },
         {
           text: 'promise',

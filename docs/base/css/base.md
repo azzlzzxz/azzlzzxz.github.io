@@ -385,7 +385,108 @@ cursor：箭头可以变成需要的形状
 - 须指定  `top`, `right`, `bottom`  或  `left`  四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
 - 偏移值不会影响任何其他元素的位置。该值总是创建一个新的层叠上下文`（stacking context）`。
 - 一个  `sticky`元素会固定   在离它最近的一个拥有   滚动机制   的祖先上（当该祖先的  `overflow`  是  `hidden`, `scroll`, `auto`, 或  `overlay`时），即便这个祖先不是最近的真实可滚动祖先。
+
+:::
+
+## `flex`属性
+
+`Flex` 是 `Flexible Box` 的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性，指定容器 `display: flex` 即可，分为容器属性和元素属性。
+
+### 容器的属性
+
+- `flex-direction`：决定主轴的方向（即子 `item` 的排列方法）。
+
+::: details `flex-direction`属性值
+
+- `row` 表示从左向右排列
+- `row-reverse` 表示从右向左排列
+- `column` 表示从上向下排列
+- `column-reverse` 表示从下向上排列
   :::
+
+- `flex-wrap`：`Flex`项目都排在一条线（又称"轴线"）上。我们可以通过`flex-wrap`属性的设置，让`Flex`项目换行排列。
+
+::: details `flex-wrap`属性值
+
+- `nowrap`：所有`Flex`项目单行排列
+- `wrap`：所有`Flex`项目多行排列，按从上到下的顺序
+- `wrap-reverse`：所有`Flex`项目多行排列，按从下到上的顺序
+  :::
+
+- `flex-flow`：`flex-direction` 和 `flex-wrap` 的简写，默认值为`row nowrap`。
+
+- `justify-content`：项目在主轴上的对其方式，水平主轴对齐方式。
+
+::: details `justify-content`属性值
+
+- `flex-start`：从启点线开始顺序排列
+- `flex-end`：相对终点线顺序排列
+- `center`：居中排列
+- `space-between`：项目均匀分布，第一项在启点线，最后一项在终点线
+- `space-around`：项目均匀分布，每一个项目两侧有相同的留白空间，相邻项目之间的距离是两个项目之间留白的和
+- `space-evenly`：项目均匀分布，所有项目之间及项目与边框之间距离相等
+  :::
+
+- `align-items`：定义项目在交叉轴上的对齐方式。
+
+::: details `align-items` 属性值
+
+- `stretch`：交叉轴方向拉伸显示
+- `flex-start`：项目按交叉轴起点线对齐
+- `flex-end`：项目按交叉轴终点线对齐
+- `center`：交叉轴方向项目中间对齐
+- `baseline`：交叉轴方向按第一行文字基线对齐
+  :::
+
+- `align-content`：定义在交叉轴方向的对齐方式及额外空间分配。
+
+::: details `align-content` 属性值
+
+- `stretch`：拉伸显示
+- `flex-start`：从启点线开始顺序排列
+- `flex-end`：相对终点线顺序排列
+- `center`：居中排列
+- `space-between`：项目均匀分布，第一项在启点线，最后一项在终点线
+- `space-around`：项目均匀分布，每一个项目两侧有相同的留白空间，相邻项目之间的距离是两个项目之间留白的和
+  :::
+
+### 项目的属性（元素的属性）
+
+- `order`：`Flex`项目是按照在代码中出现的先后顺序排列的，然而`order`属性可以控制项目在容器中的排列顺序，顺序越小，排列越靠前，默认为 0。
+
+- `flex-grow`：定义项目的放大比例，`flex-grow` 值是一个单位的正整数，表示放大的比例。默认为 0，即如果存在额外空间，也不放大，负值无效。
+
+> 如果所有项目的`flex-grow`属性都为 1，则它们将等分剩余空间（如果有的话）。如果一个项目的`flex-grow`属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
+
+- `flex-shrink`：定义了项目的缩小比例，当空间不足的情况下会等比例的缩小，如果 定义个 `item` 的 `flow-shrink` 为 0，则为不缩小。
+
+- `flex-basis`：定义项目在分配额外空间之前的尺寸，属性值可以是长度（`200px`，`10rem`等）或者关键字`auto`，它的默认值为`auto`，即项目的本来大小。
+
+- `flex`：是 `flex-grow` 和 `flex-shrink`、`flex-basis` 的简写，默认值为 `0 1 auto`。
+
+- `align-self`：定义项目的对齐方式，可覆盖`align-items`属性。默认值为`auto`，表示继承父元素的`align-items`属性，如果没有父元素，则等同于`stretch`，`auto | flex-start | flex-end | center | baseline | stretch`。
+
+- `align-items`：默认属性为 `auto`，表示继承父元素的 `align-items`。
+
+### `flex: 1` 代表什么？
+
+[`flex`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex) 是一个 `CSS` 简写属性，用于设置 `Flex` 项目如何增大或缩小以适应其 `Flex` 容器中可用的空间
+
+::: tip `flex` 是 `flex-grow` `flex-shrink` `flex-basis` 属性的简写
+
+- [flex-grow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-grow) 用于**设置 `flex` 项目的增长系数**
+  - 负值无效
+  - 初始值为 `0`
+  - 省略时默认值为 `1`
+- [flex-shrink](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-shrink) 用于**设置 `flex` 项目的收缩系数**（仅在默认 `width/height` 之和大于容器时生效）
+  - 负值无效
+  - 初始值为 `1`
+  - 省略时默认值为 `1`
+- [flex-basis](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis) 用于**设置 `flex` 项目在主轴方向上的初始大小**
+  - 初始值为 `auto`
+  - 省略时默认值为 `0`
+
+:::
 
 ## 实现垂直水平居中
 
@@ -513,105 +614,6 @@ cursor：箭头可以变成需要的形状
 }
 ```
 
-## `flex`属性
-
-`Flex` 是 `Flexible Box` 的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性，指定容器 `display: flex` 即可，分为容器属性和元素属性。
-
-### 容器的属性
-
-- `flex-direction`：决定主轴的方向（即子 `item` 的排列方法）。
-
-::: details `flex-direction`属性值
-
-- `row` 表示从左向右排列
-- `row-reverse` 表示从右向左排列
-- `column` 表示从上向下排列
-- `column-reverse` 表示从下向上排列
-  :::
-
-- `flex-wrap`：`Flex`项目都排在一条线（又称"轴线"）上。我们可以通过`flex-wrap`属性的设置，让`Flex`项目换行排列。
-
-::: details `flex-wrap`属性值
-
-- `nowrap`：所有`Flex`项目单行排列
-- `wrap`：所有`Flex`项目多行排列，按从上到下的顺序
-- `wrap-reverse`：所有`Flex`项目多行排列，按从下到上的顺序
-  :::
-
-- `flex-flow`：`flex-direction` 和 `flex-wrap` 的简写，默认值为`row nowrap`。
-
-- `justify-content`：项目在主轴上的对其方式，水平主轴对齐方式。
-
-::: details `justify-content`属性值
-
-- `flex-start`：从启点线开始顺序排列
-- `flex-end`：相对终点线顺序排列
-- `center`：居中排列
-- `space-between`：项目均匀分布，第一项在启点线，最后一项在终点线
-- `space-around`：项目均匀分布，每一个项目两侧有相同的留白空间，相邻项目之间的距离是两个项目之间留白的和
-- `space-evenly`：项目均匀分布，所有项目之间及项目与边框之间距离相等
-  :::
-
-- `align-items`：定义项目在交叉轴上的对齐方式。
-
-::: details `align-items` 属性值
-
-- `stretch`：交叉轴方向拉伸显示
-- `flex-start`：项目按交叉轴起点线对齐
-- `flex-end`：项目按交叉轴终点线对齐
-- `center`：交叉轴方向项目中间对齐
-- `baseline`：交叉轴方向按第一行文字基线对齐
-  :::
-
-- `align-content`：定义在交叉轴方向的对齐方式及额外空间分配。
-
-::: details `align-content` 属性值
-
-- `stretch`：拉伸显示
-- `flex-start`：从启点线开始顺序排列
-- `flex-end`：相对终点线顺序排列
-- `center`：居中排列
-- `space-between`：项目均匀分布，第一项在启点线，最后一项在终点线
-- `space-around`：项目均匀分布，每一个项目两侧有相同的留白空间，相邻项目之间的距离是两个项目之间留白的和
-  :::
-
-### 项目的属性（元素的属性）
-
-- `order`：`Flex`项目是按照在代码中出现的先后顺序排列的，然而`order`属性可以控制项目在容器中的排列顺序，顺序越小，排列越靠前，默认为 0。
-
-- `flex-grow`：定义项目的放大比例，`flex-grow` 值是一个单位的正整数，表示放大的比例。默认为 0，即如果存在额外空间，也不放大，负值无效。
-
-> 如果所有项目的`flex-grow`属性都为 1，则它们将等分剩余空间（如果有的话）。如果一个项目的`flex-grow`属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
-
-- `flex-shrink`：定义了项目的缩小比例，当空间不足的情况下会等比例的缩小，如果 定义个 `item` 的 `flow-shrink` 为 0，则为不缩小。
-
-- `flex-basis`：定义项目在分配额外空间之前的尺寸，属性值可以是长度（`200px`，`10rem`等）或者关键字`auto`，它的默认值为`auto`，即项目的本来大小。
-
-- `flex`：是 `flex-grow` 和 `flex-shrink`、`flex-basis` 的简写，默认值为 `0 1 auto`。
-
-- `align-self`：定义项目的对齐方式，可覆盖`align-items`属性。默认值为`auto`，表示继承父元素的`align-items`属性，如果没有父元素，则等同于`stretch`，`auto | flex-start | flex-end | center | baseline | stretch`。
-
-- `align-items`：默认属性为 `auto`，表示继承父元素的 `align-items`。
-
-### `flex: 1` 代表什么？
-
-[`flex`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex) 是一个 `CSS` 简写属性，用于设置 `Flex` 项目如何增大或缩小以适应其 `Flex` 容器中可用的空间
-
-::: tip `flex` 是 `flex-grow` `flex-shrink` `flex-basis` 属性的简写
-
-- [flex-grow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-grow) 用于**设置 `flex` 项目的增长系数**
-  - 负值无效
-  - 初始值为 `0`
-  - 省略时默认值为 `1`
-- [flex-shrink](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-shrink) 用于**设置 `flex` 项目的收缩系数**（仅在默认 `width/height` 之和大于容器时生效）
-  - 负值无效
-  - 初始值为 `1`
-  - 省略时默认值为 `1`
-- [flex-basis](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis) 用于**设置 `flex` 项目在主轴方向上的初始大小**
-  - 初始值为 `auto`
-  - 省略时默认值为 `0`
-    :::
-
 ## `link` 和 `@import` 加载样式的区别
 
 [`<link>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link) 是一个 `HTML` 标签，其规定了当前文档与外部资源的关系，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
@@ -635,7 +637,8 @@ cursor：箭头可以变成需要的形状
 - `DOM` 可控性
   - `<link>` 可以通过 `JavaScript` 操作 `DOM` 进行插入
   - `@import` 没有 `DOM` 接口，无法通过 `JavaScript` 操作
-    :::
+
+:::
 
 ## 媒体查询
 
@@ -789,7 +792,98 @@ cursor：箭头可以变成需要的形状
 }
 ```
 
-## `px`、`rem`、`vw`、`%`、`em`
+## `px`、`rem`、`vw`、`em`
+
+> 先了解一下前置知识：像素和视口
+
+::: tip 前置知识：像素和视口
+
+- 像素
+
+像素是网页布局的基础，一个像素表示了计算机屏幕所能显示的最小区域，像素分为两种类型：`CSS`像素和物理像素。
+
+---
+
+- `CSS` 像素`（CSS Pixel）`
+
+`CSS` 像素是网页布局中的逻辑单位，它用于定义页面的尺寸、边距、字体大小等。`CSS` 像素的大小由浏览器计算，通常是根据设备分辨率和屏幕密度来调整的。
+
+特点：
+
+- 在 `CSS` 中定义的尺寸单位是相对于 `CSS` 像素的。例如 `width: 100px;` 中的 `100px` 是指 `CSS` 像素。
+- `CSS` 像素是一种抽象单位，它并不直接与设备的物理像素相对应。在高分辨率的设备上，多个物理像素可能会映射为一个 `CSS` 像素
+
+---
+
+- 物理像素`（Device Pixel）`
+
+物理像素是指设备屏幕上的最小显示单位。屏幕由无数个物理像素组成，每个物理像素是屏幕上的一个点。
+
+特点：
+
+- 物理像素的数量是固定的，取决于设备的分辨率。例如，`1920x1080` 的屏幕有 `1920` 个水平像素和 `1080` 个垂直像素。
+- 高分辨率设备（如 `Retina` 显示屏）的物理像素密度非常高，单个 `CSS` 像素可能会由多个物理像素表示。
+
+---
+
+| 名称       | `CSS`像素                              | 物理像素                         |
+| :--------- | :------------------------------------- | :------------------------------- |
+| 定义       | 用于布局的逻辑单位                     | 设备屏幕上显示的实际像素         |
+| 大小       | 取决于设备像素比和屏幕密度             | 固定，取决于设备的分辨率         |
+| 设备相关性 | 与设备无直接关系                       | 完全取决于设备的物理属性         |
+| 映射       | 高分辨率设备中，多个物理像素映射为一个 | 每个物理像素是不可再分的最小单位 |
+
+---
+
+- 设备像素比`（Device Pixel Ratio，DPR）`
+
+设备像素比`（DRP）`是物理像素与 `CSS` 像素之间的比例，它表示一个 `CSS` 像素对应的物理像素数量
+
+**设备像素比 = 物理像素 / CSS 像素**
+
+特点:
+
+- 设备像素比的值由设备决定。在普通分辨率的设备上，`DRP` 通常为 `1`，即 `1` 个 `CSS` 像素等于 `1` 个物理像素。
+- 在高分辨率设备上，`DRP` 通常大于 `1`，意味着 `1` 个 `CSS` 像素等于多个物理像素。例如，`DRP` = `2` 表示 `1` 个 `CSS` 像素有`2`个物理像素的宽度和 `2` 个物理像素的高度，等于 `2x2 = 4` 个物理像素。
+
+---
+
+- 视口
+
+广义的视口，是指浏览器显示内容的屏幕区域，狭义的视口包括了布局视口、视觉视口和理想视口。
+
+---
+
+- 布局视口`（layout viewport）`
+
+布局视口定义了`pc`网页在移动端的默认布局行为，因为通常`pc`的分辨率较大，布局视口默认为`980px`。也就是说在不设置网页的`viewport`的情况下，`pc`端的网页默认会以布局视口为基准，在移动端进行展示。因此我们可以明显看出来，默认为布局视口时，根植于`pc`端的网页在移动端展示很模糊。
+
+---
+
+- 视觉视口`（visual viewport）`
+
+视觉视口指的是用户在设备屏幕上实际可见的内容区域。
+
+它是浏览器在屏幕上显示网页时，用户能够看到的部分，如果用户在浏览器中缩放或滚动页面，视觉视口的大小或位置会发生改变。缩放时，视觉视口会变小，从而让用户看到更多网页的细节，因此视觉视口不会影响布局视口的宽度和高度。
+
+---
+
+- 理想视口`（ideal viewport）`
+
+理想视口是指一个网页在移动设备上以最合适的大小显示的状态。在这个视口下，网页无需缩放即可适合屏幕宽度，用户能够清晰地查看内容且不需要水平滚动。理想视口的宽度等于设备的物理像素宽度。
+
+- 理想视口与设备的物理像素密度有关。移动设备通常会有一个理想视口宽度（通过 `device-width` 来设置），确保网页内容在该设备上以适当的比例和大小显示。
+- 可以通过 `meta`标签来设置理想视口，让网页在移动设备上自然适配屏幕。
+
+```html
+<meta
+  id="viewport"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"
+/>
+```
+
+:::
 
 在`CSS`单位中，可以分为长度单位、绝对单位
 
@@ -797,3 +891,148 @@ cursor：箭头可以变成需要的形状
 | :----------- | :------------------------------------- |
 | 相对长度单位 | em、ex、ch、rem、vw、vh、vmin、vmax、% |
 | 绝对长度单位 | cm、mm、in、px、pt、pc                 |
+
+### `px`
+
+`px`，表示像素，所谓像素就是呈现在我们显示器上的一个个小点，每个像素点都是大小等同的，所以像素为计量单位被分在了绝对长度单位中。
+
+有些人会把`px`认为是相对长度，原因在于在移动端中存在设备像素比，`px`实际显示的大小是不确定的。
+
+在`PC`端，通常情况下浏览器的布局视口宽度是 `980px`
+
+```md
+1 CSS 像素 = 750 物理像素 / 980 布局视口宽度 = 0.76px
+```
+
+这意味着在`PC`端，`1`个`CSS`像素大约对应`0.76`个物理像素，因此网页上的内容显示可能会稍微缩小。
+
+对于`iPhone6`，布局视口的宽度为 `375px`。
+
+```md
+1 CSS 像素 = 750 物理像素 / 375 布局视口宽度 = 2px
+```
+
+​
+这意味着在`iPhone6上`，`1`个`CSS`像素对应`2`个物理像素，因此网页内容会显示得更大和清晰（因为更多物理像素用于表示同样的`CSS`像素）。
+
+在`PC`端，由于布局视口宽度较大`（980px）`，`CSS`像素对应的物理像素数量较少（`1`个`CSS`像素 ≈ `0.76`个物理像素），网页的显示相对较小。
+在`iPhone6`上，布局视口较小`（375px）`，`1`个`CSS`像素对应的物理像素更多（`1`个`CSS`像素 = `2`个物理像素），网页的显示相对较大。
+
+### `em`
+
+`em`是相对长度单位。相对于当前对象内文本的字体尺寸。如当前对行内文本的字体尺寸未被人为设置，则相对于浏览器的通常默认字体尺寸`（1em = 16px）`。
+
+为了简化  `font-size`  的换算，我们可以在`css`中的  `body`  选择器中声明`font-size= 62.5%`，这就使 `em` 值变为  `16px*62.5% = 10px`
+这样  `12px = 1.2em`, `10px = 1em`, 也就是说只需要将你的原来的`px`  数值除以 `10`，然后换上`em`作为单位就行了
+
+特点：
+
+- `em` 的值并不是固定的
+- `em` 会继承父级元素的字体大小
+- `em` 是相对长度单位。相对于当前对象内文本的字体尺寸。
+
+### `rem`
+
+`rem`相对单位，相对的只是`HTML`根元素`font-size`的值。
+
+使用`rem`可以很方便的修改所有元素尺寸，每当需要修改时，只需要修改`html`这个根元素的`font-size`即可。用了`rem`的元素会跟随着发生变化。
+
+#### 项目配置
+
+- 安装 postcss-pxtorem
+
+```sh
+npm install postcss-pxtorem --save-dev
+```
+
+- 配置 postcss-pxtorem
+
+> 在目录文件下增加`postcss.config.js`并添加相关配置
+
+```js
+module.exports = {
+  'plugins': {
+    ...
+    'postcss-pxtorem': {
+      rootValue: 16, // rem 相对于 px 转换的基准值
+      propList: ['*'], // 需要转换的 CSS 属性，* 表示全部
+      unitPrecision: 3, // 转换后的小数位数
+      exclude: (e) => { // 排除某些文件
+        ...
+      }
+    }
+  }
+}
+```
+
+- 增加适配`js`，动态计算`font-szie`
+
+```js
+//基准大小
+const baseSize = 16
+
+//设置 rem 函数
+function setRem() {
+  //当前页面宽度相对于1920宽的缩放比例, 可根据自己需要修改
+  const scale = document.documentElement.clientWidth / 1920
+  //设置页面根节点字体大小, 字体大小最小为12
+  let fontSize = baseSize * Math.min(scale, 2) > 12 ? baseSize * Math.min(scale, 2) : 12
+  document.documentElement.style.fontSize = fontSize + 'px'
+}
+
+//初始化
+setRem()
+
+//改变窗口大小重新设置rem
+window.onresize = function () {
+  setRem()
+}
+```
+
+### `vw、vh`
+
+`vw`就是根据窗口的宽度，分成 100 等份，`100vw`就表示满宽，`50vw`就表示一半宽。（`vw` 始终是针对窗口的宽），同理，`vh`则为窗口的高度
+
+这里的窗口分成几种情况：
+
+- 在桌面端，指的是浏览器的可视区域。
+- 移动端指的就是布局视口。
+
+| 单位 | 含义                               |
+| :--- | :--------------------------------- |
+| vw   | 相对于视窗的宽度，视窗宽度是 100vw |
+| vh   | 相对于视窗的高度，视窗高度是 100vh |
+| vmin | vw 和 vh 中的较小值                |
+| vmax | vw 和 vh 中的较大值                |
+
+#### `vw`单位换算
+
+如果要将`px`换算成`vw`单位，只要确定视图的窗口大小（布局视口），如果我们将布局视口设置成分辨率大小，比如对于`iphone6/7` `375*667`的分辨率，那么`px`可以通过如下方式换算成`vw`
+
+```md
+1px = （1/375）\*100 vw
+```
+
+也可以通过`postcss`的相应插件，预处理`css`做一个自动的转换，[postcss-px-to-viewport](https://github.com/evrone/postcss-px-to-viewport)可以自动将`px`转化成`vw`。
+
+`postcss-px-to-viewport`的默认参数为：
+
+```js
+{
+  unitToConvert: 'px', // 需要转换的单位，默认为"px"
+  viewportWidth: 320, // 设计稿的视口宽度
+  unitPrecision: 5, // 单位转换后保留的精度
+  propList: ['*'], // 能转化为vw的属性列表
+  viewportUnit: 'vw', // 希望使用的视口单位
+  fontViewportUnit: 'vw', // 字体使用的视口单位
+  selectorBlackList: [], // 需要忽略的CSS选择器，不会转为视口单位，使用原有的px等单位
+  minPixelValue: 1, // 设置最小的转换数值，如果为1的话，只有大于1的值会被转换
+  mediaQuery: false, // 媒体查询里的单位是否需要转换单位
+  replace: true, // 是否直接更换属性值，而不添加备用属性
+  exclude: undefined, // 忽略某些文件夹下的文件或特定文件
+  include: undefined, // 只有匹配到的文件才会被转换
+  landscape: false, // 是否添加根据 landscapeWidth 生成的媒体查询条件 @media (orientation: landscape)
+  landscapeUnit: 'vw', // 横屏时使用的单位
+  landscapeWidth: 568 // 横屏时使用的视口宽度
+}
+```

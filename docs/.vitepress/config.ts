@@ -66,6 +66,7 @@ export default defineConfig({
         lastmod: pageData.lastUpdated,
       })
   },
+
   buildEnd: async ({ outDir }) => {
     const sitemap = new SitemapStream({ hostname: 'https://azzlzzxz.github.io/' })
     const writeStream = createWriteStream(resolve(outDir, 'sitemap.xml'))

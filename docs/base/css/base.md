@@ -792,7 +792,7 @@ cursor：箭头可以变成需要的形状
 }
 ```
 
-## `px`、`rem`、`vw`、`em`
+## `px`&`rem`&`vw`&`em`
 
 > 先了解一下前置知识：像素和视口
 
@@ -1010,7 +1010,7 @@ window.onresize = function () {
 如果要将`px`换算成`vw`单位，只要确定视图的窗口大小（布局视口），如果我们将布局视口设置成分辨率大小，比如对于`iphone6/7` `375*667`的分辨率，那么`px`可以通过如下方式换算成`vw`
 
 ```md
-1px = （1/375）\*100 vw
+1px = （1/375）\* 100 vw
 ```
 
 也可以通过`postcss`的相应插件，预处理`css`做一个自动的转换，[postcss-px-to-viewport](https://github.com/evrone/postcss-px-to-viewport)可以自动将`px`转化成`vw`。

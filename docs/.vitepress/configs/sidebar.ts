@@ -17,6 +17,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'ES6 常用知识点',
       collapsed: false,
       items: [
+        { text: 'let&const', link: '/base/es6/let&const' },
         { text: '箭头函数', link: '/base/es6/arrowFn' },
         {
           text: 'promise',
@@ -264,6 +265,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'Git常用命令', link: '/work/git/command' },
         { text: 'Git浅析', link: '/work/git/principle' },
+        { text: 'Git 常用', link: '/work/git/method' },
       ],
     },
     {

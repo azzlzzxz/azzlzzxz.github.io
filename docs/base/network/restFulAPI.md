@@ -79,30 +79,6 @@
 
 至于什么情况下浏览器会发预检请求，浏览器会会将请求分为两类，简单请求与非简单请求，非简单请求会产生预检 `options` 请求。
 
-### 两种请求方式
-
-浏览器将 `CORS` 请求分为两类：简单请求`（simple request）`和非简单请求`（not-simple-request）`,简单请求浏览器不会预检，而非简单请求会预检。
-
-**这两种方式怎么区分？**
-
-同时满足下列三大条件，就属于简单请求，否则属于非简单请求
-
-1. 请求方式只能是：`GET`、`POST`、`HEAD`。
-2. `HTTP` 请求头限制这几种字段：`Accept`、`Accept-Language`、`Content-Language`、`Content-Type`、`Last-Event-ID`。
-3. `Content-type` 只能取：`application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`。
-
-对于简单请求，浏览器直接请求，会在请求头信息中，增加一个 `origin` 字段，来说明本次请求来自哪个源（协议+域名+端口）。
-
-服务器根据这个值，来决定是否同意该请求，服务器返回的响应会多几个头信息字段，三个与 `CORS` 请求相关，都是以 `Access-Control`-开头。
-
-1. `Access-Control-Allow-Origin：`该字段是必须的，\_ 表示接受任意域名的请求，还可以指定域名。
-2. `Access-Control-Allow-Credentials：`该字段可选，是个布尔值，表示是否可以携带 `cookie`，（注意：如果 `Access-Control-Allow-Origin` 字段设置\_，此字段设为 `true` 无效）。
-3. `Access-Control-Allow-Headers：`该字段可选，里面可以获取 `Cache-Control`、`Content-Type`、`Expires` 等，如果想要拿到其他字段，就可以在这个字段中指定。
-
-非简单请求是对那种对服务器有特殊要求的请求，比如请求方式是 `PUT` 或者 `DELETE，或者` `Content-Type` 字段类型是 `application/json`，都会在正式通信之前，增加一次 `HTTP` 请求，称之为预检。
-
-浏览器会先询问服务器，当前网页所在域名是否在服务器的许可名单之中，服务器允许之后，浏览器会发出正式的 `XMLHttpRequest` 请求，否则会报错。（备注：之前碰到预检请求后端没有通过，就不会发正式请求，然后找了好久原因，原来后端给忘了设置...）`Java` 后端实现拦截器，排除 `Options`。
-
 ## 经典面试题 `Get` 与 `Post`的区别
 
 ### 最普遍的答案
@@ -111,11 +87,9 @@
 - `GET` 方式提交的数据有长度限制，则 `POST` 的数据则可以非常大。
 - `POST` 比 `GET` 安全，因为数据在地址栏上不可见
 
-**<font color="FF9D00">“标准答案”其实是错的</font>**
-
 ### `GET` 使用 `URL` 或 `Cookie` 传参，而 `POST` 将数据放在 `BODY` 中
 
-**<font color="FF9D00">`GET` 和 `POS`T 是由 `HTTP` 协议定义的。</font>**
+**<font color="FF9D00">`GET` 和 `POST` 是由 `HTTP` 协议定义的。</font>**
 
 在 `HTTP` 协议中，`Method` 和 `Data（URL， Body， Header）`是正交的两个概念，也就是说，使用哪个 `Method`与应用层的数据如何传输是没有相互关系的。
 
@@ -125,7 +99,7 @@
 
 而且，现代的 `Web Server` 都是支持 `GET` 中包含 `BODY` 这样的请求。虽然这种请求不可能从浏览器发出，但是现在的 `Web Server` 又不是只给浏览器用，已经完全地超出了`HTML` 服务器的范畴了。
 
-### GET 方式提交的数据有长度限制，则 POST 的数据则可以非常大
+### `GET` 方式提交的数据有长度限制，则 `POST` 的数据则可以非常大
 
 **<font color="FF9D00">先说结论：`HTTP` 协议对 `GET` 和 `POST` 都没有对长度的限制。`HTTP` 协议明确地指出了，`HTTP` 头和 Body 都没有长度的要求。</font>**
 

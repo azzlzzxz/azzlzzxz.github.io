@@ -67,6 +67,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: '浏览器渲染原理', link: '/base/browser/browser' },
         { text: '浏览器事件循环机制', link: '/base/browser/eventloop' },
+        { text: '浏览器跨域', link: '/base/browser/cross' },
         { text: '浏览器缓存', link: '/base/browser/cache' },
         { text: '浏览器V8引擎', link: '/base/browser/engine' },
         { text: '浏览器性能优化', link: '/base/browser/performance' },

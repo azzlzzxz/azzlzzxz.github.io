@@ -2,7 +2,7 @@
 
 :::tip WebSocket
 
-[WebSocket MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)
+[<u>`WebSocket MDN`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)
 
 :::
 

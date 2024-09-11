@@ -29,7 +29,7 @@
 
 #### 执行栈
 
-执行栈是在其它编程语言中所说的“调用栈”，是一种拥有` LIFO（后进先出）`数据结构的栈，被用来存储代码运行时创建的所有执行上下文。
+执行栈是在其它编程语言中所说的“调用栈”，是一种拥有`LIFO（后进先出）`数据结构的栈，被用来存储代码运行时创建的所有执行上下文。
 
 （作用域链）当`JavaScript`引擎第一次遇到你的脚本时，它会创建一个全局的执行上下文并且压入当前执行栈。
 
@@ -65,7 +65,7 @@
 
 ![micro](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/micro.png)
 
-#### 浅析宏任务与微任务的区别：
+#### 浅析宏任务与微任务的区别
 
 - 这个就像去银行办业务一样，先要取号进行排号。
 
@@ -160,4 +160,4 @@ also before timeout
 
 想了解 `Node EventLoop` 👇
 
-[Node EventLoop 🚀](../../node/base/eventLoop.md)
+[<u>`Node EventLoop 🚀`</u>](../../node/base/eventLoop.md)

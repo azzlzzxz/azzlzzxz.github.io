@@ -40,7 +40,7 @@
 
 - `CORS`
 - `JSONP`
-- [`Nginx`反向代理]
+- `Nginx`反向代理
 - `Node`中间件
 - `WebSocket`
 - `window.postMesssage`

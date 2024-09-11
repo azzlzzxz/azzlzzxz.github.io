@@ -8,7 +8,7 @@
 
 ![unidirectional](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/unidirectional.jpg)
 
-#### Demo
+举个 🌰
 
 ```js
 // 链表中的节点
@@ -107,7 +107,7 @@ ll.add(300) // 末尾添加
 
 ![reverse](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/reverse.jpeg)
 
-#### Demo
+举个 🌰
 
 ```js
 class Node {
@@ -159,7 +159,7 @@ console.log(reverseList)
 
 ![create](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/create.jpeg)
 
-#### Demo
+举个 🌰
 
 ```js
 class Node {

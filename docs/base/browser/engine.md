@@ -2,12 +2,12 @@
 
 ## V8 如何执行一段 JS 代码
 
-![v8](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/v8.png)
+![`v8`](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/v8.png)
 
-1. 预解析：检查语法错误但不生成` AST`。
-2. 生成` AST`：经过词法/语法分析，生成抽象语法树。
+1. 预解析：检查语法错误但不生成`AST`。
+2. 生成`AST`：经过词法/语法分析，生成抽象语法树。
 3. 生成字节码：基线编译器`(Ignition)`将`AST`转换成字节码。
-4. 生成机器码：优化编译器`(Turbofan)`将字节码转换成优化过的机器码，此外在逐行执行字节码的过程中，如果一段代码经常被执行，那么 `V8 `会将这段代码直接转换成机器码保存起来，下一次执行就不必经过字节码，优化了执行速度。
+4. 生成机器码：优化编译器`(Turbofan)`将字节码转换成优化过的机器码，此外在逐行执行字节码的过程中，如果一段代码经常被执行，那么 `V8`会将这段代码直接转换成机器码保存起来，下一次执行就不必经过字节码，优化了执行速度。
 
 ## 介绍一下引用计数和标记清除
 
@@ -23,15 +23,15 @@
 
 ### 为什么要有垃圾回收?
 
-在` C 语言`和` C++语言`中，我们如果想要开辟一块堆内存的话，需要先计算需要内存的大小，然后自己通过`malloc`函数去手动分配，在用完之后，还要时刻记得用 free 函数去清理释放，否则这块内存就会被永久占用，造成内存泄露。
+在`C 语言`和`C++语言`中，我们如果想要开辟一块堆内存的话，需要先计算需要内存的大小，然后自己通过`malloc`函数去手动分配，在用完之后，还要时刻记得用 free 函数去清理释放，否则这块内存就会被永久占用，造成内存泄露。
 
-但是我们在写`JavaScript`的时候，却没有这个过程，因为人家已经替我们封装好了，`V8 `引擎会根据你当前定义对象的大小去自动申请分配内存。
+但是我们在写`JavaScript`的时候，却没有这个过程，因为人家已经替我们封装好了，`V8`引擎会根据你当前定义对象的大小去自动申请分配内存。
 
 不需要我们去手动管理内存了，所以自然要有垃圾回收，否则的话只分配不回收，岂不是没多长时间内存就被占满了吗，导致应用崩溃。
 
 垃圾回收的好处是不需要我们去管理内存，把更多的精力放在实现复杂应用上，但坏处也来自于此，不用管理了，就有可能在写代码的时候不注意，造成循环引用等情况，导致内存泄露。
 
-`JS `引擎中对变量的存储主要有两种位置，栈内存和堆内存，栈内存存储基本类型数据以及引用类型数据的内存地址，堆内存储存引用类型的数据。
+`JS`引擎中对变量的存储主要有两种位置，栈内存和堆内存，栈内存存储基本类型数据以及引用类型数据的内存地址，堆内存储存引用类型的数据。
 
 ![stack](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/stack.png)
 
@@ -39,7 +39,7 @@
   栈内存调用栈上下文切换后就被回收，比较简单
 
 - 堆内存的回收：
-  `V8 `的堆内存分为新生代内存和老生代内存，新生代内存是临时分配的内存，存在时间短，老生代内存存在时间长
+  `V8`的堆内存分为新生代内存和老生代内存，新生代内存是临时分配的内存，存在时间短，老生代内存存在时间长
 
 ![mechanism](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/mechanism.png)
 
@@ -55,51 +55,51 @@
 
 新生代采用`Scavenge`垃圾回收算法，在算法实现时主要采用`Cheney`算法。
 
-`Cheney `算法将内存一分为二，叫做` semispace`，一块处于使用状态，一块处于闲置状态。
+`Cheney`算法将内存一分为二，叫做`semispace`，一块处于使用状态，一块处于闲置状态。
 
 ![Cheney](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/cheney.png)
 
 处于使用状态的`semispace`称为`From`空间，处于闲置状态的`semispace`称为`To`空间。
 
-我画了一套详细的流程图，接下来我会结合流程图来详细说明`Cheney`算法是怎么工作的。 垃圾回收在下面我统称为` GC（Garbage Collection）`。
+我画了一套详细的流程图，接下来我会结合流程图来详细说明`Cheney`算法是怎么工作的。 垃圾回收在下面我统称为`GC（Garbage Collection）`。
 
 1. **在`From`空间中分配了 3 个对象 A、B、C**
 
 ![from](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from.png)
 
-1. **`GC` 进来判断对象 B 没有其他引用，可以回收，对象 A 和 C 依然为活跃对象**
+2. **`GC` 进来判断对象 B 没有其他引用，可以回收，对象 A 和 C 依然为活跃对象**
 
 ![from_B](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_B.png)
 
-1. **将活跃对象 A、C 从 From 空间复制到`To`空间**
+3. **将活跃对象 A、C 从 From 空间复制到`To`空间**
 
 ![from_toAC](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_toAC.png)
 
-1. **清空`From`空间的全部内存**
+4. **清空`From`空间的全部内存**
 
 ![from_clear](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_clear.png)
 
-1. **交换`From`空间和`To`空间**
+5. **交换`From`空间和`To`空间**
 
 ![interchange_from_to](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/interchange_from_to.png)
 
-1. **在`From`空间中又新增了 2 个对象 D、E**
+6. **在`From`空间中又新增了 2 个对象 D、E**
 
 ![from_add](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_add.png)
 
-1. **下一轮`GC`进来发现对象 D 没有引用了，做标记**
+7. **下一轮`GC`进来发现对象 D 没有引用了，做标记**
 
 ![from_next](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_next.png)
 
-1. **将活跃对象 A、C、E 从 From 空间复制到`To`空间**
+8. **将活跃对象 A、C、E 从 From 空间复制到`To`空间**
 
 ![from_CE](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_CE.png)
 
-1. **清空`From`空间全部内存**
+9. **清空`From`空间全部内存**
 
 ![from_clear_again](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_clear_again.png)
 
-1.  **继续交换`From`空间和`To`空间，开始下一轮**
+10. **继续交换`From`空间和`To`空间，开始下一轮**
 
 ![from_to_next](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/from_to_next.png)
 
@@ -118,7 +118,7 @@
 对象晋升的条件主要有两个：
 
 1. 对象从`From`空间复制到`To`空间时，会检查它的内存地址来判断这个对象是否已经经历过一次`Scavenge`回收。如果已经经历过了，会将该对象从`From`空间移动到老生代空间中，如果没有，则复制到`To`空间。总结来说，如果一个对象是第二次经历从`From`空间复制到 To 空间，那么这个对象会被移动到老生代中。
-2. 当要从`From`空间复制一个对象到`To`空间时，如果` To` 空间已经使用了超过 25%，则这个对象直接晋升到老生代中。设置 25%这个阈值的原因是当这次`Scavenge`回收完成后，这个`To`空间会变为`From`空间，接下来的内存分配将在这个空间中进行。如果占比过高，会影响后续的内存分配。
+2. 当要从`From`空间复制一个对象到`To`空间时，如果`To` 空间已经使用了超过 25%，则这个对象直接晋升到老生代中。设置 25%这个阈值的原因是当这次`Scavenge`回收完成后，这个`To`空间会变为`From`空间，接下来的内存分配将在这个空间中进行。如果占比过高，会影响后续的内存分配。
 
 ## 老生代内存回收机制
 
@@ -149,11 +149,11 @@
 
 ![old_obj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_obj.png)
 
-1. **`GC` 进入标记阶段，将 A、C、E 标记为存活对象**
+2. **`GC` 进入标记阶段，将 A、C、E 标记为存活对象**
 
 ![old_mark](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_mark.png)
 
-1. **`GC` 进入清除阶段，回收掉死亡的 B、D、F 对象所占用的内存空间**
+3. **`GC` 进入清除阶段，回收掉死亡的 B、D、F 对象所占用的内存空间**
 
 ![old_clear](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_clear.png)
 
@@ -171,15 +171,15 @@
 
 ![old_obj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/old_obj.png)
 
-1. **`GC`进入标记阶段，将 A、C、E 标记为存活对象（和`Mark—Sweep`一样）**
+2. **`GC`进入标记阶段，将 A、C、E 标记为存活对象（和`Mark—Sweep`一样）**
 
 ![compact_old_mark](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/compact_old_mark.png)
 
-1. **`GC` 进入整理阶段，将所有存活对象向内存空间的一侧移动，灰色部分为移动后空出来的空间**
+3. **`GC` 进入整理阶段，将所有存活对象向内存空间的一侧移动，灰色部分为移动后空出来的空间**
 
 ![compact_tidy](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/compact_tidy.png)
 
-1. **`GC` 进入清除阶段，将边界另一侧的内存一次性全部回收**
+4. **`GC` 进入清除阶段，将边界另一侧的内存一次性全部回收**
 
 ![compact_old_clear](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/compact_old_clear.png)
 
@@ -187,13 +187,13 @@
 
 在`V8`的回收策略中，`Mark-Sweep` 和`Mark-Conpact`两者是结合使用的。
 
-由于`Mark-Conpact`需要移动对象，所以它的执行速度不可能很快，在取舍上，`V8` 主要使用` Mark-Sweep`，在空间不足以对从新生代中晋升过来的对象进行分配时，才使用` Mark-Compact`。
+由于`Mark-Conpact`需要移动对象，所以它的执行速度不可能很快，在取舍上，`V8` 主要使用`Mark-Sweep`，在空间不足以对从新生代中晋升过来的对象进行分配时，才使用`Mark-Compact`。
 
 ## 总结
 
-`V8 `的垃圾回收机制分为新生代和老生代。
+`V8`的垃圾回收机制分为新生代和老生代。
 
-新生代主要使用`Scavenge`进行管理，主要实现是`Cheney`算法，将内存平均分为两块，使用空间叫` From`，闲置空间叫` To`，新对象都先分配到 From 空间中，在空间快要占满时将存活对象复制到`To`空间中，然后清空`From`的内存空间，此时，调换`From`空间和`To`空间，继续进行内存分配，当满足那两个条件时对象会从新生代晋升到老生代。
+新生代主要使用`Scavenge`进行管理，主要实现是`Cheney`算法，将内存平均分为两块，使用空间叫`From`，闲置空间叫`To`，新对象都先分配到 From 空间中，在空间快要占满时将存活对象复制到`To`空间中，然后清空`From`的内存空间，此时，调换`From`空间和`To`空间，继续进行内存分配，当满足那两个条件时对象会从新生代晋升到老生代。
 
 老生代主要采用`Mark-Sweep`和 `Mark-Compact` 算法，一个是标记清除，一个是标记整理。两者不同的地方是，`Mark-Sweep` 在垃圾回收后会产生碎片内存，而`Mark-Compact`在清除前会进行一步整理，将存活对象向一侧移动，随后清空边界的另一侧内存，这样空闲的内存都是连续的，但是带来的问题就是速度会慢一些。在`V8`中，老生代是`Mark-Sweep`和`Mark-Compact`两者共同进行管理的。
 
@@ -205,14 +205,14 @@
 
 ![process](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process.png)
 
-`process.memoryUsage `返回一个对象，包含了`Node`进程的内存占用信息。该对象包含四个字段，含义如下:
+`process.memoryUsage`返回一个对象，包含了`Node`进程的内存占用信息。该对象包含四个字段，含义如下:
 
 ![process_memoryUsage](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_memoryUsage.png)
 
-- `rss（resident set size）：`所有内存占用，包括指令区和堆栈
-- `heapTotal：`V8 引擎可以分配的最大堆内存，包含下面的 `heapUsed`
-- `heapUsed：`V8 引擎已经分配使用的堆内存
-- ` external：`V8 管理`C++`对象绑定到`JavaScript`对象上的内存
+- `rss（resident set size）`：所有内存占用，包括指令区和堆栈
+- `heapTotal`：V8 引擎可以分配的最大堆内存，包含下面的 `heapUsed`
+- `heapUsed`：V8 引擎已经分配使用的堆内存
+- `external`：V8 管理`C++`对象绑定到`JavaScript`对象上的内存
 
 以上所有内存单位均为字节`（Byte）`
 

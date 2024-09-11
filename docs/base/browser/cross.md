@@ -2,6 +2,25 @@
 
 当请求`URL`的协议、域名、端口三者之间任意一个与当前页面`url`不同即为跨域
 
+::: tip 前置知识 URL
+
+`URL（Uniform Resource Locator）`是互联网上的一种资源的简洁标识。它是一种特定格式的字符串，可以指向互联网上的任何资源。
+
+以下是一个 URL 的完整示例：`http://username:password@www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument`
+
+这个`URL`的各个部分具有以下含义：
+
+- `http:` 这部分被称为协议或者方案。它定义了如何访问和互动资源。常见的协议有`HTTP`, `HTTPS`, `FTP`, `FILE`等。
+- `user:pass` 这是可选部分，用于需要身份验证的服务。
+- `site.com` 这部分被称为主机名或者域名。它定义了我们想要访问的服务器的地址。这可以是一个`IP`地址或者一个注册的域名。
+- `:80` 这部分是可选的，称为端口号。它定义了服务器上的哪个服务我们要访问。如果未指定，那么默认端口是协议的标准端口（例如，对于`HTTP`是`80`，`HTTPS`是`443`）。
+- `/pa/th` 这部分是路径，它指定了服务器上的哪个具体资源我们想要访问。
+- `?q=val` 这部分是查询字符串，用于发送参数到服务器。它以问号开始，参数以键值对的形式存在，并用`&`符号分隔。
+- `#hash` 这部分被称为片段或者锚点，它指定了网页中的一个位置。当你访问一个`URL`时，浏览器会尝试滚动到这个位置。
+
+![url_cross](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/url_cross.webp)
+:::
+
 ::: tip 为什么会产生跨域 - 浏览器的同源策略
 
 [<u>同源策略</u>](https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy)是浏览器一个重要的安全策略，它用于限制一个[<u>源</u>](https://developer.mozilla.org/zh-CN/docs/Glossary/Origin) `(origin)` 的文档或者它加载的脚本如何能与另一个源的资源进行交互。它能帮助阻隔恶意文档，减少可能被攻击的媒介
@@ -21,15 +40,18 @@
 
 - `CORS`
 - `JSONP`
-- `Nginx`反向代理
+- [`Nginx`反向代理]
+- `Node`中间件
 - `WebSocket`
 - `window.postMesssage`
+- `window.name`
 - `document.domain`
-  :::
+
+:::
 
 ### `CORS`跨源资源共享
 
-[<u>`CORS`</u>](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)是一种基于 [<u><HTTP</u>](https://developer.mozilla.org/zh-CN/docs/Glossary/HTTP) 头的机制，该机制允许浏览器向跨源服务器发出 `XMLHttpRequest` 请求，从而解决了 `AJAX` 只能同源使用的限制。
+[<u>`CORS`</u>](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)是一种基于 [<u>HTTP</u>](https://developer.mozilla.org/zh-CN/docs/Glossary/HTTP) 头的机制，该机制允许浏览器向跨源服务器发出 `XMLHttpRequest` 请求，从而解决了 `AJAX` 只能同源使用的限制。
 
 > `CORS` 需要浏览器和服务器同时支持，目前所有浏览器均已支持，只需服务器配置即可使用
 
@@ -125,6 +147,138 @@
 
 ### `Nginx`反向代理
 
+[<u>`Nginx`</u>](https://nginx.org/en/docs/njs/)是一个开源的、高性能的、可扩展的 `HTTP` 和反向代理服务器。它也可以用作邮件代理服务器和通用的 `TCP/UDP` 代理服务器。
+
+`Nginx`可以作为一个`HTTP`服务器，提供静态资源服务，也可以作为应用服务器（例如`PHP`, `Python`等）的前端服务器。
+
+要使用 `Nginx` 来处理跨域问题，你需要配置一些响应头。你可以在 `Nginx` 的配置文件中进行配置，通常这个配置文件位于 `/etc/nginx/nginx.conf` 或 `/etc/nginx/sites-available/default`，大部分情况只需要配置 `http` 模块下的 `server` 即可，一般初始文件，只有一个 `server`，如果你需要 `Nginx` 同时开启不同的端口或域名，就需要写多个 `server`。
+
+#### `server`
+
+```bash
+server {
+  listen       80;   # 端口号
+  server_name  localhost;   # server name 默认 localhost
+
+  #access_log  logs/host.access.log  main;
+
+  location / {   # 访问路径匹配规则
+      root   html;
+      index  index.html index.htm;
+  }
+
+  error_page   500 502 503 504  /50x.html;  # 错误处理
+  location = /50x.html {
+      root   html;
+  }
+}
+```
+
+里面比较重要的是 `location` 模块，反向代理的主要工作也是配置 `location`
+
+#### `location`
+
+`location` 配置项定义了一条访问 `Nginx` 服务某一路径时的匹配规则，`location` 后面紧跟的是匹配的路径，这个路径可以直接写绝对路径，可以写正则匹配。
+
+```bash
+# 当访问 http://localhost/api1 时命中
+location /api1 {
+    # ...
+}
+```
+
+```bash
+# 当访问 http://localhost/api2 和 http://localhost/api 3 时命中
+location ~ ^/(api2/api3) {
+  # ...
+}
+```
+
+```bash
+# ~ 符号表示接下来的是一个正则表达式。Nginx 会使用这个正则表达式来匹配请求的 URL 路径
+# .json$ 是一个正则表达式，它匹配任何以 .json 结尾的 URL 路径
+location ~ \.json$ {
+  # ...
+}
+```
+
+#### `proxy_pass`
+
+`location` 里有多个配置项，其中一个是 `proxy_pass`，意思是将当前命中的 `Nginx` 接口（例如：`http://localhost/api`）代理到其他 `server` 的接口，如下例子就是将 `http://localhost/api` 代理到 `https://azzlzzxz.com/api`
+
+```bash
+location /api {
+  proxy_pass https://azzlzzxz.com;
+}
+```
+
+::: tip 注意 ⚠️
+
+- 在写 `proxy_pass` 不能随便在目标地址后加 `/`，如果你在地址末尾加了 `/`，则最终代理是这样的：
+
+```bash
+location /api {
+  proxy_pass https://azzlzzxz.com/; # 将会被代理到 https://azzlzzxz.com/，后面没有 /api
+}
+```
+
+- 不加 `/`，则最终代理是这样的，访问 `Nginx` 命中的 `/api`，`Nginx` 也会自动帮你拼接上去
+
+```bash
+location /api {
+  proxy_pass https://azzlzzxz.com; # 将会代理到 https://azzlzzxz.com/api
+}
+
+```
+
+:::
+
+#### `add_header`
+
+`location` 配置中的 `add_header`选项，表示 `Nginx` 将在 `response` 中添加一些额外的响应头信息给客户端。众所周知，开启跨域支持是需要服务端配置 `Access-Control-Allow-Origin`、`Access-Control-Allow-Methods`、`Access-Control-Allow-Headers` 这些请求头的，那么既然有了 `Nginx` 做了中间层代理服务，就算 `server` 不给我们开启这些，我们完全也能够自给自足：
+
+```bash
+location /api {
+  add_header Access-Control-Allow-Origin * always;
+  add_header Access-Control-Allow-Headers *;
+  add_header Access-Control-Allow-Methods "GET, POST, PUT, OPTIONS";
+  proxy_pass https://azzlzzxz.com;
+}
+```
+
+一般来说，如果请求过程中出现 `40X` 、`50X`的错误，`Nginx`将不会设置 `Access-Control-Allow-Origin` 继而导致跨域失败，所以需要在后面再加个 `always` 告诉 `Nginx` 不管怎样，都给我设置这个响应头。
+
+### `Node`中间件
+
+[<u>`http-proxy-middleware`</u>](https://github.com/chimurai/http-proxy-middleware#readme) 是一个用于 `Node.js` 的中间件，它可以在你的应用中创建一个反向代理。这在处理跨域请求、添加负载均衡、或者在开发环境中连接到不同的服务等场景中非常有用。
+
+你可以使用 `createProxyMiddleware` 函数来创建一个代理。这个函数接收一个配置对象，你可以在这个对象中指定代理的目标、路径重写规则等选项：
+
+```js
+const { createProxyMiddleware } = require('http-proxy-middleware')
+
+app.use(
+  '/api',
+  createProxyMiddleware({
+    target: 'http://localhost:4000',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api': '',
+    },
+  }),
+)
+```
+
+在 👆 例子中，所有以 `/api` 开头的请求都会被代理到 `http://localhost:4000，并且路径中的` `/api` 会被去掉。
+
+👇 是 `createProxyMiddleware` 配置对象的一些常用选项：
+
+- `target`：这是代理的目标服务器的 `URL`。
+
+- `changeOrigin`：如果设置为 `true`，代理服务器会在请求转发时修改请求头中的 `host` 为目标服务器的 `host`。
+
+- `pathRewrite`：这是一个对象，它定义了如何重写路径。例如，你可以将路径中的 `/api` 替换为 `/`。
+
 ### `WebScoket`
 
 [<u>`WebSocket`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)： 一种浏览器与服务器进行全双工通讯的网络技术，也就是客户端和服务器之间存在持久的连接，而且双方都可以随时开始发送数据。
@@ -141,4 +295,60 @@
 - 多窗口之间消息传递
 - 页面与嵌套的`iframe`消息传递
 
+### `window.name`
+
+[<u>`window.name`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/name)是一个旧的`HTML`属性，它允许在同一浏览器窗口或者`Tab`中的不同页面之间传递数据。它有一个非常有趣的特性：当你改变窗口的`URL`时，`window.name`的值会保持不变。这个特性使得`window.name`可以被用于跨域通信。
+
 ### `document.domain`
+
+`document.domain`是一种在同一主域名下的不同子域之间实现跨域通信的方法。这种方法的基本思想是通过将每个子域的 `document.domain` 设置为相同的主域名，使得这些子域在 `JavaScript` 中被认为是同源的。
+
+举个 🌰
+
+> `a.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>origin</title>
+  </head>
+
+  <body>
+    <iframe
+      id="myIframe"
+      src="http://test.azzlzzxz.com:4000/b.html"
+      style="display: none;"
+    ></iframe>
+    <script>
+      document.domain = 'azzlzzxz.com'
+      window.onload = function () {
+        var iframe = document.getElementById('myIframe')
+        console.log(iframe.contentWindow.document.getElementById('container').innerHTML)
+      }
+    </script>
+  </body>
+</html>
+```
+
+> `b.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>origin</title>
+  </head>
+
+  <body>
+    <div id="container">container</div>
+    <script>
+      document.domain = 'azzlzzxz.com'
+    </script>
+  </body>
+</html>
+```

@@ -201,7 +201,7 @@
 
 由于`V8`最开始就是为`JavaScript`在浏览器执行而打造的，不太可能遇到使用大量内存的场景，所以它可以申请的最大内存就没有设置太大，在 64 位系统下大约为 1.4GB，在 32 位系统下大约为 700MB。
 
-在 NodeJS 环境中，我们可以通过**process.memoryUsage()**来查看内存分配
+在 NodeJS 环境中，我们可以通过 **process.memoryUsage()** 来查看内存分配
 
 ![process](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process.png)
 

@@ -18,6 +18,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: 'let & const', link: '/base/es6/let&const' },
+        { text: 'Set & Map', link: '/base/es6/Set&Map' },
         { text: '箭头函数', link: '/base/es6/arrowFn' },
         {
           text: 'promise',

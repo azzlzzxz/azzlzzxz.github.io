@@ -19,7 +19,6 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'let & const', link: '/base/es6/let&const' },
         { text: 'Set & Map', link: '/base/es6/Set&Map' },
-        { text: '模块化', link: '/node/es6/esModule' },
         { text: '箭头函数', link: '/base/es6/arrowFn' },
         {
           text: 'promise',
@@ -30,6 +29,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           ],
         },
         { text: 'async&await', link: '/base/es6/async' },
+        { text: '模块化', link: '/base/es6/esModule' },
       ],
     },
     {

@@ -40,7 +40,6 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           text: '基础知识',
           collapsed: false,
           items: [
-            { text: '介绍', link: '/base/typescript/ts' },
             { text: '类型', link: '/base/typescript/type' },
             { text: '函数', link: '/base/typescript/function' },
             { text: '类', link: '/base/typescript/class' },
@@ -52,6 +51,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           ],
         },
         { text: '工具类型', link: '/base/typescript/built-in' },
+        { text: '编译配置', link: '/base/typescript/tsconfig' },
         // { text: '类型体操', collapsed: false, items: [] },
       ],
     },

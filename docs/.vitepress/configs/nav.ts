@@ -11,7 +11,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       { text: 'CSS 基础知识', link: '/base/css/base' },
       {
         items: [
-          { text: 'TypeScript 基础知识', link: '/base/typescript/ts' },
+          { text: 'TypeScript 基础知识', link: '/base/typescript/type' },
           { text: 'TypeScript 工具类型', link: '/base/typescript/built-in' },
         ],
       },

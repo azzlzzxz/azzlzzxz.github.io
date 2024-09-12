@@ -78,7 +78,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       { text: 'Git', link: '/work/git/command' },
       {
         items: [
-          { text: '实用工具', link: '/work/utility/ni' },
+          { text: '实用工具/配置', link: '/work/utility/ni' },
           { text: '常用工具/方法', link: '/work/utils/regexp' },
         ],
       },

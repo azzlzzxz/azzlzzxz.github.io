@@ -48,7 +48,7 @@
   - `CommonJS` 模块中的顶层 `this` 指向模块本身
   - `ESModule` 模块中的顶层 `this` 指向 `undefined`
 
-::: tip
+::: tip 相关资料
 
 - [阮一峰 ES6 模块与 CommonJS 模块的差异](https://es6.ruanyifeng.com/#docs/module-loader#ES6-%E6%A8%A1%E5%9D%97%E4%B8%8E-CommonJS-%E6%A8%A1%E5%9D%97%E7%9A%84%E5%B7%AE%E5%BC%82)
 - [阮一峰 ES6 模块](https://es6.ruanyifeng.com/#docs/module)

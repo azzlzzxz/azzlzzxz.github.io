@@ -106,7 +106,7 @@ const pattern = /(\d)(?=(\d{3})+\.)/g
 
 ::: tip
 
-[<u>JS 正则表达式完整教程</u>](https://juejin.cn/post/6844903487155732494)
-[<u>JS 正则迷你书</u>](https://github.com/qdlaoyao/js-regex-mini-book)
+- [<u>JS 正则表达式完整教程</u>](https://juejin.cn/post/6844903487155732494)
+- [<u>JS 正则迷你书</u>](https://github.com/qdlaoyao/js-regex-mini-book)
 
 :::

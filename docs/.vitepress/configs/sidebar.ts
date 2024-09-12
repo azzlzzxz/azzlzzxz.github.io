@@ -19,6 +19,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'let & const', link: '/base/es6/let&const' },
         { text: 'Set & Map', link: '/base/es6/Set&Map' },
+        { text: '模块化', link: '/node/es6/esModule' },
         { text: '箭头函数', link: '/base/es6/arrowFn' },
         {
           text: 'promise',
@@ -107,12 +108,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     },
     {
       text: '编程题',
+      link: '/base/coding/',
     },
   ],
 
   '/node/': [
     {
-      text: '规范与模块',
+      text: '模块化&规范',
       collapsed: false,
       items: [{ text: 'CommonJs规范', link: '/node/norm/commonJs' }],
     },
@@ -280,6 +282,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'zsh配置', link: '/work/utility/zsh' },
         { text: '图床搭建', link: '/work/utility/picgo' },
       ],
+    },
+    {
+      text: '常用工具/方法',
+      collapsed: false,
+      items: [{ text: '常用正则', link: '/work/utils/regexp' }],
     },
     {
       text: '日常问题记录',

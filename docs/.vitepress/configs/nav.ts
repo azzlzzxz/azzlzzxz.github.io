@@ -10,7 +10,10 @@ export const nav: DefaultTheme.Config['nav'] = [
       { text: 'HTML 基础知识', link: '/base/html/base' },
       { text: 'CSS 基础知识', link: '/base/css/base' },
       {
-        items: [{ text: 'TypeScript', link: '/base/typescript/ts' }],
+        items: [
+          { text: 'TypeScript 基础知识', link: '/base/typescript/ts' },
+          { text: 'TypeScript 工具类型', link: '/base/typescript/built-in' },
+        ],
       },
       {
         items: [
@@ -19,6 +22,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         ],
       },
       { text: '数据结构与算法', link: '/base/structure/linkList' },
+      { text: '编程题', link: '/base/coding/' },
     ],
     activeMatch: '^/base',
   },
@@ -28,7 +32,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       { text: '模块&规范', link: '/node/norm/commonJs' },
       { text: 'Node 相关知识', link: '/node/base/base' },
       { text: 'NPM 相关知识', link: '/node/npm/npm' },
-      { text: 'Nest', link: '/node/nest/base' },
+      { text: 'Nest 相关知识', link: '/node/nest/base' },
     ],
     activeMatch: '^/node',
   },
@@ -72,7 +76,12 @@ export const nav: DefaultTheme.Config['nav'] = [
     items: [
       { text: '编程规范', link: '/work/standard/code' },
       { text: 'Git', link: '/work/git/command' },
-      { text: '实用工具', link: '/work/utility/ni' },
+      {
+        items: [
+          { text: '实用工具', link: '/work/utility/ni' },
+          { text: '常用工具/方法', link: '/work/utils/regexp' },
+        ],
+      },
       { text: '日常问题记录', link: '/work/question/npm' },
       { text: '其他', link: '/work/command/command' },
       { text: '微信相关', link: '/wx/qw/side' },

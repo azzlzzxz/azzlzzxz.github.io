@@ -110,7 +110,7 @@ npm config list -l
 npm config get init.author.name
 
 # 修改 npm 默认配置
-npm config set init.author.name maomao
+npm config set init.author.name xxx
 
 # 删除 npm 指定配置
 npm config delete init.author.name

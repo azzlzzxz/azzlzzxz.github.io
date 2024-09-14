@@ -112,7 +112,7 @@ export function createHostRootFiber() {
 
 #### `FiberNode`(`Fiber` 节点)
 
-> 源码地址 [function FiberNode](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiber.old.js#L118)
+> 源码地址 [function FiberNode](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiber.old.js#L118)
 
 ```js
 // ReactFiber
@@ -159,7 +159,7 @@ export function FiberNode(tag, pendingProps, key) {
 
 #### `Fiber` 类型
 
-> 源码地址 [ReactWorkTags](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactWorkTags.js)
+> 源码地址 [ReactWorkTags](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
 
 ```js
 // ReactWorkTags
@@ -174,7 +174,7 @@ export const HostText = 6 // 纯文本节点
 
 #### `Fiber` 更新标识代表的二进制
 
-> 源码地址 [ReactFiberFlags](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberFlags.js)
+> 源码地址 [ReactFiberFlags](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiberFlags.js)
 
 ```js
 // ReactFiberFlags
@@ -342,7 +342,7 @@ export function markUpdateLaneFromFiberToRoot(sourceFiber) {
 
 #### `scheduleUpdateOnFiber`(任务调度与创建 `Fiber` 树)
 
-> 源码地址 [scheduleUpdateOnFiber](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberWorkLoop.new.js#L533)
+> 源码地址 [scheduleUpdateOnFiber](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberWorkLoop.js#L716)
 
 ```js
 import { scheduleCallback } from 'scheduler'
@@ -523,7 +523,7 @@ export function createHostRootFiber() {
 
 ### `BeginWork`
 
-> 源码地址 [BeginWork](https://github.com/maomao1996/code-analysis/blob/9a3aa89acc830353e3795276b0eda4e96e840975/react-v18.2.0/src/react/packages/react-reconciler/src/ReactFiberBeginWork.new.js#L3685C20-L3685C20)
+> 源码地址 [BeginWork](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L3861)
 
 ![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
 

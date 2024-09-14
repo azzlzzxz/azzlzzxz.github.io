@@ -22,7 +22,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'let & const', link: '/base/es6/let&const' },
         { text: 'Set & Map', link: '/base/es6/Set&Map' },
+        { text: 'Proxy & Reflect', link: '/base/es6/Proxy&Reflect' },
+        { text: '模版字符串', link: '/base/es6/template' },
+        { text: '解构赋值', link: '/base/es6/deconstruction' },
         { text: '箭头函数', link: '/base/es6/arrowFn' },
+        { text: '函数、数组、对象、运算符扩展', link: '/base/es6/extension' },
+        { text: 'Class', link: '/base/es6/class' },
         {
           text: 'promise',
           collapsed: false,

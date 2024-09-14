@@ -173,9 +173,7 @@ const child = createObject(parent)
 child.getName() // 输出 'Parent'
 ```
 
-::: info
-
-特点
+::: info 特点
 
 - 这种继承方式适用于对象的浅拷贝。
 

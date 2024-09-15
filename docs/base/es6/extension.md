@@ -592,21 +592,21 @@ const source2 = { c: 3 }
 Object.assign(target, source1, source2)
 ```
 
-##### 只有一个参数时会直接返回该参数
+#### 只有一个参数时会直接返回该参数
 
 ```js
 const obj = { a: 1 }
 Object.assign(obj) === obj // true
 ```
 
-##### 传入参数不是对象时会先转成对象再返回
+#### 传入参数不是对象时会先转成对象再返回
 
 ```js
 typeof Object.assign(1) // "object"
 typeof Object.assign(true) // "object"
 ```
 
-##### 传入非对象类型的场景
+#### 传入非对象类型的场景
 
 ```js
 /* undefined 和 null */
@@ -632,7 +632,7 @@ Object.assign([1, 2, 3], [4, 5]) // [4, 5, 3]
 Object.assign({ a: 1 }, [1, 2]) // {0: 1, 1: 2, a: 1}
 ```
 
-##### 传入数组时会把数组当对象处理
+#### 传入数组时会把数组当对象处理
 
 ```js
 Object.assign([1, 2, 3], [4, 5]) // [4, 5, 3]
@@ -738,6 +738,8 @@ Object.fromEntries(new URLSearchParams(params)) // {name: 'steins gate', age: '1
 `ES6` 内部定义了 [\[\[OwnPropertyKeys\]\]()](https://262.ecma-international.org/11.0/#sec-ordinary-object-internal-methods-and-internal-slots-ownpropertykeys) 方法对属性进行分类和排序
 
 :::
+
+[<u>这里只列举了一些常用方法，其他的对象扩展方法可以看 阮一峰 的 ES6 入门教程</u>](https://es6.ruanyifeng.com/#docs/object)
 
 ## 运算符的扩展
 

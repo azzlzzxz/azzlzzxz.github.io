@@ -368,6 +368,185 @@ console.log(Dog.species()) // 输出: "Generic Animal (Dog)"
 - `Animal` 和 `Dog` 都有静态方法 `species`。
 - `Dog.species()` 通过 `super.species()` 调用了 `Animal` 的静态方法。
 
+### `Object.getPrototypeOf()`
+
+`Object.getPrototypeOf()`方法可以用来从子类上获取父类
+
+```js
+class Point {
+  /*...*/
+}
+
+class ColorPoint extends Point {
+  /*...*/
+}
+
+Object.getPrototypeOf(ColorPoint) === Point
+// true
+```
+
+因此，可以使用这个方法判断，一个类是否继承了另一个类。
+
+### `super` 关键字
+
+- `super` 作为函数调用时，代表父类的构造函数，`ES6` 要求，子类的构造函数必须执行一次`super()`函数
+
+- `super`作为对象时，在普通方法中，指向父类的原型对象，在静态方法中，指向父类
+
+#### `super` 作为函数调用时，代表父类的构造函数
+
+```js
+class A {}
+
+class B extends A {
+  constructor() {
+    super()
+  }
+}
+```
+
+::: tip 注意 ⚠️
+
+- 调用`super()`的作用是形成子类的`this`对象，把父类的实例属性和方法放到这个`this`对象上面
+
+- 子类在调用`super()`之前，是没有`this`对象的，任何对`this`的操作都要放在`super()`的后面
+  :::
+
+```js
+class A {
+  constructor() {
+    console.log(new.target.name)
+  }
+}
+class B extends A {
+  constructor() {
+    super()
+  }
+}
+new A() // A
+new B() // B
+```
+
+👆 的代码中，`new.target`指向当前正在执行的函数。可以看到，在`super()`执行时（`new B()`），它指向的是子类`B`的构造函数，而不是父类`A`的构造函数。就说明了，`super()`内部的`this`指向的是子类`B`。
+
+::: tip 注意 ⚠️
+
+- 由于`super()`在子类构造方法中执行时，子类的属性和方法还没有绑定到`this`，所以如果存在同名属性，此时拿到的是父类的属性
+
+```js
+class A {
+  name = 'A'
+  constructor() {
+    console.log('My name is ' + this.name)
+  }
+}
+
+class B extends A {
+  name = 'B'
+}
+
+const b = new B() // My name is A
+```
+
+也就是在子类`B`，在`super()`时，`B`的`name`属性还没绑定到`this`上，所以`this.name`拿到的是`A`的`name`。
+:::
+
+#### `super` 作为对象时，在普通方法中，指向父类的原型对象，在静态方法中，指向父类
+
+- 在普通方法中，指向父类的原型对象
+
+```js
+class A {
+  p() {
+    return 2
+  }
+}
+
+A.prototype.name = 'steins gate'
+
+class B extends A {
+  constructor() {
+    super()
+    console.log(super.p()) // 2
+    console.log(super.name) // steins gate
+  }
+}
+
+let b = new B()
+```
+
+在子类普通方法中通过`super`调用父类的方法时，方法内部的`this`指向当前的子类实例
+
+```js
+class A {
+  constructor() {
+    this.x = 1
+  }
+  print() {
+    console.log(this.x)
+  }
+}
+
+class B extends A {
+  constructor() {
+    super()
+    this.x = 2
+  }
+  m() {
+    super.print()
+  }
+}
+
+let b = new B()
+b.m() // 2
+```
+
+👆 的代码中，`super.print()`虽然调用的是`A.prototype.print()`，但是`A.prototype.print()`内部的`this`指向子类 B 的实例，导致输出的是`2`，而不是`1`。也就是说，实际上执行的是`super.print.call(this)`
+
+- 如果`super`作为对象，用在静态方法之中，这时`super`将指向父类
+
+```js
+class Parent {
+  static myMethod(msg) {
+    console.log('static', msg)
+  }
+
+  myMethod(msg) {
+    console.log('instance', msg)
+  }
+}
+
+class Child extends Parent {
+  static myMethod(msg) {
+    super.myMethod(msg)
+  }
+
+  myMethod(msg) {
+    super.myMethod(msg)
+  }
+}
+
+Child.myMethod(1) // static 1
+
+var child = new Child()
+child.myMethod(2) // instance 2
+```
+
+### 类的`prototype`属性和`__proto__`属性
+
+- 子类的`__proto__`属性，表示构造函数的继承，总是指向父类。
+
+- 子类`prototype`属性的`__proto__`属性，表示方法的继承，总是指向父类的`prototype`属性。
+
+```js
+class A {}
+
+class B extends A {}
+
+B.__proto__ === A // true
+B.prototype.__proto__ === A.prototype // true
+```
+
 ## ES6 类继承与原型继承的对比
 
 | 特性         | 原型继承                                      | ES6 类继承                        |

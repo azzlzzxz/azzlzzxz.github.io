@@ -214,7 +214,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         {
           text: 'Fiber',
           collapsed: false,
-          items: [{ text: '介绍Fiber', link: '/rsource/react/fiber' }],
+          items: [
+            { text: '介绍 Fiber', link: '/rsource/react/introduce' },
+            { text: 'Fiber 初始化', link: '/rsource/react/fiber' },
+          ],
         },
       ],
     },

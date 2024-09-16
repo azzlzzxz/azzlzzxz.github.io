@@ -206,10 +206,17 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     },
   ],
   '/rsource/': [
+    { text: 'React 18 的新特性', link: '/rsource/newFeature' },
     {
-      text: 'React-18.2源码',
+      text: 'React-18.2 源码解析',
       collapsed: false,
-      items: [{ text: 'Fiber', link: 'rsource/react/fiber' }],
+      items: [
+        {
+          text: 'Fiber',
+          collapsed: false,
+          items: [{ text: '介绍Fiber', link: '/rsource/react/fiber' }],
+        },
+      ],
     },
   ],
   '/vsource/': [

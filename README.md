@@ -5,16 +5,20 @@
   - TypeScript
   - HTML
   - CSS
-  - React
-  - Vue
-  - Node
   - ...
 - 源码阅读
+  - React
+  - Vue
   - 了解框架和第三方库的实现原理
-  - 学习各种小技巧和冷知识
+- Node 相关知识
+  - NPM
+  - Node
+  - Nest
+- 构建工具
+  - Webpack
+  - Vite
 - work
-  - 在工作中学到的一切
-  - 构建工具
+  - 在工作中学习了解到的
   - 终端命令和技巧
   - 工作中遇到的问题
   - ...

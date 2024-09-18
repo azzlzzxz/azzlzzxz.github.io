@@ -4,6 +4,8 @@
 
 > 源码地址 [<u>beginWork | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L3861)
 
+> `Fiber 树`的结构
+
 ![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
 
 `begin_work` 的参数
@@ -83,9 +85,13 @@ export const HostText = 6; // 纯文本节点
 
 ## `updateHostRoot`
 
+> 源码地址 [<u>updateHostRoot | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L1480)
+
 `updateHostRoot`方法是构建`根Fiber`的`子fiber链表`
 
 ```js
+// ReactFiberBeginWork.js
+
 function updateHostRoot(current, workInProgress) {
   // 需要知道它的子虚拟DOM，知道它的儿子的虚拟DOM信息
   processUpdateQueue(workInProgress) // workInProgress.memoizedState = { element }
@@ -105,9 +111,13 @@ function updateHostRoot(current, workInProgress) {
 
 ### `processUpdateQueue`
 
+> 源码地址 [<u>processUpdateQueue | react-reconciler/src/ReactFiberClassUpdateQueue.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberClassUpdateQueue.js#L494)
+
 根据老状态和更新队列中的更新，来计算计算新状态
 
 ```js
+// ReactFiberClassUpdateQueue.js
+
 /**
  * 根据老状态和更新队列中的更新计算新状态
  * @param {*} workInProgress 要计算的Fiber
@@ -158,9 +168,58 @@ function getStateFromUpdate(update, prevState) {
 }
 ```
 
-### `reconcileChildren` 根据`新的虚拟DOM`构建`新的fiber子链表`
+## `updateHostComponent`
+
+> 源码地址 [<u>updateHostComponent | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L1615)
+
+`updateHostComponent` 函数用于处理`普通 DOM 标签`，构建`原生组件`的`子fiber链表`
 
 ```js
+// ReactFiberBeginWork.js
+
+import { shouldSetTextContent } from 'react-dom-bindings/src/client/ReactDOMHostConfig'
+
+/**
+ * 构建原生组件的子fiber链表
+ * @param {*} current 老fiber
+ * @param {*} workInProgress 新fiber h1
+ */
+function updateHostComponent(current, workInProgress) {
+  const { type } = workInProgress
+  const nextProps = workInProgress.pendingProps
+  let nextChildren = nextProps.children
+
+  // 判断当前虚拟DOM它的子节点是不是一个文本类型的节点
+  const isDirectTextChild = shouldSetTextContent(type, nextProps)
+
+  if (isDirectTextChild) {
+    nextChildren = null
+  }
+
+  reconcileChildren(current, workInProgress, nextChildren)
+  return workInProgress.child
+}
+```
+
+### `shouldSetTextContent`
+
+判断当前`虚拟DOM`的子节点是不是一个文本类型的节点
+
+```js
+// react-dom-bindings/src/client/ReactDOMHostConfig.js
+
+export function shouldSetTextContent(type, props) {
+  return typeof props.children === 'string' || typeof props.children === 'number'
+}
+```
+
+## `reconcileChildren` 根据`新的虚拟DOM`构建`新的fiber子链表`
+
+> 源码地址 [<u>reconcileChildren | react-reconciler/src/ReactChildFiber.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L340)
+
+```js
+// ReactFiberBeginWork.js
+
 import { mountChildFibers, reconcileChildFibers } from './ReactChildFiber'
 
 /**
@@ -204,14 +263,37 @@ function reconcileChildren(current, workInProgress, nextChildren) {
 // ReactChildFiber.js
 
 import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols'
-import { createFiberFromElement } from './ReactFiber'
+import { createFiberFromElement, createFiberFromText } from './ReactFiber'
 import { Placement } from './ReactFiberFlags'
+
+import isArray from 'shared/isArray'
 
 /**
  *
  * @param {*} shouldTrackSideEffects 是否跟踪副作用
  */
 function createChildReconciler(shouldTrackSideEffects) {
+  function createChild(returnFiber, newChild) {
+    if ((typeof newChild === 'string' && newChild !== '') || typeof newChild === 'number') {
+      const created = createFiberFromText(`${newChild}`)
+      created.return = returnFiber
+      return created
+    }
+    if (typeof newChild === 'object' && newChild !== null) {
+      switch (newChild.$$typeof) {
+        case REACT_ELEMENT_TYPE: {
+          const created = createFiberFromElement(newChild)
+          created.ref = newChild.ref
+          created.return = returnFiber
+          return created
+        }
+        default:
+          break
+      }
+    }
+    return null
+  }
+
   function reconcileSingleElement(returnFiber, currentFirstFiber, element) {
     // 因为我们现在实现的是初次挂载，那么老节点currentFirstFiber肯定是没有的，所以可以根据虚拟DOM创建fiber节点
     const created = createFiberFromElement(element)
@@ -234,14 +316,46 @@ function createChildReconciler(shouldTrackSideEffects) {
     return newFiber
   }
 
+  function placeChild(newFiber, newIdx) {
+    //指定新的fiber在新的挂载索引
+    newFiber.index = newIdx
+    //如果不需要跟踪副作用
+    if (shouldTrackSideEffects) {
+      newFiber.flags |= Placement
+    }
+  }
+
+  function reconcileChildrenArray(returnFiber, currentFirstChild, newChildren) {
+    let resultingFirstChild = null //返回的第一个新节点
+    let previousNewFiber = null //上一个的新fiber
+    let newIdx = 0 //用来遍历新的虚拟DOM的索引
+
+    for (; newIdx < newChildren.length; newIdx++) {
+      const newFiber = createChild(returnFiber, newChildren[newIdx])
+      if (newFiber === null) continue
+      placeChild(newFiber, newIdx)
+      //如果previousNewFiber为null，说明这是第一个fiber
+      if (previousNewFiber === null) {
+        resultingFirstChild = newFiber //这个newFiber就是第一个子节点
+      } else {
+        //否则说明不是第一个子节点，就把这个newFiber添加上一个子节点后面
+        previousNewFiber.sibling = newFiber
+      }
+      //让newFiber成为最后一个或者说上一个子fiber
+      previousNewFiber = newFiber
+    }
+
+    return resultingFirstChild
+  }
+
   /**
    * 比较子fiber
    * DOM-DIFF 用老的子fiber链表和新的虚拟DOM进行比较的过程
    * @param {*} returnFiber 新的父fiber
-   * @param {*} currentFirstFiber 老fiber的第一个子fiber，current一般指的是老的意思
+   * @param {*} currentFirstChild 老fiber的第一个子fiber，current一般指的是老的意思
    * @param {*} newChild 新的子虚拟DOM （h1 虚拟DOM）
    */
-  function reconcileChildFibers(returnFiber, currentFirstFiber, newChild) {
+  function reconcileChildFibers(returnFiber, currentFirstChild, newChild) {
     // 现在暂时考虑新的虚拟DOM只有一个的情况
     if (typeof newChild === 'object' && newChild !== null) {
       switch (newChild.$$typeof) {
@@ -249,12 +363,18 @@ function createChildReconciler(shouldTrackSideEffects) {
         case REACT_ELEMENT_TYPE:
           return placeSingleChild(
             // 协调单节点
-            reconcileSingleElement(returnFiber, currentFirstFiber, newChild),
+            reconcileSingleElement(returnFiber, currentFirstChild, newChild),
           )
         default:
           break
       }
     }
+    //newChild [hello文本节点,span虚拟DOM元素]
+    if (isArray(newChild)) {
+      return reconcileChildrenArray(returnFiber, currentFirstChild, newChild)
+    }
+
+    return null
   }
 
   return reconcileChildFibers
@@ -312,29 +432,57 @@ function createFiberFromTypeAndProps(type, key, pendingProps) {
 }
 ```
 
-## `updateHostComponent`
-
-`updateHostComponent` 函数用于处理`普通 DOM 标签`，构建`原生组件`的`子fiber链表`
+### `createFiberFromText` 创建文本类型的 `fiber`
 
 ```js
-/**
- * 构建原生组件的子fiber链表
- * @param {*} current 老fiber
- * @param {*} workInProgress 新fiber h1
- */
-function updateHostComponent(current, workInProgress) {
-  const { type } = workInProgress
-  const nextProps = workInProgress.pendingProps
-  let nextChildren = nextProps.children
-
-  //判断当前虚拟DOM它的子节点是不是一个文本类型的节点
-  const isDirectTextChild = shouldSetTextContent(type, nextProps)
-
-  if (isDirectTextChild) {
-    nextChildren = null
-  }
-
-  reconcileChildren(current, workInProgress, nextChildren)
-  return workInProgress.child
+export function createFiberFromText(content) {
+  return createFiber(HostText, content, null)
 }
+```
+
+## `completeUnitOfWork` 完成
+
+```js
+// ReactFiberWorkLoop.js
+
+import { completeWork } from "./ReactFiberCompleteWork";
+
+function performUnitOfWork {
+  ...
+}
+
+function completeUnitOfWork(unitOfWork) {
+  let completedWork = unitOfWork;
+  do {
+    const current = completedWork.alternate;
+    const returnFiber = completedWork.return;
+    //执行此fiber 的完成工作,如果是原生组件的话就是创建真实的DOM节点
+    completeWork(current, completedWork);
+    //如果有弟弟，就构建弟弟对应的fiber子链表
+    const siblingFiber = completedWork.sibling;
+    if (siblingFiber !== null) {
+      workInProgress = siblingFiber;
+      return;
+    }
+    //如果没有弟弟，说明这当前完成的就是父fiber的最后一个节点
+    //也就是说一个父fiber,所有的子fiber全部完成了
+    completedWork = returnFiber;
+    workInProgress = completedWork;
+  } while (completedWork !== null);
+}
+```
+
+![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
+
+`Fiber 树`在整个构建过程中执行的`logger`打印出来
+
+```sh
+beginWork HostRoot
+beginWork HostComponent h1
+beginWork HostText Hello,
+completeWork HostText Hello,
+beginWork HostComponent span
+completeWork HostComponent span
+completeWork HostComponent h1
+completeWork HostRoot
 ```

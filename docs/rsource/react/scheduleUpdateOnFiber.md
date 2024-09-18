@@ -244,9 +244,20 @@ function workLoopSync() {
 
 ## `performUnitOfWork` 执行工作单元
 
+> 源码地址 [performUnitOfWork ｜ react-reconciler/src/ReactFiberWorkLoop.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberWorkLoop.js#L2500)
+
 - `current` 表示当前页面正在使用的 `Fiber 节点`，即 `workInProgress.alternate`
 
 - `workInProgress` 表示当前正在构建的 `Fiber 节点`
+
+::: tip `performUnitOfWork` 工作流程
+
+- 调用 `beginWork` 函数，进入 `“递”` 阶段
+  - 根据传入的 `Fiber 节点` 创建 `子 Fiber 节点`
+- 调用 `completeUnitOfWork` 函数，进入 `“归”` 阶段
+  - 调用 `completeWork` 函数对创建好的 `Fiber 节点` 进行处理
+- 更新 `workInProgress` 指针，指向下一个 `Fiber 节点`
+  :::
 
 ```js {5-21}
 let workInProgress = null;
@@ -262,12 +273,28 @@ function performUnitOfWork(unitOfWork) {
   unitOfWork.memoizedProps = unitOfWork.pendingProps;
 
   if (next === null) {
-    workInProgress = null;
     // 如果没有子节点，表示当前fiber已经完成了
-    // completeUnitOfWork(unitOfWork);
+    completeUnitOfWork(unitOfWork);
   } else {
     // 如果有子节点，就让子节点成为下一个工作单元
     workInProgress = next;
   }
 }
 ```
+
+::: tip `Fiber 树` 的构建
+
+整个 `Fiber 树` 的构建是一个深度优先遍历，其中的两个重要变量 `workInProgress` 和 `current` 即之前说的 [Fiber 双缓存机制](/rsource/react/introduce.md#fiber-双缓存)
+
+- `workInProgress` 和 `current` 都是一个指针
+- `workInProgress` 表示当前正在构建的 `Fiber 节点`
+- `current = workInProgress.alternate` （即 `fiber.alternate`）表示当前页面正在使用的 `Fiber 节点`
+  - 初次构建时页面还未渲染，此时 `current = null`
+
+在深度优先遍历中每个 `Fiber 节点` 都会经历两个阶段
+
+- `“递”`阶段 `beginWork`
+- `“归”`阶段 `completeWork`
+
+这两个阶段共同完成了每一个 `Fiber 节点` 的创建, 所有 `Fiber 节点` 连接起来就是一棵 `Fiber 树`
+:::

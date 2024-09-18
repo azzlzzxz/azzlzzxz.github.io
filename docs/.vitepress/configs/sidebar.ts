@@ -211,13 +211,26 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'React-18.2 源码解析',
       collapsed: false,
       items: [
+        { text: '源码文件结构', link: '/rsource/react/file' },
+        { text: 'Fiber', link: '/rsource/react/introduce' },
         {
-          text: 'Fiber',
-          collapsed: false,
+          text: '渲染流程',
           items: [
-            { text: '源码文件结构', link: '/rsource/react/file' },
-            { text: '介绍 Fiber', link: '/rsource/react/introduce' },
-            { text: 'Fiber 初始化', link: '/rsource/react/fiber' },
+            {
+              text: '初始化阶段',
+              items: [
+                { text: 'FiberRootNode & HostRootFiber', link: '/rsource/react/create_fiberRoot' },
+                { text: '更新队列', link: '/rsource/react/updateQueue' },
+              ],
+            },
+            {
+              text: 'render 阶段',
+              items: [
+                { text: 'scheduleUpdateOnFiber', link: '/rsource/react/scheduleUpdateOnFiber' },
+                { text: 'beginWork', link: '/rsource/react/beginWork' },
+                { text: 'completeWork', link: '/rsource/react/completeWork' },
+              ],
+            },
           ],
         },
       ],

@@ -98,6 +98,12 @@
 - 第3个任务结束
 ```
 
+::: tip 缺点
+
+- 兼容性问题。
+- 执行任务的帧空闲时间不可控。
+  :::
+
 ## requestAnimationFrame
 
 [MDN requestAnimationFrame API](https://developer.mozilla.org/zh-CN/docs/Web/API/window/requestAnimationFrame)

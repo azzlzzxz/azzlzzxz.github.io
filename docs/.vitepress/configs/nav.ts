@@ -50,7 +50,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       {
         text: '源码',
         items: [
-          { text: 'React18.2 源码', link: '/rsource/react/introduce' },
+          { text: 'React18.2 源码', link: '/rsource/react/file' },
           { text: 'Vue3 源码', link: '/vsource/vue/effect' },
         ],
       },

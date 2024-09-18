@@ -27,7 +27,7 @@ root.render(element)
 
 ## `createRoot`
 
-> [createRoot - 源码地址](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom/src/client/ReactDOMRoot.js#L161)
+> 源码地址 [createRoot - react-dom/src/client/ReactDOMRoot.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom/src/client/ReactDOMRoot.js#L161)
 
 ```js
 // ReactDOMRoot.js
@@ -46,7 +46,7 @@ export function createRoot(container) {
 }
 ```
 
-### `createContainer`(创建根容器)
+## `createContainer`(创建根容器)
 
 ```js
 // ReactFiberReconciler.js
@@ -58,11 +58,11 @@ export function createContainer(containerInfo) {
 }
 ```
 
-### `createFiberRoot`(创建 `Fiber` 根)
+## `createFiberRoot`(创建 `Fiber` 根)
 
 > `FiberRootNode` 是真实的 `DOM` 节点（根节点）
 >
-> [createFiberRoot - 源码地址](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberRoot.js#L144)
+> 源码地址 [createFiberRoot - react-reconciler/src/ReactFiberRoot.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberRoot.js#L144)
 
 ```js
 // ReactFiberRoot.js
@@ -90,7 +90,7 @@ export function createFiberRoot(containerInfo) {
 }
 ```
 
-### `createHostRootFiber`(创建根 `Fiber`)
+## `createHostRootFiber`(创建根 `Fiber`)
 
 ```js
 // ReactFiber.js
@@ -104,9 +104,9 @@ export function createHostRootFiber() {
 }
 ```
 
-#### `FiberNode`(`Fiber` 节点)
+### `FiberNode`(`Fiber` 节点)
 
-> 源码地址 [function FiberNode](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiber.js#L136)
+> 源码地址 [function FiberNode | react-reconciler/src/ReactFiber.js](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiber.js#L136)
 
 ```js
 // ReactFiber.js
@@ -156,9 +156,9 @@ export function FiberNode(tag, pendingProps, key) {
 - 可以自由重用的`“其他”`未使用节点集合在一起
   :::
 
-##### `Fiber` 类型
+### `Fiber` 类型
 
-> 源码地址 [ReactWorkTags](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
+> 源码地址 [ReactWorkTags | react-reconciler/src/ReactWorkTags.js](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
 
 ```js
 // ReactWorkTags.js
@@ -175,9 +175,9 @@ export const HostText = 6; //纯文件节点
 ...
 ```
 
-##### `Fiber` 更新标识`（flags）`代表的二进制
+### `Fiber` 更新标识`（flags）`代表的二进制
 
-> 源码地址 [ReactFiberFlags](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiberFlags.js)
+> 源码地址 [ReactFiberFlags | react-reconciler/src/ReactFiberFlags.js](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiberFlags.js)
 
 ```js
 // ReactFiberFlags.js
@@ -185,4 +185,5 @@ export const HostText = 6; //纯文件节点
 export const NoFlags = 0b0000000000000000000000000000
 export const Placement = 0b0000000000000000000000000010
 export const Update = 0b0000000000000000000000000100
+...
 ```

@@ -4,8 +4,8 @@ layoutClass: 'm-home-layout'
 
 hero:
   name: Steins Gate
-  text: 前端记录
-  tagline: 知识是进步的阶梯，争取每天都有知识点更新
+  text: 前端知识记录
+  tagline: Knowledge is power
   image:
     src: /logo.jpg
     alt: Steins Gate
@@ -18,7 +18,7 @@ hero:
 features:
   - icon: 📖
     title: 常用知识
-    details: 整理前端常用知识点<small>（面试八股文）</small><br />完整自己的前端生态知识
+    details: 整理前端常用知识点<br />完整自己的前端生态知识
     link: /base/javaScript/dataType
     linkText: 前端常用知识
   - icon: 📘
@@ -28,19 +28,9 @@ features:
     linkText: 源码阅读
   - icon: 💡
     title: Work
-    details: 在工作中用到的一切<small>（常用工具等）</small><br />配合 CV 大法来加快你的开发😄
+    details: 在工作中用到的一切<small>（常用工具/方法）</small><br />配合 CV 大法来加快你的开发😄
     link: /work/utility/ni
     linkText: 常用工具库
-  # - icon: 🧰
-  #   title: 提效工具
-  #   details: 工欲善其事，必先利其器<br />记录开发和日常使用中所用到的软件、插件、扩展等
-  #   link:
-  #   linkText: 提效工具
-  # - icon: 🐞
-  #   title: 踩坑记录
-  #   details: 那些年我们踩过的坑<br />总有一些让你意想不到的问题
-  #   link:
-  #   linkText: 踩坑记录
   - icon: 💯
     title: 记录、总结、深入。
     details: '<small class="bottom-small">不断学习、进步</small>'

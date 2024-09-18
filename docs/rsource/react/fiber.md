@@ -112,7 +112,7 @@ export function createHostRootFiber() {
 
 #### `FiberNode`(`Fiber` 节点)
 
-> 源码地址 [function FiberNode](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiber.old.js#L118)
+> 源码地址 [function FiberNode](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactFiber.js#L136)
 
 ```js
 // ReactFiber

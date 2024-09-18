@@ -50,8 +50,8 @@ export const nav: DefaultTheme.Config['nav'] = [
       {
         text: '源码',
         items: [
-          { text: 'React18.2源码', link: '/rsource/react/introduce' },
-          { text: 'Vue3源码', link: '/vsource/vue/effect' },
+          { text: 'React18.2 源码', link: '/rsource/react/introduce' },
+          { text: 'Vue3 源码', link: '/vsource/vue/effect' },
         ],
       },
       {
@@ -75,7 +75,7 @@ export const nav: DefaultTheme.Config['nav'] = [
     text: '工作',
     items: [
       { text: '编程规范', link: '/work/standard/code' },
-      { text: 'Git', link: '/work/git/command' },
+      { text: 'Git 相关知识', link: '/work/git/command' },
       {
         items: [
           { text: '实用工具/配置', link: '/work/utility/ni' },

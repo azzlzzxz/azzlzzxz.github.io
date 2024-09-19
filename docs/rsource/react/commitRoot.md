@@ -2,7 +2,7 @@
 
 在 `render` 阶段完成更新后，会调用 `commitRoot(root)`（进入 `commit` 阶段）来提交更新
 
-> 注意：目前代码还不涉及到优先级、DOM-Diff、并发渲染等功能，知识初次渲染时执行的
+> 注意：目前代码还不涉及到优先级、DOM-Diff、并发渲染等功能，只是初次渲染时执行的
 
 ```js
 // ReactFiberWorkLoop.js
@@ -356,5 +356,5 @@ root.render(element)
 
 ::: tip 仓库
 
-整个`React 18.2.0`渲染流程的源码解析的我放在了[<u>React 源码解析</u>](https://github.com/azzlzzxz/react-code/tree/4.commitRoot)这里。
+整个`React 18.2.0`挂在阶段的渲染流程的源码解析的我放在了[<u>React 18.2.0 渲染流程</u>](https://github.com/azzlzzxz/react-code/tree/4.commitRoot)这里。
 :::

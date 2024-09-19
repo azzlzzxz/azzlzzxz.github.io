@@ -237,6 +237,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             },
           ],
         },
+        {
+          text: '函数组件',
+          link: '/rsource/react/functionComponent',
+        },
       ],
     },
   ],

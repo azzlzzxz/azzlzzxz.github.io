@@ -231,6 +231,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
                 { text: 'completeWork', link: '/rsource/react/completeWork' },
               ],
             },
+            {
+              text: 'commot 阶段',
+              items: [{ text: 'commitRoot', link: '/rsource/react/commitRoot' }],
+            },
           ],
         },
       ],

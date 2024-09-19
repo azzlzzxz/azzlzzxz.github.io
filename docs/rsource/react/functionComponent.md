@@ -1,6 +1,6 @@
 # 函数组件
 
-接下来我们来看看 `React` 是如何渲染函数组件的
+接下来我们来看看 `React` 是如何实现渲染函数组件的。
 
 ## `main.jsx`
 
@@ -146,3 +146,9 @@ export function commitMutationEffectsOnFiber(finishedWork, root) {
 这样就能展示函数组件了，这里只是简单的实现了一个函数组件，更复杂的实现请看 hook 篇
 
 ![functionComponent_show](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/functionComponent_show.jpg)
+
+::: tip 源码地址
+
+`React 18.2.0`简易版函数组件的源码解析的我放在了[<u>React 18.2.0 简易版函数组件</u>](https://github.com/azzlzzxz/react-code/tree/5.functionComponent)这里。
+
+:::

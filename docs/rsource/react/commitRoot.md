@@ -156,6 +156,8 @@ function commitReconciliationEffects(finishedWork) {
 
 `commitPlacement`函数：把此`fiber`的`真实DOM`插入到`父DOM`里
 
+- 根据`parentFiber.tag`类型去执行不同的插入操作
+
 ```js
 // ReactFiberCommitWork.js
 
@@ -318,6 +320,8 @@ function insertOrAppendPlacementNode(node, before, parent) {
 
 #### `insertBefore` & `appendChild`
 
+- 插入和添加`真实DOM`节点
+
 ```js
 export function appendChild(parentInstance, child) {
   parentInstance.appendChild(child)
@@ -334,7 +338,7 @@ export function insertBefore(parentInstance, child, beforeChild) {
 }
 ```
 
-## 展示
+## 页面渲染
 
 至此整个渲染流程就结束了，页面上能够展示出我们最开始写在`main.jsx`里的`elememt`了
 
@@ -354,7 +358,7 @@ root.render(element)
 
 ![render_show](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/render_show.jpg)
 
-::: tip 仓库
+::: tip 源码地址
 
 整个`React 18.2.0`挂在阶段的渲染流程的源码解析的我放在了[<u>React 18.2.0 渲染流程</u>](https://github.com/azzlzzxz/react-code/tree/4.commitRoot)这里。
 :::

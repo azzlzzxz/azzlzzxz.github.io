@@ -212,6 +212,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: '源码文件结构', link: '/rsource/react/file' },
+        { text: '前置知识', link: '/rsource/react/preknowledge' },
         { text: 'Fiber', link: '/rsource/react/introduce' },
         {
           text: '渲染流程',
@@ -240,6 +241,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         {
           text: '函数组件',
           link: '/rsource/react/functionComponent',
+        },
+        {
+          text: '合成事件',
+          link: '/rsource/react/event',
         },
       ],
     },

@@ -40,7 +40,7 @@ function completeUnitOfWork(unitOfWork) {
 
 类似 `beginWork`，`completeWork` 也是根据 `fiber.tag` 来调用不同的处理逻辑
 
-> 源码地址
+> 源码地址 [<u>completeWork | react-reconciler/src/ReactFiberCompleteWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberCompleteWork.js#L935)
 
 ```js
 // ReactFiberCompleteWork.js
@@ -102,10 +102,12 @@ export function createTextInstance(content) {
 
 `createInstance` 函数的作用是为 `Fiber 节点`创建对应的 `DOM` 节点
 
-> 源码地址
+> 源码地址 [<u>createInstance | react-dom-bindings/src/client/ReactFiberConfigDOM.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js#L398)
 
 ```js
 // react-dom-bindings/src/client/ReactDOMHostConfig
+
+import { precacheFiberNode, updateFiberProps } from './ReactDOMComponentTree'
 
 /**
  * 在原生组件初次挂载的时候，会通过此方法创建真实DOM
@@ -129,6 +131,9 @@ export function createInstance(type, props, internalInstanceHandle) {
 ```
 
 ### `precacheFiberNode` & `updateFiberProps`
+
+> 源码地址 [<u>precacheFiberNode | react-dom-bindings/src/client/ReactDOMComponentTree.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/client/ReactDOMComponentTree.js#L59)
+> 源码地址 [<u>updateFiberProps | react-dom-bindings/src/client/ReactDOMComponentTree.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/client/ReactDOMComponentTree.js#L218)
 
 ```js
 // react-dom-bindings/src/client/ReactDOMComponentTree

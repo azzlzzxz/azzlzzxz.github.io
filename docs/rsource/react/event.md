@@ -12,12 +12,12 @@ import { createRoot } from 'react-dom/src/client/ReactDOMRoot'
 function FunctionComponent() {
   return (
     <h1
-      onClick={() => console.log('父 onClick')}
-      onClickCapture={() => console.log('父 onClickCapture')}
+      onClick={() => console.log('ParentBubble')}
+      onClickCapture={() => console.log('ParentCapture')}
     >
       <span
-        onClick={() => console.log('子 onClick')}
-        onClickCapture={() => console.log('子 onClickCapture')}
+        onClick={() => console.log('ChildBubble')}
+        onClickCapture={() => console.log('ChildCapture')}
       >
         hello
       </span>
@@ -34,6 +34,8 @@ root.render(element)
 
 ## `createRoot`
 
+`createRoot`函数里添加`listenToAllSupportedEvents`
+
 ```js {6,7}
 import { listenToAllSupportedEvents } from 'react-dom-bindings/src/events/DOMPluginEventSystem'
 
@@ -47,7 +49,11 @@ export function createRoot(container) {
 }
 ```
 
-## `DOMPluginEventSystem （React事件监听入口文件）`
+## `DOMPluginEventSystem （React事件监听系统入口文件）`
+
+> React 事件监听系统 方法执行流程图
+
+![react_event_method](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/react_event_method.jpg)
 
 - `listenToAllSupportedEvents` 监听所有的注册事件
 
@@ -58,12 +64,30 @@ export function createRoot(container) {
 - `dispatchEventForPlugins`里创建了两个变量：
 
   - `nativeEventTarget`：原生事件的`target`
-  - `dispatchQueue`：派发事件的数组（这里的`dispatchQueue`为什么要是数组，因为`dispatchQueue`里的事件不仅仅是自己的，还有它的父亲和祖先身上的事件）
+  - `dispatchQueue`：派发事件的数组
   - 最后执行[<u>`SimpleEventPlugin 里的 extractEvents`</u>](#simpleeventplugin是-react-事件插件)
 
-- `accumulateSinglePhaseListeners`函数：累加单阶段监听
+::: tip 这里的`dispatchQueue`为什么要是数组?
 
-```js
+因为 React 事件系统里有很多插件， 比如`SimpleEventPlugin`、`ChangeEventPlugin`、`BeforeInputEventPlugin`等，他们都有可能有监听函数需要执行，也就是执行`SimpleEventPlugin 里的 extractEvents`方法，这时就会放到 `dispatchQueue` 里
+
+:::
+
+- `accumulateSinglePhaseListeners`函数：累加单阶段(捕获或冒泡阶段)的监听（这里的`listeners`为什么要是数组，因为`listeners`里的事件不仅仅是自己的，还有它的父亲和祖先身上的事件）
+
+- `processDispatchQueue`函数：遍历`dispatchQueue`派发事件数组，执行`processDispatchQueueItemsInOrder`函数
+
+- `processDispatchQueueItemsInOrder`函数：根据`inCapturePhase`判断事件是`捕获`还是`冒泡`，去执行`dispatchQueue[index]`里的`listeners（监听函数数组）`对应的`捕获/冒泡的监听函数`
+
+- `executeDispatch`函数：执行监听函数
+
+::: tip 合成事件实例上`currentTarget`是在不断的变化的
+
+- `event nativeEventTarget`：它的是原始的事件源（当前执行操作的 DOM 节点），是永远不变的
+- `event currentTarget`：当前的事件源，它是会随着事件回调的执行不断变化的
+  :::
+
+```js{15,34,49,70,80,104,113,121,150,162,187}
 // react-dom-bindings/src/events/DOMPluginEventSystem
 
 import { allNativeEvents } from './EventRegistry'
@@ -73,7 +97,7 @@ import { IS_CAPTURE_PHASE } from './EventSystemFlags'
 import { createEventListenerWrapperWithPriority } from './ReactDOMEventListener'
 import { addEventCaptureListener, addEventBubbleListener } from './EventListener'
 
-// 把原生事件名称 都 放到 allNativeEvents 里
+// 把原生事件名称都放到 allNativeEvents 里
 SimpleEventPlugin.registerEvents()
 
 const listeningMarker = `_reactListening` + Math.random().toString(36).slice(2)
@@ -163,6 +187,45 @@ function dispatchEventForPlugins(
     eventSystemFlags,
     targetContainer,
   )
+
+  processDispatchQueue(dispatchQueue, eventSystemFlags);
+}
+
+function processDispatchQueue(dispatchQueue, eventSystemFlags) {
+  //判断是否在捕获阶段
+  const inCapturePhase = (eventSystemFlags & IS_CAPTURE_PHASE) !== 0;
+  for (let i = 0; i < dispatchQueue.length; i++) {
+    const { event, listeners } = dispatchQueue[i];
+    processDispatchQueueItemsInOrder(event, listeners, inCapturePhase);
+  }
+}
+
+function executeDispatch(event, listener, currentTarget) {
+  // 合成事件实例currentTarget是在不断的变化的
+  // event nativeEventTarget 它的是原始的事件源，是永远不变的
+  // event currentTarget 当前的事件源，它是会随着事件回调的执行不断变化的
+  event.currentTarget = currentTarget;
+  listener(event);
+}
+
+function processDispatchQueueItemsInOrder(event, dispatchListeners, inCapturePhase) {
+  if (inCapturePhase) {//dispatchListeners[子，父]
+    for (let i = dispatchListeners.length - 1; i >= 0; i--) {
+      const { listener, currentTarget } = dispatchListeners[i];
+      if (event.isPropagationStopped()) {
+        return;
+      }
+      executeDispatch(event, listener, currentTarget);
+    }
+  } else {
+    for (let i = 0; i < dispatchListeners.length; i++) {
+      const { listener, currentTarget } = dispatchListeners[i];
+      if (event.isPropagationStopped()) {
+        return;
+      }
+      executeDispatch(event, listener, currentTarget);
+    }
+  }
 }
 
 function extractEvents(
@@ -197,25 +260,53 @@ export function accumulateSinglePhaseListeners(
   const listeners = []
   let instance = targetFiber
   while (instance !== null) {
-    const { stateNode, tag } = instance //stateNode 当前的执行回调的DOM节点
+    const { stateNode, tag } = instance // stateNode 当前的执行回调的DOM节点
     if (tag === HostComponent && stateNode !== null) {
+      // 获取fiber节点上props属性中的监听事件
       const listener = getListener(instance, reactEventName)
       console.log('listener', listener)
       if (listener) {
-        listeners.push()
+        listeners.push(createDispatchListener(instance, listener, stateNode))
       }
     }
-    instance = instance.return
+    instance = instance.return // 找完自己的就向上找父亲、祖先的监听事件
   }
   return listeners
+}
+
+function createDispatchListener(instance, listener, currentTarget) {
+  return { instance, listener, currentTarget }
+}
+```
+
+### `getListener`
+
+- `getListener`函数：获取此`fiber`上对应的回调函数，在其`props`上获取
+- [<u>`getFiberCurrentPropsFromNode`方法请看这里</u>](#getclosestinstancefromnode)
+
+```js
+import { getFiberCurrentPropsFromNode } from '../client/ReactDOMComponentTree'
+
+/**
+ * 获取此fiber上对应的回调函数
+ * @param {*} inst
+ * @param {*} registrationName
+ */
+export default function getListener(inst, registrationName) {
+  const { stateNode } = inst
+  if (stateNode === null) return null
+  const props = getFiberCurrentPropsFromNode(stateNode)
+  if (props === null) return null
+  const listener = props[registrationName] // props.onClick
+  return listener
 }
 ```
 
 ## `allNativeEvents`
 
-`allNativeEvents`函数：就是一个`Set`数据结构，里面放着原生事件的名称
+`allNativeEvents`：就是一个`Set`数据结构，里面放着原生事件的名称
 
-```js
+```js {3,21}
 // react-dom-bindings/src/events/EventRegistry
 
 export const allNativeEvents = new Set()
@@ -246,8 +337,11 @@ export function registerDirectEvent(registrationName, dependencies) {
 - `registerSimpleEvents`函数：直接通过此插件暴露出去
 - `extractEvents`函数：把要执行的回调函数添加到`dispatchQueue`中
 
-```js
+```js {6-56}
+// react-dom-bindings/src/events/plugins/SimpleEventPlugin.js
+
 import { registerSimpleEvents } from '../DOMEventProperties'
+import { SyntheticMouseEvent } from '../SyntheticEvent';
 
 /**
  * 把要执行回调函数添加到dispatchQueue中
@@ -268,28 +362,144 @@ function extractEvents(
   eventSystemFlags,
   targetContainer,
 ) {
-  const reactName = topLevelEventsToReactNames.get(domEventName) //click=>onClick
-  const isCapturePhase = (eventSystemFlags & IS_CAPTURE_PHASE) !== 0 //是否是捕获阶段
+  const reactName = topLevelEventsToReactNames.get(domEventName) // map click => onClick
+
+  // 合成事件的构建函数
+  let SyntheticEventCtor;
+  // 根据domEventName来构建合成事件，这里只列举click事件
+  switch (domEventName) {
+    case 'click':
+      SyntheticEventCtor = SyntheticMouseEvent;
+      break;
+    ...
+    default:
+      break;
+  }
+
+  const isCapturePhase = (eventSystemFlags & IS_CAPTURE_PHASE) !== 0 // 是否是捕获阶段
   const listeners = accumulateSinglePhaseListeners(
     targetInst,
     reactName,
     nativeEvent.type,
     isCapturePhase,
   )
+
+  // 如果有要执行的监听函数的话 listeners=[onClickCapture,onClickCapture]=[ChildCapture,ParentCapture]
+  const event = new SyntheticEventCtor(reactName, domEventName, null, nativeEvent, nativeEventTarget);
+
+  dispatchQueue.push({
+    event,// 合成事件实例
+    listeners// 监听函数数组
+  });
 }
 
 export { registerSimpleEvents as registerEvents, extractEvents }
 ```
 
+### `createSyntheticEvent` 创建合成事件
+
+> 源码地址 [createSyntheticEvent | react-dom-bindings/src/events/SyntheticEvent.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/events/SyntheticEvent.js#L31)
+
+- `createSyntheticEvent`函数是`React 合成事件的核心代码`
+
+- `SyntheticBaseEvent`函数是合成事件的基类，根据传入`createSyntheticEvent`方法中的参数，来合成不同的合成事件，👇 的代码就是创建点击事件的合成事件。
+
+- `xxxinterface`:是合成事件的接口，里面有原生事件的属性，例如：`MouseEventInterface`、`DragEventInterface` 等。
+
+> 源码地址 [MouseEventInterface | react-dom-bindings/src/events/SyntheticEvent.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/events/SyntheticEvent.js#L192C7-L192C26)
+
+```js {17-47}
+import assign from 'shared/assign'
+
+function functionThatReturnsTrue() {
+  return true
+}
+function functionThatReturnsFalse() {
+  return false
+}
+
+const MouseEventInterface = {
+  clientX: 0,
+  clientY: 0,
+}
+
+// 创建合成事件
+function createSyntheticEvent(inter) {
+  /**
+   * 合成事件的基类
+   * @param {*} reactName React属性名 onClick
+   * @param {*} reactEventType click
+   * @param {*} targetInst 事件源对应的fiber实例
+   * @param {*} nativeEvent 原生事件对象
+   * @param {*} nativeEventTarget 原生事件源 span 事件源对应的那个真实DOM
+   */
+  function SyntheticBaseEvent(
+    reactName,
+    reactEventType,
+    targetInst,
+    nativeEvent,
+    nativeEventTarget,
+  ) {
+    this._reactName = reactName
+    this.type = reactEventType
+    this._targetInst = targetInst
+    this.nativeEvent = nativeEvent
+    this.target = nativeEventTarget
+
+    // 把此接口上对应的属性从原生事件上拷贝到合成事件实例上
+    for (const propName in inter) {
+      if (!inter.hasOwnProperty(propName)) {
+        continue
+      }
+      this[propName] = nativeEvent[propName]
+    }
+
+    // 是否已经阻止默认事件
+    this.isDefaultPrevented = functionThatReturnsFalse
+
+    // 是否已经阻止继续传播
+    this.isPropagationStopped = functionThatReturnsFalse
+
+    return this
+  }
+
+  // 浏览器兼容性处理
+  assign(SyntheticBaseEvent.prototype, {
+    preventDefault() {
+      const event = this.nativeEvent
+      if (event.preventDefault) {
+        event.preventDefault()
+      } else {
+        event.returnValue = false
+      }
+      this.isDefaultPrevented = functionThatReturnsTrue
+    },
+    stopPropagation() {
+      const event = this.nativeEvent
+      if (event.stopPropagation) {
+        event.stopPropagation()
+      } else {
+        event.cancelBubble = true
+      }
+      this.isPropagationStopped = functionThatReturnsTrue
+    },
+  })
+
+  return SyntheticBaseEvent
+}
+
+export const SyntheticMouseEvent = createSyntheticEvent(MouseEventInterface)
+```
+
 ## `registerSimpleEvents`
 
-`registerSimpleEvents`函数：把原生事件名和处理函数的名字进行映射或者说绑定
+- `registerSimpleEvents`函数：把原生事件名和处理函数的名字进行映射或者说绑定
 
-`simpleEventPluginEvents`是包含所有原生事件名称的数组，这里只列举 `click`
+- `simpleEventPluginEvents`是包含所有原生事件名称的数组，这里只列举了 `click`
 
 > 源码地址 [simpleEventPluginEvents | react-dom-bindings/src/events/DOMEventProperties.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/events/DOMEventProperties.js#L37)
 
-```js
+```js {23-30}
 // react-dom-bindings/src/events/DOMEventProperties.js
 
 import { registerTwoPhaseEvent } from './EventRegistry'
@@ -330,7 +540,7 @@ export function registerSimpleEvents() {
 - 连续事件：会连续触发的事件，例如：滚动事件
 - 此函数把参数一直透传下去，实际执行的方法是`dispatchEvent`
 
-```js
+```js {7-15}
 // react-dom-bindings/src/events/ReactDOMEventListener.js
 
 import getEventTarget from './getEventTarget'
@@ -496,3 +706,9 @@ export function addEventBubbleListener(target, eventType, listener) {
   return listener
 }
 ```
+
+## 点击事件触发
+
+我们看一下点击`hello`之后的打印结果
+
+![react_event_result](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/react_event_result.gif)

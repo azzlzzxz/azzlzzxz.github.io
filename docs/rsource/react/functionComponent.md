@@ -149,6 +149,6 @@ export function commitMutationEffectsOnFiber(finishedWork, root) {
 
 ::: tip 源码地址
 
-`React 18.2.0`简易版函数组件的源码解析的我放在了[<u>React 18.2.0 简易版函数组件</u>](https://github.com/azzlzzxz/react-code/tree/5.functionComponent)这里。
+`React 18.2.0`简易版函数组件的源码解析的我放在了[<u>5.functionComponent 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/5.functionComponent)
 
 :::

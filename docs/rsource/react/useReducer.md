@@ -241,3 +241,7 @@ function dispatchReducerAction(fiber, queue, action) {
   console.log(fiber, queue, action)
 }
 ```
+
+> 点击按钮后，打印看一下 `dispatchReducerAction` 函数的入参
+
+![useReducer_dispatchReducerAction](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useReducer_dispatchReducerAction.jpg)

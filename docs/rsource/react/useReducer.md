@@ -27,18 +27,30 @@ const [state, dispatch] = useReducer(reducer, initialArg, init?)
 
 ## `main.jsx` 入口文件
 
-```js {4-7,10,12-14}
+```js {4-18}
 import * as React from './react'
 import { createRoot } from 'react-dom/src/client/ReactDOMRoot'
 
 function counter(state, action) {
   if (action.type === 'add') return state + action.payload
+
   return state
 }
 
 function FunctionComponent() {
   const [number, setNumber] = React.useReducer(counter, 0)
-  return <button onClick={() => setNumber({ type: 'add', payload: 1 })}>{number}</button>
+
+  return (
+    <button
+      onClick={() => {
+        setNumber({ type: 'add', payload: 1 })
+        setNumber({ type: 'add', payload: 2 })
+        setNumber({ type: 'add', payload: 3 })
+      }}
+    >
+      {number}
+    </button>
+  )
 }
 
 let element = <FunctionComponent />
@@ -134,8 +146,6 @@ export default ReactSharedInternals
 - `mount`：挂载阶段的方法
 - `update`：更新阶段的方法
 
----
-
 ## `renderWithHooks`
 
 - 需要在函数组件执行前给`ReactCurrentDispatcher.current`赋值
@@ -182,6 +192,9 @@ export function renderWithHooks(current, workInProgress, Component, props) {
 
 ### `mountReducer`
 
+- `mountWorkInProgressHook`函数：是来创建 hook
+- `dispatchReducerAction`函数：是来执行派发动作的方法
+
 ```js
 function mountReducer(reducer, initialArg) {
   const hook = mountWorkInProgressHook()
@@ -226,11 +239,16 @@ function mountWorkInProgressHook() {
 }
 ```
 
-## `dispatchReducerAction`
+## `update` 阶段
+
+### `dispatchReducerAction`
 
 - `dispatchReducerAction`函数：执行派发动作的方法，它要更新状态，并且让界面重新更新
 
 ```js
+import { enqueueConcurrentHookUpdate } from './ReactFiberCocurrentUpdates'
+import { scheduleUpdateOnFiber } from './ReactFiberWorkLoop'
+
 /**
  * 执行派发动作的方法，它要更新状态，并且让界面重新更新
  * @param {*} fiber function对应的fiber
@@ -239,9 +257,126 @@ function mountWorkInProgressHook() {
  */
 function dispatchReducerAction(fiber, queue, action) {
   console.log(fiber, queue, action)
+
+  const update = {
+    action, // { type: 'add', payload: 1 } 派发的动作
+    next: null, // 指向下一个更新对象
+  }
+  // 把当前的最新的更新添加到更新队列中，并且返回当前的根fiber
+  const root = enqueueConcurrentHookUpdate(fiber, queue, update)
+  scheduleUpdateOnFiber(root)
 }
 ```
 
 > 点击按钮后，打印看一下 `dispatchReducerAction` 函数的入参
 
 ![useReducer_dispatchReducerAction](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useReducer_dispatchReducerAction.jpg)
+
+### `scheduleUpdateOnFiber`
+
+```js
+// ReactFiberWorkLoop.js
+
+import { finishQueueingConcurrentUpdates } from './ReactFiberConcurrentUpdates'
+
+/**
+ * 计划更新root
+ * 源码此处有一个任务调度的功能
+ * @param {*} root
+ */
+export function scheduleUpdateOnFiber(root) {
+  // 确保调度执行root上的更新
+  ensureRootIsScheduled(root)
+}
+
+// ... 省略此处代码
+
+function prepareFreshStack(root) {
+  workInProgress = createWorkInProgress(root.current, null)
+
+  // 在工作循环之前完成更新队列的收集
+  finishQueueingConcurrentUpdates()
+}
+
+// 开始构建fiber树
+function renderRootSync(root) {
+  prepareFreshStack(root)
+  workLoopSync()
+}
+```
+
+### `ReactFiberConcurrentUpdates.js`
+
+- `enqueueConcurrentHookUpdate`函数：把更新对象添加到更新队列中去
+
+- `enqueueUpdate`函数：把更新先缓存到`concurrentQueue`数组中
+
+- `getRootForUpdatedFiber`函数：从当前的`fiber`往上找，一直找到根节点
+
+- `finishQueueingConcurrentUpdates`函数：把更新放到队列里
+
+```js
+//
+
+// 更新队列
+const concurrentQueues = []
+// 并发更新队列的索引
+let concurrentQueuesIndex = 0
+
+/**
+ * 把更新先缓存到concurrentQueue数组中
+ * @param {*} fiber
+ * @param {*} queue
+ * @param {*} update
+ */
+function enqueueUpdate(fiber, queue, update) {
+  //012 setNumber1 345 setNumber2 678 setNumber3
+  concurrentQueues[concurrentQueuesIndex++] = fiber // 函数组件对应的fiber
+  concurrentQueues[concurrentQueuesIndex++] = queue // 要更新的hook对应的更新队列
+  concurrentQueues[concurrentQueuesIndex++] = update //更新对象
+}
+
+/**
+ * 把更新对象添加到更新队列中
+ * @param {*} fiber 函数组件对应的fiber
+ * @param {*} queue 要更新的hook对应的更新队列
+ * @param {*} update 更新对象
+ */
+export function enqueueConcurrentHookUpdate(fiber, queue, update) {
+  enqueueUpdate(fiber, queue, update)
+  return getRootForUpdatedFiber(fiber)
+}
+
+// 从当前的fiber往上找，找到根节点
+function getRootForUpdatedFiber(sourceFiber) {
+  let node = sourceFiber
+  let parent = node.return
+  while (parent !== null) {
+    node = parent
+    parent = node.return
+  }
+  return node.tag === HostRoot ? node.stateNode : null //FiberRootNode div#root
+}
+
+// 把更新放到队列里
+export function finishQueueingConcurrentUpdates() {
+  const endIndex = concurrentQueuesIndex // 9 只是一边界条件
+  concurrentQueuesIndex = 0
+  let i = 0
+  while (i < endIndex) {
+    const fiber = concurrentQueues[i++]
+    const queue = concurrentQueues[i++]
+    const update = concurrentQueues[i++]
+    if (queue !== null && update !== null) {
+      const pending = queue.pending
+      if (pending === null) {
+        update.next = update
+      } else {
+        update.next = pending.next
+        pending.next = update
+      }
+      queue.pending = update
+    }
+  }
+}
+```

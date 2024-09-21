@@ -251,7 +251,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           collapsed: false,
           items: [
             { text: 'useReducer', link: '/rsource/react/useReducer' },
-            // { text: 'useState', link: '/rsource/react/useState' },
+            { text: 'useState', link: '/rsource/react/useState' },
             // { text: 'useEffect', link: '/rsource/react/useEffect' },
             // { text: 'useLayoutEffect', link: '/rsource/react/useLayoutEffect' },
           ],

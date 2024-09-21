@@ -572,5 +572,5 @@ completeWork HostRoot
 
 ::: tip 源码地址
 
-`beginWork`的相关源码解析的我放在了[<u>3.beginWork 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/3.beginWorkt)这里。
+实现`beginWork`的相关源码解析的我放在了[<u>3.beginWork 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/3.beginWorkt)这里。
 :::

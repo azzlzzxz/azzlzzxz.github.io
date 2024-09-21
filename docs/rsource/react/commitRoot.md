@@ -433,5 +433,5 @@ root.render(element)
 
 ::: tip 源码地址
 
-整个`React 18.2.0`挂在阶段的渲染流程的源码解析的我放在了[<u>4.commitRoot 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/4.commitRoot)这里。
+实现整个`React 18.2.0`挂在阶段的渲染流程的源码解析的我放在了[<u>4.commitRoot 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/4.commitRoot)这里。
 :::

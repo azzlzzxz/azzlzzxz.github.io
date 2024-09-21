@@ -715,5 +715,5 @@ export function addEventBubbleListener(target, eventType, listener) {
 
 ::: tip 源码地址
 
-React 合成事件相关代码我放在了[<u>6.event 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/6.event)
+实现`React 合成事件`的相关代码我放在了[<u>6.event 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/6.event)
 :::

@@ -163,6 +163,7 @@ export default ReactSharedInternals
 
   - `mount`阶段：需要在函数组件执行前给`ReactCurrentDispatcher.current`赋值
   - `update`阶段：执行`updateReducer`
+  - `commit`阶段：提交更新，更新真实`DOM`
 
 ```js
 import ReactSharedInternals from 'shared/ReactSharedInternals'
@@ -491,3 +492,8 @@ function updateWorkInProgressHook() {
 `main.jsx` 文件执行的结果
 
 ![userReducer_render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/userReducer_render.gif)
+
+::: tip 源码地址
+
+实现`useReducer`的相关代码我放在了[<u>7.useReducer 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/7.useReducer)
+:::

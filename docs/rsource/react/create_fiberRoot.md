@@ -190,5 +190,5 @@ export const Update = 0b0000000000000000000000000100 // 4
 
 ::: tip 源码地址
 
-`FiberRootNode` & `HostRootFiber`的相关源码解析的我放在了[<u>1.createFiberRoot 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/1.createFiberRoot)这里。
+实现`FiberRootNode` & `HostRootFiber`的相关源码解析的我放在了[<u>1.createFiberRoot 分支里 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/1.createFiberRoot)这里。
 :::

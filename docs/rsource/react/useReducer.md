@@ -173,6 +173,10 @@ const HooksDispatcherOnMount = {
   useReducer: mountReducer,
 }
 
+const HooksDispatcherOnUpdate = {
+  useReducer: updateReducer,
+}
+
 // 当前函数组件对应的 fiber
 let currentlyRenderingFiber = null
 // 当前正在使用中的 hook
@@ -191,10 +195,19 @@ let currentHook = null
 export function renderWithHooks(current, workInProgress, Component, props) {
   currentlyRenderingFiber = workInProgress // Function组件对应的 fiber
 
-  // 需要要函数组件执行前给ReactCurrentDispatcher.current赋值
-  ReactCurrentDispatcher.current = HooksDispatcherOnMount
+  // 如果有老的fiber,并且有老的hook链表，进入更新逻辑
+  if (current !== null && current.memoizedState !== null) {
+    // 需要在函数组件执行前给ReactCurrentDispatcher.current赋值
+    ReactCurrentDispatcher.current = HooksDispatcherOnUpdate
+  } else {
+    ReactCurrentDispatcher.current = HooksDispatcherOnMount
+  }
 
   const children = Component(props)
+
+  currentlyRenderingFiber = null
+  workInProgress = null
+  currentHook = null
 
   return children
 }

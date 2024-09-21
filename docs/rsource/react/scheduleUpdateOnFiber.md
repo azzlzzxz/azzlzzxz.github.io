@@ -148,7 +148,7 @@ function performConcurrentWorkOnRoot(root) {
 
 ## `renderRootSync`
 
-> `Fiber Tree`
+> 构建 `Fiber Tree`
 
 ![fiber_tree](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fiber_tree.jpg)
 
@@ -167,8 +167,11 @@ function renderRootSync(root) {
 ```js
 // 创建一个新栈
 function prepareFreshStack(root) {
+  // 创建根节点的新fiber
   workInProgress = createWorkInProgress(root.current, null)
-  console.log('workInProgress', workInProgress)
+
+  // 在工作循环之前完成更新队列的收集
+  finishQueueingConcurrentUpdates()
 }
 ```
 

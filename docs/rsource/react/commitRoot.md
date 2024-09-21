@@ -2,8 +2,6 @@
 
 在 `render` 阶段完成更新后，会调用 `commitRoot(root)`（进入 `commit` 阶段）来提交更新
 
-> 注意：目前代码还不涉及到优先级、DOM-Diff、并发渲染等功能，只是初次渲染时执行的
-
 ```js
 // ReactFiberWorkLoop.js
 
@@ -19,6 +17,9 @@ function commitRoot(root) {
   // 如果自己有副作用或子节点有副作用那就进行提交DOM操作
   if (subtreeHasEffects || rootHasEffect) {
     console.log('commitRoot', finishedWork.child)
+
+    // 提交的变更 副作用 在 fiber 上
+    commitMutationEffectsOnFiber(finishedWork, root)
   }
 
   // 等DOM变更后，root 的 current属性指向新fiber树
@@ -38,6 +39,7 @@ function performConcurrentWorkOnRoot(root) {
 
   root.finishedWork = finishedWork
   commitRoot(root)
+  workInProgressRoot = null
 }
 ```
 

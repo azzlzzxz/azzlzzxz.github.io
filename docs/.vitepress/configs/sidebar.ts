@@ -249,7 +249,16 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         {
           text: 'Hooks',
           collapsed: false,
-          items: [{ text: 'useReducer', link: '/rsource/react/useReducer' }],
+          items: [
+            { text: 'useReducer', link: '/rsource/react/useReducer' },
+            // { text: 'useState', link: '/rsource/react/useState' },
+            // { text: 'useEffect', link: '/rsource/react/useEffect' },
+            // { text: 'useLayoutEffect', link: '/rsource/react/useLayoutEffect' },
+          ],
+        },
+        {
+          text: 'DOM-DIFF',
+          link: '/rsource/react/dom-diff',
         },
       ],
     },

@@ -30,6 +30,13 @@ import { mountChildFibers, reconcileChildFibers } from './ReactChildFiber'
 export function beginWork(current, workInProgress) {
   logger('beginWork', workInProgress)
   switch (workInProgress.tag) {
+    case IndeterminateComponent:
+      return mountIndeterminateComponent(current, workInProgress, workInProgress.type, renderLanes)
+    case FunctionComponent: {
+      const Component = workInProgress.type
+      const nextProps = workInProgress.pendingProps
+      return updateFunctionComponent(current, workInProgress, Component, nextProps, renderLanes)
+    }
     case HostRoot:
       return updateHostRoot(current, workInProgress)
     case HostComponent:
@@ -213,6 +220,42 @@ export function shouldSetTextContent(type, props) {
 }
 ```
 
+## `mountIndeterminateComponent`
+
+- `mountIndeterminateComponent`函数：挂载函数组件
+
+```js
+/**
+ * 挂载函数组件
+ * @param {*} current  老fiber
+ * @param {*} workInProgress 新的fiber
+ * @param {*} Component 组件类型，也就是函数组件的定义
+ */
+export function mountIndeterminateComponent(current, workInProgress, Component) {
+  const props = workInProgress.pendingProps
+  const value = renderWithHooks(current, workInProgress, Component, props)
+  workInProgress.tag = FunctionComponent
+  reconcileChildren(current, workInProgress, value)
+  return workInProgress.child
+}
+```
+
+## `updateFunctionComponent`
+
+```js
+export function updateFunctionComponent(
+  current,
+  workInProgress,
+  Component,
+  nextProps,
+  renderLanes,
+) {
+  const nextChildren = renderWithHooks(current, workInProgress, Component, nextProps, renderLanes)
+  reconcileChildren(current, workInProgress, nextChildren)
+  return workInProgress.child
+}
+```
+
 ## `reconcileChildren` 根据`新的虚拟DOM`构建`新的fiber子链表`
 
 > 源码地址 [<u>reconcileChildren | react-reconciler/src/ReactChildFiber.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L340)
@@ -259,11 +302,19 @@ function reconcileChildren(current, workInProgress, nextChildren) {
 源码里`createChildReconciler` 中定义了大量如 `deleteXXX`、`placeXXX`、`updateXXX`、`reconcileXXX` 的函数，这些函数覆盖了对 `Fiber 节点` 的`创建`、`增加`、`删除`、`修改`等操作，而这些函数将直接或间接地被 `reconcileChildFibers` 所调用
 :::
 
+- `useFiber`函数：根据传入的`fiber`和` pendingProps``克隆 `出一个`新的fiber节点`
+
+- `createChild`函数：根据`新的父Fiber`创建`新的子Fiber节点`
+- `reconcileSingleElement`函数：`虚拟DOM`是单节的话，调用此方法 更新/创建 一个`fiber`
+- `reconcileChildrenArray`函数：处理`多个虚拟DOM`构成的数组的 更新/创建 多个`fiber`
+- `placeSingleChild`函数：给`fiber`单节点设置副作用（`flags` 增删改）
+- `placeChild`函数：给`fiber`节点设置副作用（`flags` 增删改），更改其在`fiber树`中的索引
+
 ```js
 // ReactChildFiber.js
 
 import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols'
-import { createFiberFromElement, createFiberFromText } from './ReactFiber'
+import { createFiberFromElement, createFiberFromText, createWorkInProgress } from './ReactFiber'
 import { Placement } from './ReactFiberFlags'
 
 import isArray from 'shared/isArray'
@@ -273,6 +324,13 @@ import isArray from 'shared/isArray'
  * @param {*} shouldTrackSideEffects 是否跟踪副作用
  */
 function createChildReconciler(shouldTrackSideEffects) {
+  function useFiber(fiber, pendingProps) {
+    const clone = createWorkInProgress(fiber, pendingProps)
+    clone.index = 0
+    clone.sibling = null
+    return clone
+  }
+
   function createChild(returnFiber, newChild) {
     if ((typeof newChild === 'string' && newChild !== '') || typeof newChild === 'number') {
       const created = createFiberFromText(`${newChild}`)
@@ -294,10 +352,35 @@ function createChildReconciler(shouldTrackSideEffects) {
     return null
   }
 
-  function reconcileSingleElement(returnFiber, currentFirstFiber, element) {
-    // 因为我们现在实现的是初次挂载，那么老节点currentFirstFiber肯定是没有的，所以可以根据虚拟DOM创建fiber节点
+  /**
+   * 虚拟DOM的单节点协调
+   * @param {*} returnFiber 根fiber div#root对应的fiber
+   * @param {*} currentFirstChild 老的FunctionComponent对应的fiber
+   * @param {*} element 新的虚拟DOM对象
+   * @returns 返回新的第一个子fiber
+   */
+  function reconcileSingleElement(returnFiber, currentFirstChild, element) {
+    const key = element.key // 新的虚拟DOM的key,也就是唯一标准
+    let child = currentFirstChild // 老的FunctionComponent对应的fiber
+    while (child !== null) {
+      // 判断此老fiber对应的key和新的虚拟DOM对应的key是否一样
+      if (child.key === key) {
+        //判断老fiber对应的类型和新虚拟DOM元素对应的类型是否相同
+        if (child.type === element.type) {
+          // p div
+          //如果key一样，类型也一样，则认为此节点可以复用
+          const existing = useFiber(child, element.props)
+          existing.return = returnFiber
+          return existing
+        }
+      }
+      child = child.sibling
+    }
+
+    // 在初次挂载时，那么老节点currentFirstChild肯定是没有的，不需要DOM-Diff，所以可以根据虚拟DOM创建fiber节点
     const created = createFiberFromElement(element)
     created.return = returnFiber
+
     return created
   }
 
@@ -307,8 +390,8 @@ function createChildReconciler(shouldTrackSideEffects) {
    * @returns
    */
   function placeSingleChild(newFiber) {
-    // 说明要添加副作用
-    if (shouldTrackSideEffects) {
+    // 说明要添加副作用 并且他的老fiber是null，才需要插入
+    if (shouldTrackSideEffects && newFiber.alternate === null) {
       // 要在提交阶段插入此节点
       // React渲染分为渲染（创建Fiber树）和提交（更新真实DOM）两个阶段
       newFiber.flags |= Placement // Placement 这个新fiber需要变成DOM，插入到dom中

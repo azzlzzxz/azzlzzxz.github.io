@@ -82,7 +82,14 @@ function commitRoot(root) {
 ```js
 // ReactFiberCommitWork.js
 
-import { HostRoot, HostComponent, HostText } from './ReactWorkTags'
+import { MutationMask, Placement } from './ReactFiberFlags'
+import { HostRoot, HostComponent, HostText, FunctionComponent } from './ReactWorkTags'
+import {
+  appendChild,
+  insertBefore,
+  commitUpdate,
+} from 'react-dom-bindings/src/client/ReactDOMHostConfig'
+import { Update } from './ReactFiberFlags'
 
 /**
  * 遍历fiber树，执行fiber上的副作用 变更操作
@@ -90,14 +97,40 @@ import { HostRoot, HostComponent, HostText } from './ReactWorkTags'
  * @param {*} root 根节点
  */
 export function commitMutationEffectsOnFiber(finishedWork, root) {
+  const current = finishedWork.alternate // 当前fiber的老fiber
+  const flags = finishedWork.flags
   switch (finishedWork.tag) {
+    case FunctionComponent:
     case HostRoot:
-    case HostComponent:
     case HostText: {
       //先遍历它们的子节点，处理它们的子节点上的副作用
       recursivelyTraverseMutationEffects(root, finishedWork)
       //再处理自己身上的副作用
       commitReconciliationEffects(finishedWork)
+      break
+    }
+    case HostComponent: {
+      //先遍历它们的子节点，处理它们的子节点上的副作用
+      recursivelyTraverseMutationEffects(root, finishedWork)
+      //再处理自己身上的副作用
+      commitReconciliationEffects(finishedWork)
+      //处理DOM更新
+      if (flags & Update) {
+        //获取真实DOM
+        const instance = finishedWork.stateNode
+        //更新真实DOM
+        if (instance !== null) {
+          const newProps = finishedWork.memoizedProps
+          const oldProps = current !== null ? current.memoizedProps : newProps
+          const type = finishedWork.type
+          // 原生组件的更新队列里放的是带生效的属性
+          const updatePayload = finishedWork.updateQueue
+          finishedWork.updateQueue = null
+          if (updatePayload) {
+            commitUpdate(instance, updatePayload, type, oldProps, newProps, finishedWork)
+          }
+        }
+      }
       break
     }
     default:
@@ -335,6 +368,44 @@ export function appendChild(parentInstance, child) {
  */
 export function insertBefore(parentInstance, child, beforeChild) {
   parentInstance.insertBefore(child, beforeChild)
+}
+```
+
+## `commitUpdate`
+
+`commitUpdate`函数：提交更新操作
+
+- `updateProperties`：更新`DOM`上的属性
+- `updateFiberProps`：更新`props`
+
+```js
+export function commitUpdate(domElement, updatePayload, type, oldProps, newProps) {
+  updateProperties(domElement, updatePayload, type, oldProps, newProps)
+  updateFiberProps(domElement, newProps)
+}
+```
+
+### `updateProperties`
+
+```js
+// react-dom-bindings/src/ReactDOMHostConfig.js
+
+export function updateProperties(domElement, updatePayload) {
+  updateDOMProperties(domElement, updatePayload)
+}
+
+function updateDOMProperties(domElement, updatePayload) {
+  for (let i = 0; i < updatePayload.length; i += 2) {
+    const propKey = updatePayload[i]
+    const propValue = updatePayload[i + 1]
+    if (propKey === STYLE) {
+      setValueForStyles(domElement, propValue)
+    } else if (propKey === CHILDREN) {
+      setTextContent(domElement, propValue)
+    } else {
+      setValueForProperty(domElement, propKey, propValue)
+    }
+  }
 }
 ```
 

@@ -1,6 +1,10 @@
-# completeWork
+# completeWork 完成工作
 
 `performUnitOfWork` 函数每次会调用 `beginWork` 来创建当前节点的子节点，如果当前节点没有子节点，则说明当前节点是一个叶子节点。在前面我们已经知道，当遍历到叶子节点时说明当前节点 `“递”` 阶段 的工作已经完成，接下来就要进入 `“归”` 阶段 ，即通过 `completeUnitOfWork` 执行当前节点对应的 `completeWork` 逻辑
+
+> completeWork 流程图
+
+![completeWork](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/completeWork.jpg)
 
 ## `completeUnitOfWork`
 
@@ -45,6 +49,17 @@ function completeUnitOfWork(unitOfWork) {
 ```js
 // ReactFiberCompleteWork.js
 
+import logger from 'shared/logger'
+import {
+  createTextInstance,
+  createInstance,
+  appendInitialChild,
+  finalizeInitialChildren,
+  prepareUpdate,
+} from 'react-dom-bindings/src/client/ReactDOMHostConfig'
+import { NoFlags, Update } from './ReactFiberFlags'
+import { HostComponent, HostRoot, HostText, FunctionComponent } from './ReactWorkTags'
+
 /**
  * 完成一个fiber节点
  * @param {*} current 老fiber
@@ -56,26 +71,33 @@ export function completeWork(current, workInProgress) {
     case HostRoot:
       bubbleProperties(workInProgress)
       break
-
     //如果完成的是原生节点的话
     case HostComponent:
-      // 现在只是在处理创建或者说挂载新节点的逻辑，后面此处分进行区分是初次挂载还是更新
       const { type } = workInProgress
 
-      // 创建真实DOM
-      const instance = createInstance(type, newProps, workInProgress)
+      // 如果老fiber存在，并且老fiber上真实DOM节点，要走节点更新的逻辑
+      if (current !== null && workInProgress.stateNode !== null) {
+        // 更新
+        updateHostComponent(current, workInProgress, type, newProps)
+      } else {
+        // 挂载
+        // 创建真实DOM
+        const instance = createInstance(type, newProps, workInProgress)
 
-      //把自己所有的子节点都添加到自己的身上
-      appendAllChildren(instance, workInProgress)
+        //把自己所有的子节点都添加到自己的身上
+        appendAllChildren(instance, workInProgress)
 
-      // fiber 的 stateNode属性指向真实DOM
-      workInProgress.stateNode = instance
+        // fiber 的 stateNode属性指向真实DOM
+        workInProgress.stateNode = instance
 
-      finalizeInitialChildren(instance, type, newProps)
+        finalizeInitialChildren(instance, type, newProps)
 
+        bubbleProperties(workInProgress)
+      }
+      break
+    case FunctionComponent:
       bubbleProperties(workInProgress)
       break
-
     case HostText:
       //如果完成的fiber是文本节点，那就创建真实的文本节点
       const newText = newProps
@@ -88,7 +110,7 @@ export function completeWork(current, workInProgress) {
 }
 ```
 
-## `createTextInstance` 创建文本`DOM`元素
+### `createTextInstance` 创建文本`DOM`元素
 
 ```js
 // react-dom-bindings/src/client/ReactDOMHostConfig
@@ -98,7 +120,11 @@ export function createTextInstance(content) {
 }
 ```
 
-## `createInstance` 创建真实`DOM`
+## **以`HostComponent`为例**
+
+## `mount` 阶段
+
+### `createInstance` 创建真实`DOM`
 
 `createInstance` 函数的作用是为 `Fiber 节点`创建对应的 `DOM` 节点
 
@@ -156,7 +182,7 @@ export function updateFiberProps(node, props) {
 }
 ```
 
-## `appendAllChildren`
+### `appendAllChildren`
 
 `appendAllChildren` 函数会遍历传入的 `workInProgress` 的子节点，并将这些子节点的 `stateNode` 插入到父节点中，简单来说就是把自己所有的子节点都添加都自己身上。
 
@@ -201,7 +227,7 @@ function appendAllChildren(parent, workInProgress) {
 }
 ```
 
-### `appendInitialChild`
+#### `appendInitialChild`
 
 `appendInitialChild`函数是把`子节点`的`真实DOM`，添加到`父节点`下面
 
@@ -211,7 +237,7 @@ export function appendInitialChild(parent, child) {
 }
 ```
 
-## `finalizeInitialChildren`
+### `finalizeInitialChildren`
 
 `finalizeInitialChildren` 函数会调用 `setInitialProperties` 来进行属性和事件的设置，然后根据 `DOM 节点`的类型来判断是否需要聚焦
 
@@ -237,7 +263,7 @@ function finalizeInitialChildren(domElement, type, props, rootContainerInstance,
 }
 ```
 
-### `setInitialProperties`
+#### `setInitialProperties`
 
 `setInitialProperties` 函数用于设置 `DOM 节点`的属性以及事件监听
 
@@ -313,7 +339,7 @@ export function setValueForProperty(node, name, value) {
 }
 ```
 
-## `bubbleProperties` 冒泡函数
+### `bubbleProperties` 冒泡函数
 
 `bubbleProperties`函数的作用是把`当前fiber节点`的`所有子节点`的`副作用合并`挂载到自身上
 
@@ -336,3 +362,67 @@ function bubbleProperties(completedWork) {
 > 举个 🌰
 
 ![bubbleProperties](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/bubbleProperties.jpg)
+
+## `update` 阶段
+
+### `updateHostComponent`
+
+- `updateHostComponent`函数：在`fiber`的完成阶段准备`更新DOM`
+
+```js
+function markUpdate(workInProgress) {
+  workInProgress.flags |= Update // 给当前的fiber添加更新的副作用
+}
+
+/**
+ * 在fiber的完成阶段准备更新DOM
+ * @param {*} current button老fiber
+ * @param {*} workInProgress button的新fiber
+ * @param {*} type 类型
+ * @param {*} newProps 新属性
+ */
+function updateHostComponent(current, workInProgress, type, newProps) {
+  const oldProps = current.memoizedProps // 老的属性
+  const instance = workInProgress.stateNode // 老的DOM节点
+
+  // 比较新老属性，收集属性的差异
+  const updatePayload = prepareUpdate(instance, type, oldProps, newProps)
+
+  // 让原生组件的新fiber更新队列等于 updatePayload（他是个数组[key,value, key, value]）
+  workInProgress.updateQueue = updatePayload
+
+  // 如果 updatePayload 存在，标记当前节点需要更新（所有的更新操作在 commitWork 阶段执行）
+  if (updatePayload) {
+    markUpdate(workInProgress)
+  }
+}
+```
+
+::: tip `updatePayload` 的值是一个数组
+
+- 偶数索引的值为变化的 `prop key`
+- 奇数索引的值为变化的 `prop value`
+
+> 以下面的代码举 🌰
+
+```jsx
+function UpdatePayload() {
+  const [state, setState] = useState(0)
+
+  return (
+    <button state={state} name={`log ${state * 2}`} onClick={() => setState((v) => v + 1)}>
+      点击 +1
+    </button>
+  )
+}
+```
+
+> 打印结果
+
+```sh
+['state', 1, 'name', 'log 2']
+['state', 2, 'name', 'log 4']
+['state', 3, 'name', 'log 6']
+```
+
+:::

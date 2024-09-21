@@ -25,9 +25,13 @@ const [state, dispatch] = useReducer(reducer, initialArg, init?)
 
 **接下来我们来看看`React`是如何实现`useReducer`这个`hook`的**
 
+> `userReducer` 流程图
+
+![useReducer](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useReducer.jpg)
+
 ## `main.jsx` 入口文件
 
-```js {4-18}
+```js {4-24}
 import * as React from './react'
 import { createRoot } from 'react-dom/src/client/ReactDOMRoot'
 
@@ -36,12 +40,19 @@ function counter(state, action) {
 
   return state
 }
-
 function FunctionComponent() {
   const [number, setNumber] = React.useReducer(counter, 0)
 
+  let attrs = { id: 'btn1' }
+
+  if (number === 6) {
+    delete attrs.id
+    attrs.style = { color: 'red' }
+  }
+
   return (
     <button
+      {...attrs}
       onClick={() => {
         setNumber({ type: 'add', payload: 1 })
         setNumber({ type: 'add', payload: 2 })
@@ -148,7 +159,10 @@ export default ReactSharedInternals
 
 ## `renderWithHooks`
 
-- 需要在函数组件执行前给`ReactCurrentDispatcher.current`赋值
+- `renderWithHooks`函数里通过`current`来判断是`mount（挂载阶段）`还是 `update（更新阶段）`
+
+  - `mount`阶段：需要在函数组件执行前给`ReactCurrentDispatcher.current`赋值
+  - `update`阶段：执行`updateReducer`
 
 ```js
 import ReactSharedInternals from 'shared/ReactSharedInternals'
@@ -163,6 +177,8 @@ const HooksDispatcherOnMount = {
 let currentlyRenderingFiber = null
 // 当前正在使用中的 hook
 let workInProgressHook = null
+// 当前hook对应的老hook
+let currentHook = null
 
 /**
  *
@@ -239,8 +255,6 @@ function mountWorkInProgressHook() {
 }
 ```
 
-## `update` 阶段
-
 ### `dispatchReducerAction`
 
 - `dispatchReducerAction`函数：执行派发动作的方法，它要更新状态，并且让界面重新更新
@@ -316,8 +330,6 @@ function renderRootSync(root) {
 - `finishQueueingConcurrentUpdates`函数：把更新放到队列里
 
 ```js
-//
-
 // 更新队列
 const concurrentQueues = []
 // 并发更新队列的索引
@@ -380,3 +392,89 @@ export function finishQueueingConcurrentUpdates() {
   }
 }
 ```
+
+## `update` 阶段
+
+### `updateReducer`
+
+```js
+function updateReducer(reducer) {
+  // 获取新的hook
+  const hook = updateWorkInProgressHook()
+
+  // 获取新的hook的更新队列
+  const queue = hook.queue
+
+  // 获取老的hook
+  const current = currentHook
+
+  // 获取将要生效的的更新队列
+  const pendingQueue = queue.pending
+
+  // 初始化一个新状态，取值为当前状态
+  let newState = current.memoizedState
+
+  if (pendingQueue !== null) {
+    queue.pending = null
+    const firstUpdate = pendingQueue.next
+    let update = firstUpdate
+    do {
+      const action = update.action
+      newState = reducer(newState, action)
+      update = update.next
+    } while (update !== null && update !== firstUpdate)
+  }
+
+  hook.memoizedState = newState
+  const dispatch = queue.dispatch
+
+  return [hook.memoizedState, dispatch]
+}
+```
+
+#### `updateWorkInProgressHook`
+
+`updateWorkInProgressHook`函数：根据老`hook`构建新的`hook`
+
+```js
+function updateWorkInProgressHook() {
+  // 获取将要构建的新的hook的老hook
+  if (currentHook === null) {
+    const current = currentlyRenderingFiber.alternate
+    currentHook = current.memoizedState
+  } else {
+    currentHook = currentHook.next
+  }
+
+  // 根据老hook创建新hook
+  const newHook = {
+    memoizedState: currentHook.memoizedState,
+    queue: currentHook.queue,
+    next: null,
+  }
+
+  if (workInProgressHook === null) {
+    currentlyRenderingFiber.memoizedState = workInProgressHook = newHook
+  } else {
+    workInProgressHook = workInProgressHook.next = newHook
+  }
+  return workInProgressHook
+}
+```
+
+### 执行更新操作
+
+之后执行 `completeWork` 里 `HostComponent` 的更新操作[<u>点击这里去看 updateHostComponent</u>](/rsource/react/completeWork.md#update-阶段)
+
+## `commit` 阶段
+
+- 执行`commitWork`里的`commitMutationEffectsOnFiber`方法，通过`HostComponent`里的`commitUpdate`，进行更新提交，`更新真实DOM`
+
+::: tip
+
+- `commitMutationEffectsOnFiber`: [<u>请看这里 🚀</u>](/rsource/react/commitRoot.md#commitmutationeffectsonfiber)
+  :::
+
+`main.jsx` 文件执行的结果
+
+![userReducer_render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/userReducer_render.gif)

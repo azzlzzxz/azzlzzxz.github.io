@@ -145,8 +145,10 @@ export function FiberNode(tag, pendingProps, key) {
   this.flags = NoFlags
   // 子节点对应的副作用标识
   this.subtreeFlags = NoFlags
-  // 替身、轮替
-  this.alternate = null
+  // 存放需要删除的子fiber节点的数组
+  ;(this.deletions = null),
+    // 替身、轮替
+    (this.alternate = null)
 }
 ```
 

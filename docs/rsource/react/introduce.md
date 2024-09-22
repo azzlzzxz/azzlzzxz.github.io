@@ -118,7 +118,7 @@ function FiberNode(
     // Effects 副作用相关属性
     flags: NoFlags, // 副作用的标识，标识对此Fiber节点进行何种操作（二进制增删改操作）
     subtreeFlags: NoFlags, // 子节点对应的副作用标识
-    deletions: null,
+    deletions: null, // 存放需要删除的子fiber节点的数组
 
     // 调度优先级相关
     lanes: NoLanes,

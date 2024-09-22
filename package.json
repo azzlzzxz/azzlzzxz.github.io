@@ -36,5 +36,8 @@
       "prettier --write"
     ]
   },
-  "prettier": "@femm/prettier"
+  "prettier": "@femm/prettier",
+  "dependencies": {
+    "medium-zoom": "^1.1.0"
+  }
 }

@@ -1,6 +1,7 @@
-import { h, watch } from 'vue'
-import { useData, EnhanceAppContext } from 'vitepress'
+import { h, watch, onMounted, nextTick } from 'vue'
+import { useData, useRoute, EnhanceAppContext } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+import mediumZoom from 'medium-zoom'
 
 import MNavVisitor from './components/MNavVisitor.vue'
 import MDocFooter from './components/MDocFooter.vue'
@@ -34,6 +35,19 @@ let homePageStyle: HTMLStyleElement | undefined
 
 export default {
   extends: DefaultTheme,
+  setup() {
+    const route = useRoute()
+    const initZoom = () => {
+      mediumZoom('.main img', { background: 'var(--vp-c-bg)' })
+    }
+    onMounted(() => {
+      initZoom()
+    })
+    watch(
+      () => route.path,
+      () => nextTick(() => initZoom()),
+    )
+  },
   Layout: () => {
     const props: Record<string, any> = {}
     // 获取 frontmatter
@@ -54,6 +68,7 @@ export default {
       'doc-after': () => h(MDocFooter),
     })
   },
+
   enhanceApp({ app, router }: EnhanceAppContext) {
     app.component('MNavLinks', MNavLinks)
 

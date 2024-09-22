@@ -233,7 +233,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
               ],
             },
             {
-              text: 'commot 阶段',
+              text: 'commit 阶段',
               items: [{ text: 'commitRoot', link: '/rsource/react/commitRoot' }],
             },
           ],

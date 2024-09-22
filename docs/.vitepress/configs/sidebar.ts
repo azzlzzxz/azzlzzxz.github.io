@@ -258,7 +258,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         },
         {
           text: 'DOM-DIFF',
-          link: '/rsource/react/dom-diff',
+          items: [
+            { text: '单节点的DOM-DIFF', link: '/rsource/react/singleNode-dom-diff' },
+            { text: '多节点的DOM-DIFF', link: '/rsource/react/multiNode-dom-diff' },
+          ],
         },
       ],
     },

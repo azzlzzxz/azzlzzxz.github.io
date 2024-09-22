@@ -1,10 +1,12 @@
 # DOM-DIFF
 
-`DOM-DIFF`分为两类：
+`DOM DIFF` 的三个规则:
 
-- 单节点的`DOM-DIFF`
+- 只对同级元素进行比较，不同层级不对比
 
-- 多节点的`DOM-DIFF`
+- 不同的类型对应不同的元素
+
+- 可以通过 `key` 来标识同一个节点
 
 ::: tip 那什么是`DOM-DIFF`呢?
 
@@ -38,6 +40,16 @@
 
 `Diff算法`的本质是`对比1和4，生成2`
 :::
+
+`DOM-DIFF`分为两类：
+
+- 单节点的`DOM-DIFF`
+
+- 多节点的`DOM-DIFF`([<u>多节点的 DOM-DIFF 实现 请看这里 🚀</u>](/rsource/react/multiNode-dom-diff.md))
+
+---
+
+**下面我们开始介绍`React`对`单节点DOM-DIFF`的处理和实现**
 
 ## `reconcileChildFibers`
 
@@ -540,3 +552,8 @@ export function removeChild(parentInstance, child) {
   parentInstance.removeChild(child)
 }
 ```
+
+::: tip 源码地址
+
+实现`单节点de DOM-DIFF`的相关代码我放在了[<u>9.single-dom-diff 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/9.single-dom-diff)
+:::

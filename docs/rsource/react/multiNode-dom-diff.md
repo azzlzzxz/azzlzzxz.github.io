@@ -425,3 +425,8 @@ root.render(element)
 ```
 
 ![dom-diff-move-render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/dom-diff-move-render.gif)
+
+::: tip 源码地址
+
+实现`多节点de DOM-DIFF`的相关代码我放在了[<u>10.multiNode-dom-diff 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/10.multiNode-dom-diff)
+:::

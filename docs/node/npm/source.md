@@ -98,17 +98,17 @@ package.json
    ```
 
 4. 编写代码/修改代码
-   - 如果你是修改代码，那么你还需要修改 `package.json` 中的 `version` 来修改版本，或者也可以运行 `npm version xxx `来智能的生成新版本号（命令参数详见官网或者 `npm version -h` ）
+   - 如果你是修改代码，那么你还需要修改 `package.json` 中的 `version` 来修改版本，或者也可以运行 `npm version xxx`来智能的生成新版本号（命令参数详见官网或者 `npm version -h` ）
    - 升级版本：
      `npm version patch` : `package.json` 中的版本号 2.0.0 变为 2.0.1
-     `npm version minor `: `package.json` 中的版本号 2.0.1 变为 2.1.0;
+     `npm version minor`: `package.json` 中的版本号 2.0.1 变为 2.1.0;
      `npm version major` : `package.json` 中的版本号 2.1.0 变为 3.0.0
 5. 使用 `npm publish` 发布当前包到 `npm` 仓库
    > 注意你当前的镜像必须是 `npm` 官方镜像
 
 ## 发布属于某个 `scope` 或者组织下的包
 
-在实际项目中，对于一些不能完全和项目或者框架解藕的 `npm` 包我们一般会将其发布到相应的命名空间或者组织下，例如` @vue/cli`、 `@vue/runtime-core`、 `@vue/composition-api`...他们都是 `vue` 组织下的包，同理 `@bable/xxx`、`@webpack/xxx` 等也是一样的。当我们在开发一个公司内部的项目时一般也会搭建 `npm` 私服，然后在其中创建项目的 `scope`，然后将项目的 `npm` 发布上去。
+在实际项目中，对于一些不能完全和项目或者框架解藕的 `npm` 包我们一般会将其发布到相应的命名空间或者组织下，例如`@vue/cli`、 `@vue/runtime-core`、 `@vue/composition-api`...他们都是 `vue` 组织下的包，同理 `@bable/xxx`、`@webpack/xxx` 等也是一样的。当我们在开发一个公司内部的项目时一般也会搭建 `npm` 私服，然后在其中创建项目的 `scope`，然后将项目的 `npm` 发布上去。
 
 1. 需要 `name` 用 @组织名 开头，例如 `@vue/cli`
 
@@ -152,6 +152,7 @@ package.json
 ```
 
 4. 发布 `npm` 包
+
    ```shell
     npm publish --registry 'xxx：私服镜像源'
    ```
@@ -168,13 +169,13 @@ package.json
 
 ## 安装本地包
 
-上面说到 `npm link` 可以创建链接直接链接到本地对应包的代码目录，但是当我们运行 `npm i `或者 `node_modules` 丢失之类的情况时，再次安装就会出现去 `npm` 官网下载包代码而不是创建链接，原因是 `npm link` 并不会在 `package.json` 存在记录。但是有的时候我们想开发一个私有包，不想发布到 `npm` 上，又要运行 `npm install` 能正常安装这个包，那么我们可以用下面这种方式。
+上面说到 `npm link` 可以创建链接直接链接到本地对应包的代码目录，但是当我们运行 `npm i`或者 `node_modules` 丢失之类的情况时，再次安装就会出现去 `npm` 官网下载包代码而不是创建链接，原因是 `npm link` 并不会在 `package.json` 存在记录。但是有的时候我们想开发一个私有包，不想发布到 `npm` 上，又要运行 `npm install` 能正常安装这个包，那么我们可以用下面这种方式。
 
 ```shell
 npm install 待安装包的相对路径
 ```
 
-当运行 `npm i ../bar `时，我们可以在 `package.json` 中看到相关信息
+当运行 `npm i ../bar`时，我们可以在 `package.json` 中看到相关信息
 
 ```json
 {
@@ -265,7 +266,7 @@ npm install 待安装包的相对路径
 console.log('Hello NPM')
 ```
 
-当运行 `npx hello` 时自然就相当于运行了` @azzlzzxz/hello_shell/bin/index.js`
+当运行 `npx hello` 时自然就相当于运行了`@azzlzzxz/hello_shell/bin/index.js`
 
 - 当我们使用 `npm install` 安装包时，会将这个包中 `package.json` 中 `bin` 中指定的脚本软链接到项目的 `node_modules/.bin` 下，`key` 作为链接名字（也就是命令），`value` 作为命令运行时执行的文件
 
@@ -317,15 +318,15 @@ console.log('Hello NPM')
 
 常用的 `npm hooks` 包括：
 
-1.  `preinstall：`在安装依赖前执行的脚本
-2.  `postinstall：`在安装依赖后执行的脚本
-3.  `prestart：`在启动应用前执行的脚本
-4.  `poststart：`在启动应用后执行的脚本
-5.  `pretest：在`执行测试前执行的脚本
-6.  `posttest：`在执行测试后执行的脚本
-7.  `prebuild：`在打包前执行的脚本
-8.  `postbuild：`在打包后执行的脚本
-9.  `prepublish：`在发布前执行的脚本
+1. `preinstall：`在安装依赖前执行的脚本
+2. `postinstall：`在安装依赖后执行的脚本
+3. `prestart：`在启动应用前执行的脚本
+4. `poststart：`在启动应用后执行的脚本
+5. `pretest：在`执行测试前执行的脚本
+6. `posttest：`在执行测试后执行的脚本
+7. `prebuild：`在打包前执行的脚本
+8. `postbuild：`在打包后执行的脚本
+9. `prepublish：`在发布前执行的脚本
 10. `postpublish：`在发布后执行的脚本
 
 #### 获取 `package.json` 中依赖数据构建依赖树
@@ -338,7 +339,7 @@ console.log('Hello NPM')
 
 1. 获取模块信息。在下载一个模块之前，首先要确定其版本，这是因为 `package.json` 中往往是 `semantic version（semver，语义化版本）`。此时如果版本描述文件（`npm-shrinkwrap.json` 或 `package-lock.json`）中有该模块信息直接拿即可，如果没有则从仓库获取。如 `packaeg.json` 中某个包的版本是 ^1.1.0，`npm` 就会去仓库中获取符合 1.x.x 形式的最新版本。
 
-2. 获取模块实体。上一步会获取到模块的压缩包地址（`resolved `字段），`npm `会用此地址检查本地缓存，缓存中有就直接拿，如果没有则从仓库下载。
+2. 获取模块实体。上一步会获取到模块的压缩包地址（`resolved`字段），`npm`会用此地址检查本地缓存，缓存中有就直接拿，如果没有则从仓库下载。
 
 3. 查找该模块依赖，如果有依赖则回到第 1 步，如果没有则停止。
 
@@ -409,7 +410,7 @@ node_modules
 
 ### `npm cache clean –force`
 
-是强制清除`~/.npm `目录下的压缩包（清除缓存）
+是强制清除`~/.npm`目录下的压缩包（清除缓存）
 
 ## `package-lock.json`
 
@@ -501,7 +502,7 @@ const cookie = require("cookie");  // ???
 ```
 
 这个库根本没有被作为依赖定义在 `package.json` 文件中。那这到底是怎么跑起来的呢？
-原来 `cookie` 是 `express` 的依赖，在安装的时候，NPM 会打平他们的文件夹到 `node_modules`。`NodeJS `的 `require() `函数能够在依赖目录找到它们，因为 `require() `在查找文件夹时 根本不会受 `package.json` 文件 影响。
+原来 `cookie` 是 `express` 的依赖，在安装的时候，NPM 会打平他们的文件夹到 `node_modules`。`NodeJS`的 `require()`函数能够在依赖目录找到它们，因为 `require()`在查找文件夹时 根本不会受 `package.json` 文件 影响。
 
 这是很不安全的，当未来 `express` 中不再依赖 `cookie` 时将会导致项目报错，因为那时如果整个项目可能没有如何包依赖了 `cookie`，也就不会在顶层依赖树中有 `cookie`，所以项目一定会因为找不到 `cookie` 这个包而报错。
 

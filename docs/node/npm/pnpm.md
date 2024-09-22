@@ -72,12 +72,12 @@ node_modules
 
 ![pnpm_pj](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_pj.jpg)
 
-这是` node_modules` 中的唯一的“真实”文件。 一旦所有包都硬链接到` node_modules`，就会创建符号链接来构建嵌套的依赖关系图结构。
+这是`node_modules` 中的唯一的“真实”文件。 一旦所有包都硬链接到`node_modules`，就会创建符号链接来构建嵌套的依赖关系图结构。
 
-您可能已经注意到，这两个包都硬链接到一个` node_modules` 文件夹（`foo@1.0.0/node_modules/foo）`内的子文件夹中。 这必要的：
+您可能已经注意到，这两个包都硬链接到一个`node_modules` 文件夹（`foo@1.0.0/node_modules/foo）`内的子文件夹中。 这必要的：
 
 1. 允许包自行导入自己。 `foo` 应该能够 `require('foo/package.json')` 或者 `import \* as package from "foo/package.json"。`
-2. 避免循环符号链接。 依赖以及需要依赖的包被放置在一个文件夹下。 对于 `Node.js` 来说，依赖是在包的内部` node_modules` 中或在任何其它在父目录` node_modules` 中是没有区别的。
+2. 避免循环符号链接。 依赖以及需要依赖的包被放置在一个文件夹下。 对于 `Node.js` 来说，依赖是在包的内部`node_modules` 中或在任何其它在父目录`node_modules` 中是没有区别的。
 
 安装的下一阶段是符号链接依赖项。 bar 将被符号链接到 `foo@1.0.0/node_modules` 文件夹：
 
@@ -95,7 +95,7 @@ node_modules
 
 ![pnpm_form-data](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/pnpm_form-data.jpg)
 
-接下来，处理直接依赖关系。 `foo` 将被符号链接至根目录的` node_modules` 文件夹，因为 `foo` 是项目的依赖项：
+接下来，处理直接依赖关系。 `foo` 将被符号链接至根目录的`node_modules` 文件夹，因为 `foo` 是项目的依赖项：
 
 ```lua
 node_modules
@@ -199,13 +199,13 @@ node_modules
     ├── plugh@1.0.0
 ```
 
-我们创建 f`oo@1.0.0_bar@1.0.0+baz@1.0.0 `或`foo@1.0.0_bar@1.0.0+baz@1.1.0`内到 `foo` 的软链接。 因此，`Node.js` 模块解析器将找到正确的 `peers`。
+我们创建 `foo@1.0.0_bar@1.0.0+baz@1.0.0`或`foo@1.0.0_bar@1.0.0+baz@1.1.0`内到 `foo` 的软链接。 因此，`Node.js` 模块解析器将找到正确的 `peers`。
 
 如果一个 `package` 没有 `peer` 依赖（`peer dependencies）`，不过它的依赖项有 `peer` 依赖，这些依赖会在更高的依赖图中解析, 则这个传递 `package` 便可在项目中有几组不同的依赖项。
 
 ## `.npmrc`
 
-`pnpm `的配置文件
+`pnpm`的配置文件
 
 ### 依赖提升设置
 

@@ -8,6 +8,8 @@
 const [state, setState] = useState(initialState)
 ```
 
+---
+
 接下来我们来看看`React`是如何实现`useState`这个`hook`的
 
 ## `main.jsx` 入口文件
@@ -38,6 +40,17 @@ export {
   // ....省略其他
   useState,
 } from './src/React'
+```
+
+- 在`ReactHook`里添加`useState`
+
+```js
+// react/src/ReactHook.js
+
+export function useState(reducer, initialArg) {
+  const dispatcher = resolveDispatcher()
+  return dispatcher.useState(reducer, initialArg)
+}
 ```
 
 ## `ReactFiberHooks`

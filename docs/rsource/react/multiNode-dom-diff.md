@@ -426,6 +426,23 @@ root.render(element)
 
 ![dom-diff-move-render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/dom-diff-move-render.gif)
 
+```sh
+# 打印结果
+FunctionComponent
+自己有更新和子元素有删除 HostComponent ul {children: Array(6), onClick: ƒ}
+HostComponent li {children: 'F'}
+更新 HostComponent li {children: 'A2'}
+更新 HostComponent li {children: 'C2'}
+更新 HostComponent li {children: 'E2'}
+移动并更新 HostComponent li {id: 'b2', children: 'B2'}
+插入 HostComponent li {children: 'G'}
+移动并更新 HostComponent li {children: 'D2'}
+```
+
+> 我们结合打印的结果再来看一下这张图
+
+![diff_move](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/dom-diff_move.jpg)
+
 ::: tip 源码地址
 
 实现`多节点de DOM-DIFF`的相关代码我放在了[<u>10.multiNode-dom-diff 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/10.multiNode-dom-diff)

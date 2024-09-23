@@ -282,7 +282,7 @@ mw.write('ok', function () {
 mw.write('ab')
 ```
 
-### 自己实现下可写流：
+### 自己实现下可写流
 
 ```js
 const fs = require('fs')
@@ -520,7 +520,7 @@ let md = new MyDuplex()
 md.on('data', function (chunk) {
   console.log(chunk)
 })
-md.write('20k')
+md.write('18')
 ```
 
 ## 转化流

@@ -216,6 +216,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'Fiber', link: '/rsource/react/introduce' },
         {
           text: '渲染流程',
+          collapsed: false,
           items: [
             {
               text: '初始化阶段',
@@ -239,12 +240,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           ],
         },
         {
-          text: '函数组件',
-          link: '/rsource/react/functionComponent',
-        },
-        {
           text: '合成事件',
           link: '/rsource/react/event',
+        },
+        {
+          text: '函数组件',
+          link: '/rsource/react/functionComponent',
         },
         {
           text: 'Hooks',
@@ -252,12 +253,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           items: [
             { text: 'useReducer', link: '/rsource/react/useReducer' },
             { text: 'useState', link: '/rsource/react/useState' },
-            // { text: 'useEffect', link: '/rsource/react/useEffect' },
+            { text: 'useEffect', link: '/rsource/react/useEffect' },
             // { text: 'useLayoutEffect', link: '/rsource/react/useLayoutEffect' },
           ],
         },
         {
           text: 'DOM-DIFF',
+          collapsed: false,
           items: [
             { text: '单节点的DOM-DIFF', link: '/rsource/react/singleNode-dom-diff' },
             { text: '多节点的DOM-DIFF', link: '/rsource/react/multiNode-dom-diff' },

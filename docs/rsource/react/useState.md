@@ -33,8 +33,6 @@ root.render(element);
 
 ## 在`react`文件夹里导出`useState`
 
-- 导出步骤和 userReducer 是一样的 [<u>useReducer 的导出</u>](/rsource/react/useReducer.md#在react文件夹里导出usereducer)
-
 ```js
 export {
   // ....省略其他

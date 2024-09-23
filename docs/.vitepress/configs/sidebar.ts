@@ -254,7 +254,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             { text: 'useReducer', link: '/rsource/react/useReducer' },
             { text: 'useState', link: '/rsource/react/useState' },
             { text: 'useEffect', link: '/rsource/react/useEffect' },
-            // { text: 'useLayoutEffect', link: '/rsource/react/useLayoutEffect' },
+            { text: 'useLayoutEffect', link: '/rsource/react/useLayoutEffect' },
           ],
         },
         {

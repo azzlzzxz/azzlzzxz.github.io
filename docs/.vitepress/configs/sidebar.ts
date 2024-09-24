@@ -208,7 +208,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   '/rsource/': [
     { text: 'React 18 的新特性', link: '/rsource/newFeature' },
     {
-      text: 'React-18.2.0 源码解析',
+      text: 'React-18.2 源码解析',
       collapsed: false,
       items: [
         { text: '源码文件结构', link: '/rsource/react/file' },
@@ -270,13 +270,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
-  '/vsource/': [
-    {
-      text: 'Vue3源码',
-      collapsed: false,
-      items: [{ text: 'Effect', link: 'vsource/vue/effect' }],
-    },
-  ],
+  // '/vsource/': [
+  //   {
+  //     text: 'Vue3源码',
+  //     collapsed: false,
+  //     items: [{ text: 'Effect', link: 'vsource/vue/effect' }],
+  //   },
+  // ],
   '/capital/': [
     {
       text: '构建工具',

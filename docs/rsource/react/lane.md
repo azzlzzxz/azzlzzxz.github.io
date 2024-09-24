@@ -8,7 +8,7 @@
 
 - 事件优先级（把赛到优先级的二进制通过`lanesToEventPriority`这个函数，转成对应的`Scheduler`优先级）[<u>源码地址 ｜ 事件优先级 ｜ react-reconciler/src/ReactEventPriorities.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactEventPriorities.js)
 
-- [<u>`Scheduler`优先级</u>](/docs/rsource/react/schedule.md)
+- [<u>`Scheduler`优先级</u>](/rsource/react/schedule.md)
 
 :::
 

@@ -152,7 +152,7 @@ let currentTime = performance.now()
 
 - `push`、`peek`、`pop`方法均属于最小堆的方法
 
-  - 关于最小堆的实现可以看[前置知识｜最小堆](/docs/rsource/react/preknowledge.md#最小堆)
+  - 关于最小堆的实现可以看[前置知识｜最小堆](/rsource/react/preknowledge.md#最小堆)
   - [<u>React 源码 最小堆的实现 ｜ SchedulerMinHeap.js</u>](https://github.com/azzlzzxz/react-source-code/blob/main/packages/scheduler/src/SchedulerMinHeap.js)
 
 - `scheduleCallback`函数：按优先级执行任务

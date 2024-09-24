@@ -409,6 +409,10 @@ export function finishQueueingConcurrentUpdates() {
 
 ## `update` 阶段
 
+> 流程图
+
+![useReducer_flow](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useReducer_flow.jpg)
+
 ### `updateReducer`
 
 ```js

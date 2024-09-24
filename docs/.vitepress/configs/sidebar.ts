@@ -265,6 +265,8 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             { text: '多节点的DOM-DIFF', link: '/rsource/react/multiNode-dom-diff' },
           ],
         },
+        { text: '任务调度', link: '/rsource/react/schedule' },
+        { text: 'Lane模型', link: '/rsource/react/lane' },
       ],
     },
   ],

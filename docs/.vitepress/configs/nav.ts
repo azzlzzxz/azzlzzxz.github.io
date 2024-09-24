@@ -30,8 +30,14 @@ export const nav: DefaultTheme.Config['nav'] = [
     text: 'Node',
     items: [
       { text: '模块&规范', link: '/node/norm/commonJs' },
-      { text: 'Node 相关知识', link: '/node/base/base' },
-      { text: 'NPM 相关知识', link: '/node/npm/npm' },
+      { text: 'Node 基础知识', link: '/node/base/base' },
+      {
+        text: '包管理工具',
+        items: [
+          { text: 'Npm 相关知识', link: '/node/npm/npm' },
+          { text: 'Pnpm 相关知识', link: '/node/npm/pnpm' },
+        ],
+      },
       { text: 'Nest 相关知识', link: '/node/nest/base' },
     ],
     activeMatch: '^/node',

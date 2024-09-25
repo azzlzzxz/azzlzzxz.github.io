@@ -117,7 +117,7 @@ export function createFiberRoot(containerInfo) {
 
 ## `initializeUpdateQueue`
 
-- 在创建根 fiber 的初始化更新队列时，比[<u>更新队列里文章的 queue 多了 3 个参数</u>](/docs/rsource/react/updateQueue.md#初始化更新队列)
+- 在创建根 fiber 的初始化更新队列时，比[<u>更新队列里文章的 queue 多了 3 个参数</u>](/rsource/react/updateQueue.md#初始化更新队列)
 
   - `baseState`：本次更新前，当前的`fiber`的状态，更新会基于它，来进行计算状态
 
@@ -220,7 +220,7 @@ export function enqueueUpdate(fiber, update, lane) {
 
 ### `enqueueConcurrentClassUpdate`
 
-- `enqueueUpdate`方法和`getRootForUpdatedFiber`方法，可以看[<u>这里 🚀</u>](/docs/rsource/react/useReducer.md#reactfiberconcurrentupdatesjs)
+- `enqueueUpdate`方法和`getRootForUpdatedFiber`方法，可以看[<u>这里 🚀</u>](/rsource/react/useReducer.md#reactfiberconcurrentupdatesjs)
 
 ```js
 /**
@@ -306,6 +306,113 @@ export function lanesToEventPriority(lanes) {
 在执行注册任务调度（`ensureRootIsScheduled`）的时候、找到对应的`scheduler`优先级
 
 ## `ReactFiberLane.js`
+
+`ReactFiberLane.js`这个文件存放着，`lane`的优先级的值，和处理优先级的一些函数
+
+```js
+import { allowConcurrentByDefault } from 'shared/ReactFeatureFlags'
+
+export const TotalLanes = 31
+export const NoLanes = 0b0000000000000000000000000000000
+export const NoLane = 0b0000000000000000000000000000000
+export const SyncLane = 0b0000000000000000000000000000001
+export const InputContinuousHydrationLane = 0b0000000000000000000000000000010
+export const InputContinuousLane = 0b0000000000000000000000000000100
+export const DefaultHydrationLane = 0b0000000000000000000000000001000
+export const DefaultLane = 0b0000000000000000000000000010000
+export const SelectiveHydrationLane = 0b0001000000000000000000000000000
+export const IdleHydrationLane = 0b0010000000000000000000000000000
+export const IdleLane = 0b0100000000000000000000000000000
+export const OffscreenLane = 0b1000000000000000000000000000000
+const NonIdleLanes = 0b0001111111111111111111111111111
+// ... 省略其他优先级
+
+//没有时间戳
+export const NoTimestamp = -1
+
+export function markRootUpdated(root, updateLane) {
+  // pendingLanes指的此根上等待生效的lane
+  root.pendingLanes |= updateLane
+}
+
+export function getNextLanes(root, wipLanes) {
+  // 先获取所有的有更新的赛道
+  const pendingLanes = root.pendingLanes
+
+  if (pendingLanes == NoLanes) {
+    return NoLanes
+  }
+  // 获取所有的赛道中最高优先级的赛道
+  const nextLanes = getHighestPriorityLanes(pendingLanes)
+
+  if (wipLanes !== NoLane && wipLanes !== nextLanes) {
+    // 新的赛道值比渲染中的赛道大，说明新的赛道优先级更低
+    if (nextLanes > wipLanes) {
+      return wipLanes
+    }
+  }
+
+  return nextLanes
+}
+
+export function getHighestPriorityLanes(lanes) {
+  return getHighestPriorityLane(lanes)
+}
+
+// 找到最右边的1 只能返回一个赛道
+export function getHighestPriorityLane(lanes) {
+  return lanes & -lanes
+}
+
+// 判断是否有非空闲工作
+export function includesNonIdleWork(lanes) {
+  return (lanes & NonIdleLanes) !== NoLanes
+}
+
+export function isSubsetOfLanes(set, subset) {
+  return (set & subset) === subset
+}
+export function mergeLanes(a, b) {
+  return a | b
+}
+
+export function includesBlockingLane(root, lanes) {
+  // 如果允许默认并行渲染
+  if (allowConcurrentByDefault) {
+    return false
+  }
+
+  // 同步默认车道
+  const SyncDefaultLanes = InputContinuousLane | DefaultLane
+  return (lanes & SyncDefaultLanes) !== NoLane
+}
+```
+
+## `lane` 在事件中的处理
+
+- 以点击事件为例，当用户点击按钮时，在派发离散的事件的的监听函数中需要设置`lane`（更新优先级）
+
+```js
+/**
+ * 当你点击按钮的时候，需要设置更新优先级
+ * 派发离散的事件的的监听函数（离散事件： 不会连续触发的事件）
+ * @param {*} domEventName 事件名 click
+ * @param {*} eventSystemFlags 阶段 0 冒泡 4 捕获
+ * @param {*} container 容器div#root
+ * @param {*} nativeEvent 原生的事件
+ */
+function dispatchDiscreteEvent(domEventName, eventSystemFlags, container, nativeEvent) {
+  // 先获取当前老的更新优先级
+  const previousPriority = getCurrentUpdatePriority()
+  try {
+    //把当前的更新优先级设置为离散事件优先级 1
+    setCurrentUpdatePriority(DiscreteEventPriority)
+    dispatchEvent(domEventName, eventSystemFlags, container, nativeEvent)
+  } finally {
+    setCurrentUpdatePriority(previousPriority)
+  }
+}
+```
 
 ## `lane` 在任务调度中的处理
 
@@ -572,17 +679,17 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
   // 先获取当前根节点上的任务
   const originalCallbackNode = root.callbackNode
 
-  // 获取当前优先级最高的车道
+  // 获取当前优先级最高的赛道
   const lanes = getNextLanes(root, NoLanes)
   if (lanes === NoLanes) {
     return null
   }
 
-  /** 如果不包含阻塞的车道，并且没有超时，就可以并行渲染,就是启用时间分片，所以说默认更新车道是同步的,不能启用时间分片 */
+  /** 如果不包含阻塞的赛道，并且没有超时，就可以并行渲染,就是启用时间分片，所以说默认更新赛道是同步的,不能启用时间分片 */
 
-  // 是否不包含阻塞车道
+  // 是否不包含阻塞赛道
   const nonIncludesBlockingLane = !includesBlockingLane(root, lanes)
-  // 是否不包含过期的车道
+  // 是否不包含过期的赛道
   const nonIncludesExpiredLane = !includesExpiredLane(root, lanes)
   // 时间片没有过期
   const nonTimeout = !didTimeout
@@ -785,3 +892,8 @@ export function processUpdateQueue(workInProgress, nextProps, renderLanes) {
   }
 }
 ```
+
+::: tip 源码地址
+
+实现`lane`的相关代码我放在了[<u>15.lane 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/15.lane)
+:::

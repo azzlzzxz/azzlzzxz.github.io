@@ -2,11 +2,47 @@
 
 在 `render` 阶段完成更新后，会调用 `commitRoot(root)`（进入 `commit` 阶段）来提交更新
 
+## `commitRoot`
+
+`commitRoot` 函数会做一些准备工作，然后调用 `commitRootImpl` 函数完成更新的提交
+
+```js
+function commitRoot(root) {
+  // 保存当前更新优先级
+  const previousUpdatePriority = getCurrentUpdatePriority()
+
+  try {
+    // 把当前的更新优先级设置为 1
+    setCurrentUpdatePriority(DiscreteEventPriority)
+    // 调用 commitRootImpl 函数完成提交
+    commitRootImpl(root)
+  } finally {
+    // 恢复之前的更新优先级
+    setCurrentUpdatePriority(previousUpdatePriority)
+  }
+
+  return null
+}
+```
+
+## `commitRootImpl`
+
+- `commitMutationEffectsOnFiber`：进入 `mutation` 阶段（即执行 `DOM` 操作）
+
+- `commitLayoutEffects`：处理 `layout` 阶段的副作用
+
 ```js
 // ReactFiberWorkLoop.js
 
 function commitRoot(root) {
   const { finishedWork } = root
+
+  // 当前正在调度的跟节点
+  workInProgressRoot = null
+  // 当前正在指定的渲染优先级
+  workInProgressRootRenderLanes = NoLanes
+  // 在根节点上执行的任务
+  root.callbackNode = null
 
   // 判断子树里有没有副作用 （插入/更新等）
   const subtreeHasEffects = (finishedWork.subtreeFlags & MutionMask) !== NoFlags
@@ -16,10 +52,16 @@ function commitRoot(root) {
 
   // 如果自己有副作用或子节点有副作用那就进行提交DOM操作
   if (subtreeHasEffects || rootHasEffect) {
-    console.log('commitRoot', finishedWork.child)
-
     // 提交的变更 副作用 在 fiber 上
     commitMutationEffectsOnFiber(finishedWork, root)
+
+    commitLayoutEffects(finishedWork, root)
+
+    // // 提交变更后，把root（根节点）赋值给rootWithPendingPassiveEffects，再下个宏任务里 flushPassiveEffect 执行时就能拿到root
+    if (rootDoesHavePassiveEffect) {
+      rootDoesHavePassiveEffect = false
+      rootWithPendingPassiveEffects = root
+    }
   }
 
   // 等DOM变更后，root 的 current属性指向新fiber树

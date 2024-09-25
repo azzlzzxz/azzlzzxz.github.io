@@ -308,8 +308,6 @@ function performWorkUntilDeadline() {
 
 - 从最小堆中取出优先级最高的的任务，开始执行工作循环
 
-- 通过`shouldYieldToHost`和任务是否过期，来判断是否跳出工作循环
-
 - 执行`scheduleCallback`函数，传入的`callback`回调函数，判断`callback`的返回是否是函数
 
   - 如果是函数，说明还有任务需要执行，`return true`，任务已经完成，则不需要再继续执行了，可以把此任务弹出`pop(taskQueue)`
@@ -320,18 +318,6 @@ function performWorkUntilDeadline() {
 - 没有任何要完成的任务了 `return false`
 
 ```js
-function shouldYieldToHost() {
-  //用当前时间减去开始的时间就是过去的时间
-  const timeElapsed = getCurrentTime() - startTime
-
-  //如果说经过的时间小于5ms，那就不需要放弃执行
-  if (timeElapsed < frameInterval) {
-    return false
-  }
-  // 否则就是表示5毫秒用完了，需要放弃执行
-  return true
-}
-
 function workLoop(startTime) {
   let currentTime = startTime
 
@@ -385,12 +371,36 @@ function workLoop(startTime) {
 }
 ```
 
+### `shouldYieldToHost`
+
+- `frameInterval`：`React`会在每一帧向浏览器申请`5ms`用于自己任务执行，如果`5ms`内没有完成，`React`就会放弃控制权，把控制权交还给浏览器
+
+- `shouldYieldToHost`函数：通过过去的时间和`frameInterval`进行比较，来判断任务是否过期，跳出工作循环
+
+```js
+const frameInterval = 5
+
+function shouldYieldToHost() {
+  // 用当前时间减去开始的时间就是过去的时间
+  const timeElapsed = getCurrentTime() - startTime
+
+  //如果说经过的时间小于5ms，那就不需要放弃执行
+  if (timeElapsed < frameInterval) {
+    return false
+  }
+
+  // 否则就是表示5ms用完了，需要放弃执行
+  return true
+}
+```
+
 ::: tip 源码地址
 
 实现`Scheduler`的相关代码我放在了[<u>13.scheduler 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/13.scheduler)
 :::
 
-::: tip 相关资料
+::: info 相关资料
 
 - [Scheduler 的原理与实现](https://react.iamkasong.com/concurrent/scheduler.html)
-  :::
+
+:::

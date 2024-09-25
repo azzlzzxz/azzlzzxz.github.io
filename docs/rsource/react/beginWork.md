@@ -8,6 +8,8 @@
 
 ![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
 
+## `beginWork`
+
 `begin_work` 的参数
 
 - `current` 表示当前页面正在使用的 `Fiber 节点`，即 `workInProgress.alternate`
@@ -16,7 +18,6 @@
 ```js
 // ReactFiberBeginWork.js
 
-import logger from 'shared/logger'
 import { HostRoot, HostComponent, HostText } from './ReactWorkTags'
 import { processUpdateQueue } from './ReactFiberClassUpdateQueue'
 import { mountChildFibers, reconcileChildFibers } from './ReactChildFiber'
@@ -25,9 +26,10 @@ import { mountChildFibers, reconcileChildFibers } from './ReactChildFiber'
  * 目标是根据新的虚拟DOM构建新的fiber子链表
  * @param {*} current 老fiber
  * @param {*} workInProgress 新fiber
+ * @param {*} renderLanes 当前渲染优先级中优先级最高的lane
  * @returns
  */
-export function beginWork(current, workInProgress) {
+export function beginWork(current, workInProgress, renderLanes) {
   logger('beginWork', workInProgress)
   switch (workInProgress.tag) {
     case IndeterminateComponent:
@@ -38,9 +40,9 @@ export function beginWork(current, workInProgress) {
       return updateFunctionComponent(current, workInProgress, Component, nextProps, renderLanes)
     }
     case HostRoot:
-      return updateHostRoot(current, workInProgress)
+      return updateHostRoot(current, workInProgress, renderLanes)
     case HostComponent:
-      return updateHostComponent(current, workInProgress)
+      return updateHostComponent(current, workInProgress, renderLanes)
     case HostText:
       return null
     default:
@@ -49,7 +51,21 @@ export function beginWork(current, workInProgress) {
 }
 ```
 
-## `logger` 打印日志函数
+### `ReactWorkTags`
+
+> 这里只列举了一些 `tag`，想了解全部的`tag`类型，可以看这里 [<u>FiberTage 源码地址 | react-reconciler/src/ReactWorkTags.js</u>](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
+
+```js
+// fiber 的 tag 类型
+export const FunctionComponent = 0;// 函数组件
+export const IndeterminateComponent = 2; // 不确定组件类型
+export const HostRoot = 3; // 容器根节点
+export const HostComponent = 5; // 原生节点 div span
+export const HostText = 6; // 纯文本节点
+...
+```
+
+### `logger` 打印日志函数
 
 ```js
 // logger.js
@@ -79,17 +95,6 @@ export default function (prefix, workInProgress) {
 }
 ```
 
-```js
-// ReactWorkTags.js
-
-// fiber 的 tag 类型
-export const IndeterminateComponent = 2; // 不确定组件类型
-export const HostRoot = 3; // 容器根节点
-export const HostComponent = 5; // 原生节点 div span
-export const HostText = 6; // 纯文本节点
-...
-```
-
 ## `updateHostRoot`
 
 > 源码地址 [<u>updateHostRoot | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L1480)
@@ -97,11 +102,15 @@ export const HostText = 6; // 纯文本节点
 `updateHostRoot`方法是构建`根Fiber`的`子fiber链表`
 
 ```js
-// ReactFiberBeginWork.js
-
 function updateHostRoot(current, workInProgress) {
+  // 获取新的属性
+  const nextProps = workInProgress.pendingProps
+
+  // 克隆更新队列
+  cloneUpdateQueue(current, workInProgress)
+
   // 需要知道它的子虚拟DOM，知道它的儿子的虚拟DOM信息
-  processUpdateQueue(workInProgress) // workInProgress.memoizedState = { element }
+  processUpdateQueue(workInProgress, nextProps, renderLanes) // workInProgress.memoizedState = { element }
 
   const nextState = workInProgress.memoizedState
 
@@ -122,6 +131,8 @@ function updateHostRoot(current, workInProgress) {
 
 根据老状态和更新队列中的更新，来计算计算新状态
 
+> 这里只是抽调出 计算新状态的代码，里面涉及到`lane`相关的代码，可以到[<u>processUpdateQueue 完整代码 🚀</u>](/rsource/react/lane.md#processupdatequeue)查看
+
 ```js
 // ReactFiberClassUpdateQueue.js
 
@@ -129,7 +140,7 @@ function updateHostRoot(current, workInProgress) {
  * 根据老状态和更新队列中的更新计算新状态
  * @param {*} workInProgress 要计算的Fiber
  */
-export function processUpdateQueue(workInProgress) {
+export function processUpdateQueue(workInProgress, nextProps, renderLanes) {
   const queue = workInProgress.updateQueue
   const pendingQueue = queue.shared.pending
   // 如果有更新，或者说更新队列里有内容
@@ -305,8 +316,11 @@ function reconcileChildren(current, workInProgress, nextChildren) {
 - `useFiber`函数：根据传入的`fiber`和` pendingProps``克隆 `出一个`新的fiber节点`
 
 - `createChild`函数：根据`新的父Fiber`创建`新的子Fiber节点`
-- `reconcileSingleElement`函数：`虚拟DOM`是单节的话，调用此方法 更新/创建 一个`fiber`
-- `reconcileChildrenArray`函数：处理`多个虚拟DOM`构成的数组的 更新/创建 多个`fiber`
+
+- `reconcileSingleElement`函数：`虚拟DOM`是单节的话，调用此方法 更新/创建 一个`fiber`（`DOM-DIFF`单节点协调比对，调用此方法，[<u>`DOM-DIFF`单节点处理请看这里 🚀</u>](/rsource/react/singleNode-dom-diff.md)）
+
+- `reconcileChildrenArray`函数：处理`多个虚拟DOM`构成的数组的 更新/创建 多个`fiber`（`DOM-DIFF`多节点协调比对，调用此方法，[<u>`DOM-DIFF`多节点处理请看这里 🚀</u>](/rsource/react/multiNode-dom-diff.md)）
+
 - `placeSingleChild`函数：给`fiber`单节点设置副作用（`flags` 增删改）
 - `placeChild`函数：给`fiber`节点设置副作用（`flags` 增删改），更改其在`fiber树`中的索引
 
@@ -341,7 +355,6 @@ function createChildReconciler(shouldTrackSideEffects) {
       switch (newChild.$$typeof) {
         case REACT_ELEMENT_TYPE: {
           const created = createFiberFromElement(newChild)
-          created.ref = newChild.ref
           created.return = returnFiber
           return created
         }
@@ -367,7 +380,6 @@ function createChildReconciler(shouldTrackSideEffects) {
       if (child.key === key) {
         //判断老fiber对应的类型和新虚拟DOM元素对应的类型是否相同
         if (child.type === element.type) {
-          // p div
           //如果key一样，类型也一样，则认为此节点可以复用
           const existing = useFiber(child, element.props)
           existing.return = returnFiber

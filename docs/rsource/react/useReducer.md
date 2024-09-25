@@ -300,18 +300,15 @@ function dispatchReducerAction(fiber, queue, action) {
 
 ![useReducer_dispatchReducerAction](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useReducer_dispatchReducerAction.jpg)
 
-### `scheduleUpdateOnFiber`
+### `finishQueueingConcurrentUpdates`
+
+- 在工作循环之前完成更新队列的收集
 
 ```js
 // ReactFiberWorkLoop.js
 
 import { finishQueueingConcurrentUpdates } from './ReactFiberConcurrentUpdates'
 
-/**
- * 计划更新root
- * 源码此处有一个任务调度的功能
- * @param {*} root
- */
 export function scheduleUpdateOnFiber(root) {
   // 确保调度执行root上的更新
   ensureRootIsScheduled(root)
@@ -319,17 +316,17 @@ export function scheduleUpdateOnFiber(root) {
 
 // ... 省略此处代码
 
-function prepareFreshStack(root) {
-  workInProgress = createWorkInProgress(root.current, null)
-
-  // 在工作循环之前完成更新队列的收集
-  finishQueueingConcurrentUpdates()
-}
-
 // 开始构建fiber树
 function renderRootSync(root) {
   prepareFreshStack(root)
   workLoopSync()
+}
+
+function prepareFreshStack(root) {
+  // ... 省略此处代码
+
+  // 在工作循环之前完成更新队列的收集
+  finishQueueingConcurrentUpdates()
 }
 ```
 
@@ -355,11 +352,12 @@ let concurrentQueuesIndex = 0
  * @param {*} queue
  * @param {*} update
  */
-function enqueueUpdate(fiber, queue, update) {
+function enqueueUpdate(fiber, queue, update, lane) {
   //012 setNumber1 345 setNumber2 678 setNumber3
   concurrentQueues[concurrentQueuesIndex++] = fiber // 函数组件对应的fiber
   concurrentQueues[concurrentQueuesIndex++] = queue // 要更新的hook对应的更新队列
   concurrentQueues[concurrentQueuesIndex++] = update //更新对象
+  concurrentQueues[concurrentQueuesIndex++] = lane // 更新对应的赛道
 }
 
 /**
@@ -368,8 +366,8 @@ function enqueueUpdate(fiber, queue, update) {
  * @param {*} queue 要更新的hook对应的更新队列
  * @param {*} update 更新对象
  */
-export function enqueueConcurrentHookUpdate(fiber, queue, update) {
-  enqueueUpdate(fiber, queue, update)
+export function enqueueConcurrentHookUpdate(fiber, queue, update, lane) {
+  enqueueUpdate(fiber, queue, update, lane)
   return getRootForUpdatedFiber(fiber)
 }
 

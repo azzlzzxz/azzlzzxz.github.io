@@ -53,15 +53,39 @@ export function useState(initialState) {
 
 ## `ReactFiberHooks`
 
-- `useState`其实就是一个内置了`reducer`的`useReducer`，它俩的实现原理都出不多
+- `useState`其实就是一个内置了`reducer`的`useReducer`，它俩的实现原理都差不多
 
-- 在`HooksDispatcherOnMount`和`HooksDispatcherOnUpdate`里添加`useState`
+- `mount` 阶段
 
-- `mountState`函数：创建`hook`和派发动作
+  - 在`HooksDispatcherOnMount`和`HooksDispatcherOnUpdate`里添加`useState`
 
-- `dispatchSetState`函数：派发动作的方法
+  - `mountState`函数：创建`hook`和派发动作
+
+  - `dispatchSetState`函数：派发动作的方法
+
+- `update` 阶段
+
+  - `updateState`函数：调用`updateReducer`
+
+  - `baseStateReducer`：内置的`reducer`
+
+  - `initialState`：初始状态
+
+  - `updateReducer`函数：在`do while`循环了加了一个判断逻辑，如果`update.hasEagerState = true`也就是说当前`update`是个`急切的更新`，那么`newState(新状态)`就直接获取`update.eagerState(急切的更新状态)`
+
+### `mount` 阶段
 
 ::: tip 注意 ⚠️
+
+- 优化的前提会有一个判断条件：只有第一个更新都能进行此项优化，如果`fiber`上有`lanes`，就不会执行此优化。
+
+```js
+if (fiber.lanes === NoLanes && (alternate === null || alternate.lanes == NoLanes)) {
+  // ... 省略代码
+}
+```
+
+如果不加判断条件，每次更新都会进来，这样的话`hasEagerState = true` ，`eagerState = 最新状态`，在`updateReducer`中最新状态直接把上一次的状态给覆盖掉了
 
 - 这里`React`做了一个优化，`update`里对比`useReducer`多了两个属性
   - `hasEagerState`：是否有急切的更新
@@ -73,12 +97,15 @@ export function useState(initialState) {
 
 :::
 
-- `updateState`函数：调用`updateReducer`
+#### `mountState`
 
-  - `baseStateReducer`：内置的`reducer`
-  - `initialState`：初始状态
+- `hook`上的属性
 
-- `updateReducer`函数：在`do while`循环了加了一个判断逻辑，如果`update.hasEagerState = true`也就是说当前`update`是个`急切的更新`，那么`newState(新状态)`就直接获取`update.eagerState(急切的更新状态)`
+  - `hook.memoizedState`：当前`hook`真正显示出来的状态
+
+  - `hook.baseState`：第一个跳过的更新之前的老状态
+
+  - `hook.queue.lastRenderedState`：上一个计算的状态
 
 ```js
 const HooksDispatcherOnMount = {
@@ -86,9 +113,77 @@ const HooksDispatcherOnMount = {
   useState: mountState,
 }
 
+function mountState(initialState) {
+  const hook = mountWorkInProgressHook()
+  hook.memoizedState = hook.baseState = initialState
+  const queue = {
+    pending: null,
+    dispatch: null,
+    lastRenderedReducer: baseStateReducer, // 上一个reducer
+    lastRenderedState: initialState, // 上一个state
+  }
+  hook.queue = queue
+  const dispatch = (queue.dispatch = dispatchSetState.bind(null, currentlyRenderingFiber, queue))
+  return [hook.memoizedState, dispatch]
+}
+```
+
+#### `dispatchSetState` 执行派发动作的方法
+
+```js
+function dispatchSetState(fiber, queue, action) {
+  // 获取当前的更新赛道
+  const lane = requestUpdateLane()
+
+  const update = {
+    action,
+    hasEagerState: false, //是否有急切的更新
+    eagerState: null, //急切的更新状态
+    next: null,
+  }
+
+  // 当你派发动作后，我立刻用上一次的状态和上一次的reducer计算新状态
+  // 只有第一个更新都能进行此项优化
+  if (fiber.lanes === NoLanes && (alternate === null || alternate.lanes == NoLanes)) {
+    //先获取队列上的老的状态和老的reducer
+    const { lastRenderedReducer, lastRenderedState } = queue
+
+    //使用上次的状态和上次的reducer结合本次action进行计算新状态
+    const eagerState = lastRenderedReducer(lastRenderedState, action)
+
+    update.hasEagerState = true
+    update.eagerState = eagerState
+
+    if (Object.is(eagerState, lastRenderedState)) {
+      return
+    }
+  }
+
+  // 下面是真正的入队更新，并调度更新逻辑
+  const root = enqueueConcurrentHookUpdate(fiber, queue, update, lane)
+
+  scheduleUpdateOnFiber(root, fiber, lane)
+}
+```
+
+### `update` 阶段
+
+- `baseStateReducer`：`useState`其实就是一个内置了`reducer`的`useReducer`
+
+- `updateState`里调用`updateReducer`
+
+```js
 const HooksDispatcherOnUpdate = {
   useReducer: updateReducer,
   useState: updateState,
+}
+
+function baseStateReducer(state, action) {
+  return typeof action === 'function' ? action(state) : action
+}
+
+function updateState(initialState) {
+  return updateReducer(baseStateReducer, initialState)
 }
 
 function updateReducer(reducer) {
@@ -122,64 +217,12 @@ function updateReducer(reducer) {
     } while (update !== null && update !== firstUpdate)
   }
 
-  hook.memoizedState = newState
+  // 计算好新的状态后，不但要改变hook的状态，也要改变hook上队列的lastRenderedState
+  hook.memoizedState = queue.lastRenderedState = newState
+
   const dispatch = queue.dispatch
 
   return [hook.memoizedState, dispatch]
-}
-
-/**
- * hook的属性
- * hook.memoizedState 当前 hook真正显示出来的状态
- * hook.baseState 第一个跳过的更新之前的老状态
- * hook.queue.lastRenderedState 上一个计算的状态
- */
-function mountState(initialState) {
-  const hook = mountWorkInProgressHook()
-  hook.memoizedState = hook.baseState = initialState
-  const queue = {
-    pending: null,
-    dispatch: null,
-    lastRenderedReducer: baseStateReducer, //上一个reducer
-    lastRenderedState: initialState, //上一个state
-  }
-  hook.queue = queue
-  const dispatch = (queue.dispatch = dispatchSetState.bind(null, currentlyRenderingFiber, queue))
-  return [hook.memoizedState, dispatch]
-}
-
-//useState其实就是一个内置了reducer的useReducer
-function baseStateReducer(state, action) {
-  return typeof action === 'function' ? action(state) : action
-}
-
-function updateState(initialState) {
-  return updateReducer(baseStateReducer, initialState)
-}
-
-function dispatchSetState(fiber, queue, action) {
-  const update = {
-    action,
-    hasEagerState: false, //是否有急切的更新
-    eagerState: null, //急切的更新状态
-    next: null,
-  }
-
-  //当你派发动作后，我立刻用上一次的状态和上一次的reducer计算新状态
-  //只有第一个更新都能进行此项优化
-  //先获取队列上的老的状态和老的reducer
-  const { lastRenderedReducer, lastRenderedState } = queue
-  //使用上次的状态和上次的reducer结合本次action进行计算新状态
-  const eagerState = lastRenderedReducer(lastRenderedState, action)
-  update.hasEagerState = true
-  update.eagerState = eagerState
-  if (Object.is(eagerState, lastRenderedState)) {
-    return
-  }
-
-  // 下面是真正的入队更新，并调度更新逻辑
-  const root = enqueueConcurrentHookUpdate(fiber, queue, update)
-  scheduleUpdateOnFiber(root, fiber)
 }
 ```
 

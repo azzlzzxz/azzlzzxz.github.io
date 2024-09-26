@@ -1010,4 +1010,6 @@ function commitRootImpl(root) {
 ::: tip 源码地址
 
 实现`lane`同步渲染和并发渲染的相关代码我放在了[<u>15.lane 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/15.lane)
+
+实现`lane`高优先级打断低优先级和批量更新的相关代码我放在了[<u>16.interrupt 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/16.interrupt)
 :::

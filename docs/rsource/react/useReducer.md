@@ -163,7 +163,8 @@ export default ReactSharedInternals
 
   - `mount`阶段：需要在函数组件执行前给`ReactCurrentDispatcher.current`赋值
   - `update`阶段：执行`updateReducer`
-  - `commit`阶段：提交更新，更新真实`DOM`
+
+- `commit`阶段：提交更新，更新真实`DOM`
 
 ```js
 import ReactSharedInternals from 'shared/ReactSharedInternals'
@@ -195,6 +196,9 @@ let currentHook = null
  */
 export function renderWithHooks(current, workInProgress, Component, props) {
   currentlyRenderingFiber = workInProgress // Function组件对应的 fiber
+
+  // 函数组件更新队列里存的effect（因为每次渲染都会构建新的updateQueue，所以在渲染之前要清空，否则会重复）
+  workInProgress.updateQueue = null
 
   // 如果有老的fiber,并且有老的hook链表，进入更新逻辑
   if (current !== null && current.memoizedState !== null) {
@@ -234,6 +238,8 @@ function mountReducer(reducer, initialArg) {
   const queue = {
     pending: null,
     dispatch: null,
+    lastRenderedReducer: reducer,
+    lastRenderedState: initialArg,
   }
 
   hook.queue = queue
@@ -250,11 +256,19 @@ function mountReducer(reducer, initialArg) {
 
 ### `mountWorkInProgressHook` 挂载构建中的 hook
 
+- `hook`上的属性
+
+  - `hook.memoizedState`：当前`hook`真正显示出来的状态
+
+  - `hook.baseState`：第一个跳过的更新之前的老状态
+
+  - `hook.queue.lastRenderedState`：上一个计算的状态
+
 ```js
 function mountWorkInProgressHook() {
   const hook = {
-    memoizedState: null, // hook的状态 0
-    queue: null, // 存放本hook的更新队列 queue:{pending: update}的循环链表
+    memoizedState: null, // hook的状态
+    queue: null, // 存放本hook的更新队列 queue: {pending: update}的循环链表
     next: null, // 指向下一个hook，一个函数里可以会有多个hook，它们会组成一个单向链表
   }
 
@@ -290,8 +304,10 @@ function dispatchReducerAction(fiber, queue, action) {
     action, // { type: 'add', payload: 1 } 派发的动作
     next: null, // 指向下一个更新对象
   }
+
   // 把当前的最新的更新添加到更新队列中，并且返回当前的根fiber
   const root = enqueueConcurrentHookUpdate(fiber, queue, update)
+
   scheduleUpdateOnFiber(root)
 }
 ```
@@ -341,6 +357,9 @@ function prepareFreshStack(root) {
 - `finishQueueingConcurrentUpdates`函数：把更新放到队列里
 
 ```js
+import { HostRoot } from './ReactWorkTags'
+import { mergeLanes } from './ReactFiberLane'
+
 // 更新队列
 const concurrentQueues = []
 // 并发更新队列的索引
@@ -353,11 +372,12 @@ let concurrentQueuesIndex = 0
  * @param {*} update
  */
 function enqueueUpdate(fiber, queue, update, lane) {
-  //012 setNumber1 345 setNumber2 678 setNumber3
   concurrentQueues[concurrentQueuesIndex++] = fiber // 函数组件对应的fiber
   concurrentQueues[concurrentQueuesIndex++] = queue // 要更新的hook对应的更新队列
   concurrentQueues[concurrentQueuesIndex++] = update //更新对象
   concurrentQueues[concurrentQueuesIndex++] = lane // 更新对应的赛道
+  // 当我们向一个fiber上添加一个更新的时候，要把此更新的赛道合并到此fiber的赛道上
+  fiber.lanes = mergeLanes(fiber.lanes, lane)
 }
 
 /**
@@ -367,6 +387,18 @@ function enqueueUpdate(fiber, queue, update, lane) {
  * @param {*} update 更新对象
  */
 export function enqueueConcurrentHookUpdate(fiber, queue, update, lane) {
+  enqueueUpdate(fiber, queue, update, lane)
+  return getRootForUpdatedFiber(fiber)
+}
+
+/**
+ * 把更新入队
+ * @param {*} fiber 入队的fiber 根fiber
+ * @param {*} queue shareQueue 待生效的队列
+ * @param {*} update 更新
+ * @param {*} lane 此更新的车道
+ */
+export function enqueueConcurrentClassUpdate(fiber, queue, update, lane) {
   enqueueUpdate(fiber, queue, update, lane)
   return getRootForUpdatedFiber(fiber)
 }
@@ -384,13 +416,14 @@ function getRootForUpdatedFiber(sourceFiber) {
 
 // 把更新放到队列里
 export function finishQueueingConcurrentUpdates() {
-  const endIndex = concurrentQueuesIndex // 9 只是一边界条件
+  const endIndex = concurrentQueuesIndex // 只是一边界条件
   concurrentQueuesIndex = 0
   let i = 0
   while (i < endIndex) {
     const fiber = concurrentQueues[i++]
     const queue = concurrentQueues[i++]
     const update = concurrentQueues[i++]
+    const lane = concurrentQueues[i++]
     if (queue !== null && update !== null) {
       const pending = queue.pending
       if (pending === null) {
@@ -441,7 +474,9 @@ function updateReducer(reducer) {
     } while (update !== null && update !== firstUpdate)
   }
 
-  hook.memoizedState = newState
+  // 计算好新的状态后，不但要改变hook的状态，也要改变hook上队列的lastRenderedState
+  hook.memoizedState = queue.lastRenderedState = newState
+
   const dispatch = queue.dispatch
 
   return [hook.memoizedState, dispatch]
@@ -480,7 +515,7 @@ function updateWorkInProgressHook() {
 
 ### 执行更新操作
 
-之后执行 `completeWork` 里 `HostComponent` 的更新操作[<u>点击这里去看 updateHostComponent</u>](/rsource/react/completeWork.md#update-阶段)
+之后执行 `completeWork` 里 `HostComponent` 的更新操作[<u>点击这里去看 updateHostComponent 🚀</u>](/rsource/react/completeWork.md#update-阶段)
 
 ## `commit` 阶段
 

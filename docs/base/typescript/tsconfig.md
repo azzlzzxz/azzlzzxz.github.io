@@ -248,8 +248,8 @@ tsc --init
 }
 ```
 
-::: tip 引用
+::: info 相关资料
 
-[TypeScript 编译配置](https://notes.fe-mm.com/fe/typescript/tsconfig)
+- [TypeScript 编译配置](https://notes.fe-mm.com/fe/typescript/tsconfig)
 
 :::

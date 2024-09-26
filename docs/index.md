@@ -24,12 +24,12 @@ features:
   - icon: 📘
     title: 源码阅读
     details: 了解各种库的实现原理<br />学习其中的设计思路和知识
-    link: /rsource/react/fiber
+    link: /rsource/rsource/react/file
     linkText: 源码阅读
   - icon: 💡
     title: Work
     details: 在工作中用到的一切<small>（常用工具/方法）</small><br />配合 CV 大法来加快你的开发😄
-    link: /work/utility/ni
+    link: /work/utility/standard/code
     linkText: 常用工具库
   - icon: 💯
     title: 记录、总结、深入。

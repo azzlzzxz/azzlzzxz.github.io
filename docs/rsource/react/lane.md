@@ -1003,9 +1003,11 @@ function commitRootImpl(root) {
   // ... 省略大量代码
 
   //在提交之后，因为根上可能会有跳过的更新，所以需要重新再次调度
-  ensureRootIsScheduled(root)
+  ensureRootIsScheduled(root, now)
 }
 ```
+
+## `React` 饥饿问题
 
 ::: tip 源码地址
 

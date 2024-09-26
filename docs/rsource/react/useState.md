@@ -45,9 +45,9 @@ export {
 ```js
 // react/src/ReactHook.js
 
-export function useState(reducer, initialArg) {
+export function useState(initialState) {
   const dispatcher = resolveDispatcher()
-  return dispatcher.useState(reducer, initialArg)
+  return dispatcher.useState(initialState)
 }
 ```
 

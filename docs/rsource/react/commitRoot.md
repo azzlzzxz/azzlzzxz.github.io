@@ -31,6 +31,8 @@ function commitRoot(root) {
 
 - `commitLayoutEffects`：处理 `layout` 阶段的副作用
 
+- `ensureRootIsScheduled(root, now())`：在提交之后，因为根上可能会有跳过的更新，所以需要重新再次调度
+
 ```js
 // ReactFiberWorkLoop.js
 
@@ -43,6 +45,8 @@ function commitRoot(root) {
   workInProgressRootRenderLanes = NoLanes
   // 在根节点上执行的任务
   root.callbackNode = null
+  // 当前任务优先级
+  root.callbackPriority = null
 
   // 判断子树里有没有副作用 （插入/更新等）
   const subtreeHasEffects = (finishedWork.subtreeFlags & MutionMask) !== NoFlags
@@ -66,6 +70,9 @@ function commitRoot(root) {
 
   // 等DOM变更后，root 的 current属性指向新fiber树
   root.current = finishedWork
+
+  // 在提交之后，因为根上可能会有跳过的更新，所以需要重新再次调度
+  ensureRootIsScheduled(root)
 }
 
 /**

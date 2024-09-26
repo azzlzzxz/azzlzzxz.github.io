@@ -337,6 +337,7 @@ function workLoop(startTime) {
     if (typeof callback === 'function') {
       currentTask.callback = null
 
+      // 回调函数是否过期
       const didUserCallbackTimeout = currentTask.expirationTime <= currentTime
 
       // 执行工作，如果返回新的函数，则表示当前的工作没有完成
@@ -391,6 +392,16 @@ function shouldYieldToHost() {
 
   // 否则就是表示5ms用完了，需要放弃执行
   return true
+}
+```
+
+### `unstable_cancelCallback` 取消任务
+
+- 在`workLoop`中，会判断`continuationCallback`是不是函数，不是的话直接出队
+
+```js
+function unstable_cancelCallback(task) {
+  task.callback = null
 }
 ```
 

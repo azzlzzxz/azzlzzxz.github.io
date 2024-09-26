@@ -101,6 +101,12 @@ function FiberRootNode(containerInfo) {
 
   // 表示此根上有哪些赛道等待被处理
   this.pendingLanes = NoLanes
+
+  // 当前根节点上的任务
+  this.callbackNode = null
+
+  // 当前任务的优先级
+  this.callbackPriority = NoLane
 }
 
 export function createFiberRoot(containerInfo) {
@@ -372,17 +378,18 @@ export function includesNonIdleWork(lanes) {
 export function isSubsetOfLanes(set, subset) {
   return (set & subset) === subset
 }
+
 export function mergeLanes(a, b) {
   return a | b
 }
 
 export function includesBlockingLane(root, lanes) {
-  // 如果允许默认并行渲染
+  // 如果允许默认并发渲染
   if (allowConcurrentByDefault) {
     return false
   }
 
-  // 同步默认车道
+  // 同步默认赛道
   const SyncDefaultLanes = InputContinuousLane | DefaultLane
   return (lanes & SyncDefaultLanes) !== NoLane
 }
@@ -464,6 +471,14 @@ function ensureRootIsScheduled(root) {
   // 获取新的调度优先级
   const newCallbackPriority = getHighestPriorityLane(nextLanes)
 
+  //获取现在根上正在运行的优先级
+  const existingCallbackPriority = root.callbackPriority
+
+  //如果新的优先级和老的优先级一样，则可以进行批量更新
+  if (existingCallbackPriority === newCallbackPriority) {
+    return
+  }
+
   //新的回调任务
   let newCallbackNode = null
 
@@ -502,24 +517,33 @@ function ensureRootIsScheduled(root) {
   }
   // 在根节点上执行的任务是newCallbackNode
   root.callbackNode = newCallbackNode
+
+  root.callbackPriority = newCallbackPriority
 }
 ```
 
 #### `getNextLanes`
 
-- `getNextLanes`函数：获取当前根节点上等待更新的所有赛道中，优先级最高的赛道
+- `getNextLanes`函数：获取当前根节点上等待更新的所有赛道中，优先级最高的赛道，和当前渲染中的赛道进行对比，那个优先级高，返回那个赛道
 
 ```js
 // 获取当前根节点上等待更新的所有赛道中，优先级最高的赛道
-export function getNextLanes(root) {
+export function getNextLanes(root, wipLanes) {
   //先获取所有的有更新的赛道
   const pendingLanes = root.pendingLanes
-
   if (pendingLanes == NoLanes) {
     return NoLanes
   }
 
+  // 获取所有的赛道中最高优先级的赛道
   const nextLanes = getHighestPriorityLanes(pendingLanes)
+
+  if (wipLanes !== NoLane && wipLanes !== nextLanes) {
+    // 新的赛道值比渲染中的车道大，说明新的赛道优先级更低
+    if (nextLanes > wipLanes) {
+      return wipLanes
+    }
+  }
 
   return nextLanes
 }
@@ -893,7 +917,97 @@ export function processUpdateQueue(workInProgress, nextProps, renderLanes) {
 }
 ```
 
+## 批量更新
+
+- 批量更新就是判断新老优先级是否相同，相同的话，就不再产生新的调度任务了，其他的更新，复用老的任务调度（任务调度是宏任务，在下次执行时，把所有更新都处理了）**同步添加、异步调用**
+  - 复用老任务，就创建一次 fiber 树、commit 提交一次，就不会进行多次任务调度，提高性能了。
+
+```js
+function ensureRootIsScheduled(root, currentTime) {
+  // ... 省略大量代码
+
+  //获取新的调度优先级
+  let newCallbackPriority = getHighestPriorityLane(nextLanes)
+
+  // 获取现在根上正在运行的优先级
+  const existingCallbackPriority = root.callbackPriority
+
+  // 如果新的优先级和老的优先级一样，则可以进行批量更新
+  if (existingCallbackPriority === newCallbackPriority) {
+    return
+  }
+
+  // ... 省略大量代码
+  root.callbackPriority = newCallbackPriority
+}
+```
+
+## 高优先级操作打断低优先级
+
+### `main.jsx` 举例
+
+- 需要两个优先级，`按钮点击事件`优先级为`1`，`useEffect`执行优先级是`DefaultLanes`为`16`，在`useEffect`里没有渲染完成之前，点击按钮
+
+```jsx
+import * as React from './react'
+import { createRoot } from 'react-dom/src/client/ReactDOMRoot'
+
+function FunctionComponent() {
+  const [numbers, setNumbers] = React.useState(new Array(19).fill('A'))
+
+  React.useEffect(() => {
+    setTimeout(() => {}, 10)
+
+    setNumbers((numbers) => numbers.map((number) => number + 'B'))
+  }, [])
+
+  return (
+    <button
+      onClick={() => {
+        setNumbers((number) => number + 'C')
+      }}
+    >
+      {numbers.map((number, index) => (
+        <span key={index}>{number}</span>
+      ))}
+    </button>
+  )
+}
+
+let element = <FunctionComponent />
+
+const root = createRoot(document.getElementById('root'))
+
+root.render(element)
+```
+
+### `cancelCallback` 取消任务
+
+```js
+function ensureRootIsScheduled(root, currentTime) {
+  // 先获取当前根上执行任务
+  const existingCallbackNode = root.callbackNode
+
+  // ... 省略大量代码
+
+  if (existingCallbackNode !== null) {
+    Scheduler_cancelCallback(existingCallbackNode)
+  }
+}
+```
+
+### `commitRootImpl`
+
+```js
+function commitRootImpl(root) {
+  // ... 省略大量代码
+
+  //在提交之后，因为根上可能会有跳过的更新，所以需要重新再次调度
+  ensureRootIsScheduled(root)
+}
+```
+
 ::: tip 源码地址
 
-实现`lane`的相关代码我放在了[<u>15.lane 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/15.lane)
+实现`lane`同步渲染和并发渲染的相关代码我放在了[<u>15.lane 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/15.lane)
 :::

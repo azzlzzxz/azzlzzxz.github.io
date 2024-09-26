@@ -265,6 +265,7 @@ export function createWorkInProgress(current, pendingProps) {
   workInprogress.updateQueue = current.updateQueue;
   workInprogress.sibling = current.sibling;
   workInprogress.index = current.index;
+  workInprogress.ref = current.ref;
 
   return workInprogress;
 }

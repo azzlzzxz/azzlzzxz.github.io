@@ -126,6 +126,7 @@ export function FiberNode(tag, pendingProps, key) {
   this.type = null // fiber类型，来自于虚拟DOM节点的type：div、span、p
   // 每个虚拟DOM --> fiber节点 --> 真实DOM
   this.stateNode = null // 此fiber对应的真实DOM节点
+  this.ref = null
 
   this.return = null // 指向父节点
   this.child = null // 指向第一个子节点
@@ -146,9 +147,9 @@ export function FiberNode(tag, pendingProps, key) {
   // 子节点对应的副作用标识
   this.subtreeFlags = NoFlags
   // 存放需要删除的子fiber节点的数组
-  ;(this.deletions = null),
-    // 替身、轮替
-    (this.alternate = null)
+  this.deletions = null
+  // 替身、轮替
+  this.alternate = null
 }
 ```
 
@@ -184,9 +185,17 @@ export const HostText = 6; //纯文件节点
 ```js
 // ReactFiberFlags.js
 
-export const NoFlags = 0b0000000000000000000000000000 // 0
-export const Placement = 0b0000000000000000000000000010 // 2
-export const Update = 0b0000000000000000000000000100 // 4
+export const NoFlags = 0b00000000000000000000000000; // 0
+export const Placement = 0b00000000000000000000000010; // 2
+export const Update = 0b00000000000000000000000100; // 4
+export const ChildDeletion = 0b00000000000000000000001000; // 有子节点需要被 删除8
+export const Ref = 0b00000000000000000100000000;
+export const MutationMask = Placement | Update | ChildDeletion | Ref;
+
+//如果函数组件的里面使用了useEffect,那么此函数组件对应的fiber上会有一个flags 1024
+export const Passive = 0b00000000000000010000000000; // 1024
+
+export const LayoutMask = Update;
 ...
 ```
 

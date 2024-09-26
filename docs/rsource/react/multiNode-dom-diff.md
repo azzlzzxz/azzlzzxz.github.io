@@ -263,11 +263,13 @@ function updateElement(returnFiber, current, element) {
     //判断是否类型一样，则表示key和type都一样，可以复用老的fiber和真实DOM
     if (current.type === elementType) {
       const existing = useFiber(current, element.props)
+      existing.ref = element.ref
       existing.return = returnFiber
       return existing
     }
   }
   const created = createFiberFromElement(element)
+  created.ref = element.ref
   created.return = returnFiber
   return created
 }

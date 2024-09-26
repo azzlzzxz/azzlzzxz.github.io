@@ -136,6 +136,8 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
         deleteRemainingChildren(returnFiber, child.sibling)
         //如果key一样，类型也一样，则认为此节点可以复用
         const existing = useFiber(child, element.props)
+        // 复用ref
+        existing.ref = element.ref
         existing.return = returnFiber
         return existing
       }
@@ -144,6 +146,7 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
   }
   // 在初次挂载时，那么老节点currentFirstFiber肯定是没有的，所以可以根据虚拟DOM创建fiber节点
   const created = createFiberFromElement(element)
+  created.ref = element.ref
   created.return = returnFiber
   return created
 }
@@ -225,6 +228,7 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
   }
 
   const created = createFiberFromElement(element)
+  created.ref = element.ref
   created.return = returnFiber
   return created
 }
@@ -315,6 +319,7 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
   }
 
   const created = createFiberFromElement(element)
+  created.ref = element.ref
   created.return = returnFiber
   return created
 }

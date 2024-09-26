@@ -12,7 +12,7 @@ const [state, setState] = useState(initialState)
 
 接下来我们来看看`React`是如何实现`useState`这个`hook`的
 
-## `main.jsx` 入口文件
+## `main.jsx` 入口文件举例
 
 ```jsx{4-8}
 import * as React from "./react";
@@ -57,13 +57,15 @@ export function useState(initialState) {
 
 - `mount` 阶段
 
-  - 在`HooksDispatcherOnMount`和`HooksDispatcherOnUpdate`里添加`useState`
+  - 在`HooksDispatcherOnMount`里添加`useState: mountState`
 
   - `mountState`函数：创建`hook`和派发动作
 
   - `dispatchSetState`函数：派发动作的方法
 
 - `update` 阶段
+
+  - 在`HooksDispatcherOnUpdate`里添加`useState: updateState`
 
   - `updateState`函数：调用`updateReducer`
 

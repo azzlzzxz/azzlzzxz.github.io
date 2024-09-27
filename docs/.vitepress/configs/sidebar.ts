@@ -183,6 +183,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '数据在 React 组件中的流动', link: '/frame/react/base/dataFlow' },
         { text: '受控与非受控', link: '/frame/react/base/control' },
         { text: 'Hooks', link: '/frame/react/base/hooks' },
+        { text: 'HOC', link: '/frame/react/base/hoc' },
       ],
     },
     {

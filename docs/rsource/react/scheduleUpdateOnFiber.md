@@ -14,11 +14,7 @@
 
 > 入口 `ReactFiberReconciler.js`
 
-```js {31}
-import { createFiberRoot } from './ReactFiberRoot'
-import { createUpdate, enqueueUpdate } from './ReactFiberClassUpdateQueue'
-import { scheduleUpdateOnFiber } from './ReactFiberWorkLoop'
-
+```js {30}
 // 创建容器
 export function createContainer(containerInfo) {
   return createFiberRoot(containerInfo)
@@ -32,6 +28,9 @@ export function createContainer(containerInfo) {
 export function updateContainer(element, container) {
   // 获取当前根fiber (HostRootFiber)
   const current = container.current
+
+  // 请求事件发生时间
+  const eventTime = requestEventTime()
 
   // 请求一个更新车道
   const lane = requestUpdateLane(current)
@@ -53,7 +52,7 @@ export function updateContainer(element, container) {
 
 > 源码地址 [<u>scheduleUpdateOnFiber ｜ react-reconciler/src/ReactFiberWorkLoop.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberWorkLoop.js#L716)
 
-```js {14-23}
+```js {16-25}
 // ReactFiberWorkLoop.js
 
 // 正在进行中的任务
@@ -66,16 +65,18 @@ let rootDoesHavePassiveEffect = false
 let rootWithPendingPassiveEffects = null
 // 当前正在指定的渲染优先级
 let workInProgressRootRenderLanes = NoLanes
+// 保存当前的事件发生的时间
+let currentEventTime = NoTimestamp
 
 /**
  * 计划更新root
  * @param {*} root
  */
-export function scheduleUpdateOnFiber(root, lane) {
+export function scheduleUpdateOnFiber(root, fiber, lane, eventTime) {
   // 标记当前根节点上等待更新的lane
   markRootUpdated(root, lane)
   // 确保调度执行root上的更新
-  ensureRootIsScheduled(root)
+  ensureRootIsScheduled(root, eventTime)
 }
 ```
 
@@ -100,22 +101,51 @@ export function scheduleUpdateOnFiber(root, lane) {
 
 :::
 
-```js {40-44}
+```js {37-69}
 function ensureRootIsScheduled(root) {
+  // 先获取当前根上执行任务
+  const existingCallbackNode = root.callbackNode
+
+  // 把所有饿死的赛道标记为过期
+  markStarvedLanesAsExpired(root, currentTime)
+
   //获取当前优先级最高的车道
   const nextLanes = getNextLanes(root, workInProgressRootRenderLanes)
 
   //如果没有要执行的任务
   if (nextLanes === NoLanes) {
+    root.callbackNode = null
+    root.callbackPriority = NoLane
     return
   }
 
   // 获取新的调度优先级
   const newCallbackPriority = getHighestPriorityLane(nextLanes)
 
+  //获取现在根上正在运行的优先级
+  const existingCallbackPriority = root.callbackPriority
+
+  //如果新的优先级和老的优先级一样，则可以进行批量更新
+  if (existingCallbackPriority === newCallbackPriority) {
+    return
+  }
+
+  if (existingCallbackNode !== null) {
+    console.log('cancelCallback')
+    Scheduler_cancelCallback(existingCallbackNode)
+  }
+
+  // 新的回调任务
+  let newCallbackNode = null
+
   // 如果新的优先级是同步的话
   if (newCallbackPriority === SyncLane) {
-    // TODO
+    //先把performSyncWorkOnRoot添回到同步队列中
+    scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root))
+    //再把flushSyncCallbacks放入微任务
+    queueMicrotask(flushSyncCallbacks)
+    //如果是同步执行的话
+    newCallbackNode = null
   } else {
     //如果不是同步，就需要调度一个新的任务
     let schedulerPriorityLevel
@@ -141,6 +171,11 @@ function ensureRootIsScheduled(root) {
     // 将 performConcurrentWorkOnRoot 添加到调度队列中
     Scheduler_scheduleCallback(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root))
   }
+
+  // 在根节点上执行的任务是newCallbackNode
+  root.callbackNode = newCallbackNode
+
+  root.callbackPriority = newCallbackPriority
 }
 ```
 
@@ -257,6 +292,8 @@ export function createWorkInProgress(current, pendingProps) {
     // 清空副作用
     workInprogress.flags = NoFlags;
     workInprogress.subtreeFlags = NoFlags;
+
+    workInprogress.deletions = null;
   }
 
   workInprogress.child = current.child;
@@ -266,6 +303,9 @@ export function createWorkInProgress(current, pendingProps) {
   workInprogress.sibling = current.sibling;
   workInprogress.index = current.index;
   workInprogress.ref = current.ref;
+  workInprogress.flags = current.flags;
+  workInprogress.lanes = current.lanes;
+  workInprogress.childLanes = current.childLanes;
 
   return workInprogress;
 }

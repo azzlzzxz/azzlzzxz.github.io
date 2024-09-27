@@ -150,6 +150,10 @@ export function FiberNode(tag, pendingProps, key) {
   this.deletions = null
   // 替身、轮替
   this.alternate = null
+  // 自身上的赛道优先级
+  this.lanes = NoLanes
+  // 子赛道优先级
+  this.childLanes = NoLanes
 }
 ```
 

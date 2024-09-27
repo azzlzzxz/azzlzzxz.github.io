@@ -107,6 +107,12 @@ function FiberRootNode(containerInfo) {
 
   // 当前任务的优先级
   this.callbackPriority = NoLane
+
+  //过期时间 存放每个赛道过期时间
+  this.expirationTimes = createLaneMap(NoTimestamp)
+
+  //过期的赛道
+  this.expiredLanes = NoLanes
 }
 
 export function createFiberRoot(containerInfo) {
@@ -118,6 +124,20 @@ export function createFiberRoot(containerInfo) {
   // 初始化更新队列
   initializeUpdateQueue(uninitializedFiber)
   return root
+}
+```
+
+### `createLaneMap`
+
+- 初始化所有赛道的过期时间，是`NoTimestamp`
+
+```js
+export function createLaneMap(initial) {
+  const laneMap = []
+  for (let i = 0; i < TotalLanes; i++) {
+    laneMap.push(initial)
+  }
+  return laneMap
 }
 ```
 
@@ -150,14 +170,19 @@ export function initializeUpdateQueue(fiber) {
 
 ## `updateContainer`
 
-- 在更新容器时，会调用 requestUpdateLane 方法，用来获取一个更新赛道`lane`
+- 在更新容器时，会调用 `requestUpdateLane` 方法，用来获取一个更新赛道`lane`，和 `requestEventTime` 方法获取当前时间
 
-- 把这个`lane`，放到更新队列里，并传入调度更新
+  - 把这个`lane`，放到更新队列里，并传入调度更新
+
+  - 把`eventTime`当前时间，传入调度更新中
 
 ```js{5,6}
 export function updateContainer(element, container) {
   // 获取当前根fiber
   const current = container.current;
+
+  // 请求事件发生时间
+  const eventTime = requestEventTime();
 
   // 请求一个更新赛道
   const lane = requestUpdateLane(current);
@@ -172,6 +197,17 @@ export function updateContainer(element, container) {
   const root = enqueueUpdate(current, update, lane);
 
   scheduleUpdateOnFiber(root, current, lane);
+}
+```
+
+### requestEventTime
+
+- `requestEventTime`：获取从页面打开到当前的时间
+
+```js
+export function requestEventTime() {
+  currentEventTime = now()
+  return currentEventTime // performance.now()
 }
 ```
 
@@ -393,6 +429,93 @@ export function includesBlockingLane(root, lanes) {
   const SyncDefaultLanes = InputContinuousLane | DefaultLane
   return (lanes & SyncDefaultLanes) !== NoLane
 }
+
+// 获取赛道索引（取是左侧的1的索引）
+function pickArbitraryLaneIndex(lanes) {
+  // clz32返回最左侧的1的左边0的个数
+  return 31 - Math.clz32(lanes)
+}
+
+// 把饿死的赛道标识为过期
+export function markStarvedLanesAsExpired(root, currentTime) {
+  //获取当前有更新赛道
+  const pendingLanes = root.pendingLanes
+
+  //记录每个赛道上的过期时间
+  const expirationTimes = root.expirationTimes
+
+  let lanes = pendingLanes
+  while (lanes > 0) {
+    //获取最左侧的1的索引
+    const index = pickArbitraryLaneIndex(lanes)
+
+    const lane = 1 << index
+
+    // 获取这个索引上的过期时间
+    const expirationTime = expirationTimes[index]
+
+    //如果此赛道上没有过期时间,说明没有为此车道设置过期时间
+    if (expirationTime === NoTimestamp) {
+      expirationTimes[index] = computeExpirationTime(lane, currentTime)
+    } else if (expirationTime <= currentTime) {
+      // 如果此车道的过期时间已经小于等于当前时间了
+      //把此车道添加到过期车道里
+      root.expiredLanes |= lane
+    }
+    lanes &= ~lane
+  }
+}
+
+function computeExpirationTime(lane, currentTime) {
+  switch (lane) {
+    case SyncLane:
+    case InputContinuousLane:
+      return currentTime + 250
+    case DefaultLane:
+      return currentTime + 5000
+    case IdleLane:
+      return NoTimestamp
+    default:
+      return NoTimestamp
+  }
+}
+
+export function createLaneMap(initial) {
+  const laneMap = []
+  for (let i = 0; i < TotalLanes; i++) {
+    laneMap.push(initial)
+  }
+  return laneMap
+}
+
+export function includesExpiredLane(root, lanes) {
+  return (lanes & root.expiredLanes) !== NoLanes
+}
+
+/**
+ * pendingLanes根上所有的将要被渲染的车道
+ * remainingLanes 合并统计当前新的根上剩下的车道
+ */
+export function markRootFinished(root, remainingLanes) {
+  // noLongerPendingLanes指的是已经更新过的lane
+  const noLongerPendingLanes = root.pendingLanes & ~remainingLanes
+
+  root.pendingLanes = remainingLanes
+
+  const expirationTimes = root.expirationTimes
+
+  let lanes = noLongerPendingLanes
+
+  while (lanes > 0) {
+    //获取最左侧的1的索引
+    const index = pickArbitraryLaneIndex(lanes)
+    const lane = 1 << index
+
+    //清除已经计算过的车道的过期时间
+    expirationTimes[index] = NoTimestamp
+    lanes &= ~lane
+  }
+}
 ```
 
 ## `lane` 在事件中的处理
@@ -432,11 +555,13 @@ const RootInProgress = 0
 const RootCompleted = 5
 //当渲染工作结束的时候当前的fiber树处于什么状态,默认进行中
 let workInProgressRootExitStatus = RootInProgress
+// 保存当前的事件发生的时间
+let currentEventTime = NoTimestamp
 
-export function scheduleUpdateOnFiber(root, fiber, lane) {
+export function scheduleUpdateOnFiber(root, fiber, lane, eventTime) {
   markRootUpdated(root, lane)
   // 确保调度执行root上的更新
-  ensureRootIsScheduled(root)
+  ensureRootIsScheduled(root, eventTime)
 }
 
 // 标记当前根节点上等待更新的lane
@@ -454,6 +579,8 @@ export function markRootUpdated(root, updateLane) {
 
 - 并发渲染：把`事件优先级`对应的`lane赛道优先级`对应到`scheduler`优先级，开始任务调度，执行回调（`performConcurrentWorkOnRoot`）
 
+- [<u>react 处理 饥饿问题 看这里 🚀</u>](#react-饥饿问题)
+
 > 流程图
 
 ![isSyncLane](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/isSyncLane.jpg)
@@ -463,8 +590,13 @@ function ensureRootIsScheduled(root) {
   // 获取当前优先级最高的赛道
   const nextLanes = getNextLanes(root, workInProgressRootRenderLanes)
 
+  // 把所有饿死的赛道标记为过期
+  markStarvedLanesAsExpired(root, currentTime)
+
   //如果没有要执行的任务
   if (nextLanes === NoLanes) {
+    root.callbackNode = null
+    root.callbackPriority = NoLane
     return
   }
 
@@ -477,6 +609,10 @@ function ensureRootIsScheduled(root) {
   //如果新的优先级和老的优先级一样，则可以进行批量更新
   if (existingCallbackPriority === newCallbackPriority) {
     return
+  }
+
+  if (existingCallbackNode !== null) {
+    Scheduler_cancelCallback(existingCallbackNode)
   }
 
   //新的回调任务
@@ -942,43 +1078,96 @@ function ensureRootIsScheduled(root, currentTime) {
 }
 ```
 
-## 高优先级操作打断低优先级
+## `React` 饥饿问题
 
-### `main.jsx` 举例
+- 先给每个赛道初始化一个默认过期时间`NoTimestamp`（`createLaneMap`方法）
 
-- 需要两个优先级，`按钮点击事件`优先级为`1`，`useEffect`执行优先级是`DefaultLanes`为`16`，在`useEffect`里没有渲染完成之前，点击按钮
+- 当进行更新时，为当前更新对应的 lane 赛道，计算一个过期时间（`computeExpirationTime`方法，可以理解为，给不同的赛道优先级上加一个定时器）
 
-```jsx
-import * as React from './react'
-import { createRoot } from 'react-dom/src/client/ReactDOMRoot'
+- 在执行更新时，高优先级的更新会打断低优先级的更新（`Scheduler_cancelCallback`方法）
 
-function FunctionComponent() {
-  const [numbers, setNumbers] = React.useState(new Array(19).fill('A'))
+- 但是低优先级的更新不能一直的等下去（饿死），所以根据 👆 说的，给赛道挂一个定时器，如果这个时间过期了，那么就会执行这个一直被打断的低优先级任务
 
-  React.useEffect(() => {
-    setTimeout(() => {}, 10)
+- 如果有赛道过期了，会立刻把任务执行从异步改为同步（`shouldTimeSlice`）
 
-    setNumbers((numbers) => numbers.map((number) => number + 'B'))
-  }, [])
+```js
+function ensureRootIsScheduled(root, currentTime) {
+  // 先获取当前根上执行任务
+  const existingCallbackNode = root.callbackNode
 
-  return (
-    <button
-      onClick={() => {
-        setNumbers((number) => number + 'C')
-      }}
-    >
-      {numbers.map((number, index) => (
-        <span key={index}>{number}</span>
-      ))}
-    </button>
-  )
+  // 把所有饿死的赛道标记为过期
+  markStarvedLanesAsExpired(root, currentTime)
+
+  // ... 省略大量代码
+
+  if (existingCallbackNode !== null) {
+    Scheduler_cancelCallback(existingCallbackNode)
+  }
+}
+```
+
+### `markStarvedLanesAsExpired`把饿死的赛道标识为过期
+
+```js
+// 获取赛道的索引（取是左侧的1的索引）
+function pickArbitraryLaneIndex(lanes) {
+  // clz32返回最左侧的1的左边0的个数
+  return 31 - Math.clz32(lanes)
 }
 
-let element = <FunctionComponent />
+// 把饿死的赛道标识为过期
+export function markStarvedLanesAsExpired(root, currentTime) {
+  //获取当前有更新赛道
+  const pendingLanes = root.pendingLanes
 
-const root = createRoot(document.getElementById('root'))
+  //记录每个赛道上的过期时间
+  const expirationTimes = root.expirationTimes
 
-root.render(element)
+  let lanes = pendingLanes
+
+  while (lanes > 0) {
+    //获取最左侧的1的索引
+    const index = pickArbitraryLaneIndex(lanes)
+
+    const lane = 1 << index
+
+    // 获取这个索引上的过期时间
+    const expirationTime = expirationTimes[index]
+
+    //如果此赛道上没有过期时间,说明没有为此车道设置过期时间
+    if (expirationTime === NoTimestamp) {
+      expirationTimes[index] = computeExpirationTime(lane, currentTime)
+    } else if (expirationTime <= currentTime) {
+      //如果此车道的过期时间已经小于等于当前时间了，说明这个赛道已经过期了
+      //把此车道添加到过期车道里
+      root.expiredLanes |= lane
+    }
+
+    lanes &= ~lane
+  }
+}
+```
+
+#### `computeExpirationTime`
+
+- `computeExpirationTime`：给当前需要的更新对应的赛道，**标记一个过期时间（相当于加个定时器）**
+
+  - 不同的赛道，对应计算的时间不同
+
+```js
+function computeExpirationTime(lane, currentTime) {
+  switch (lane) {
+    case SyncLane:
+    case InputContinuousLane:
+      return currentTime + 250
+    case DefaultLane:
+      return currentTime + 5000
+    case IdleLane:
+      return NoTimestamp
+    default:
+      return NoTimestamp
+  }
+}
 ```
 
 ### `cancelCallback` 取消任务
@@ -996,10 +1185,46 @@ function ensureRootIsScheduled(root, currentTime) {
 }
 ```
 
+### `shouldTimeSlice`
+
+- 一旦当前车道里存在了过期车道，`shouldTimeSlice`变为`false`，就会执行`renderRootSync`同步
+
+```js
+function performConcurrentWorkOnRoot(root, didTimeout) {
+  // ... 省略代码
+
+  //是否不包含阻塞车道
+  const nonIncludesBlockingLane = !includesBlockingLane(root, lanes)
+
+  //是否不包含过期的车道
+  const nonIncludesExpiredLane = !includesExpiredLane(root, lanes)
+
+  //时间片没有过期
+  const nonTimeout = !didTimeout
+
+  //三个变量都是真，才能进行时间分片，也就是进行并发渲染，也就是可以中断执行
+  const shouldTimeSlice = nonIncludesBlockingLane && nonIncludesExpiredLane && nonTimeout
+
+  const exitStatus = shouldTimeSlice
+    ? renderRootConcurrent(root, lanes)
+    : renderRootSync(root, lanes)
+
+  // ... 省略代码
+}
+```
+
 ### `commitRootImpl`
+
+- `remainingLanes`：获取当前根上未更新的赛道
 
 ```js
 function commitRootImpl(root) {
+  // ... 省略大量代码
+
+  //合并统计当前新的根上未更新的车道
+  const remainingLanes = mergeLanes(finishedWork.lanes, finishedWork.childLanes)
+  markRootFinished(root, remainingLanes)
+
   // ... 省略大量代码
 
   //在提交之后，因为根上可能会有跳过的更新，所以需要重新再次调度
@@ -1007,11 +1232,41 @@ function commitRootImpl(root) {
 }
 ```
 
-## `React` 饥饿问题
+#### `markRootFinished`
+
+- `pendingLanes`：根上所有的将要被渲染的车道
+
+- `remainingLanes`：根上未更新的赛道
+
+- `noLongerPendingLanes`：已经更新过的 lane 赛道
+
+```js
+export function markRootFinished(root, remainingLanes) {
+  const noLongerPendingLanes = root.pendingLanes & ~remainingLanes
+
+  root.pendingLanes = remainingLanes
+
+  const expirationTimes = root.expirationTimes
+
+  let lanes = noLongerPendingLanes
+
+  while (lanes > 0) {
+    //  获取最左侧的1的索引
+    const index = pickArbitraryLaneIndex(lanes)
+    const lane = 1 << index
+
+    // 清除已经计算过的车道的过期时间
+    expirationTimes[index] = NoTimestamp
+    lanes &= ~lane
+  }
+}
+```
 
 ::: tip 源码地址
 
 实现`lane`同步渲染和并发渲染的相关代码我放在了[<u>15.lane 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/15.lane)
 
-实现`lane`高优先级打断低优先级和批量更新的相关代码我放在了[<u>16.interrupt 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/16.interrupt)
+实现`lane`批量更新的相关代码我放在了[<u>16.interrupt 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/16.interrupt)
+
+实现`lane`高优先级打断低优先级的相关代码我放在了[<u>18.hunger 分支里了 点击直达 🚀</u>](https://github.com/azzlzzxz/react-code/tree/18.hunger)
 :::

@@ -97,7 +97,9 @@ export function scheduleUpdateOnFiber(root, fiber, lane, eventTime) {
 - 在 `sync` 同步模式下会执行 `performSyncWorkOnRoot`
 - 在 `concurrent` 并发模式下会执行 `performConcurrentWorkOnRoot`
 
-这两个函数的作用是执行 render 阶段和 commit 阶段
+这两个函数的作用是执行 `render` 阶段和 `commit` 阶段
+
+也就是根据`虚拟DOM`构建`fiber树`，要创建真实的`DOM`节点，还需要把真实的`DOM`节点插入容器
 
 :::
 
@@ -179,59 +181,164 @@ function ensureRootIsScheduled(root) {
 }
 ```
 
-## `performConcurrentWorkOnRoot`
-
-在 `concurrent` 并发模式下会执行 `performConcurrentWorkOnRoot`
-
-```js
-/**
- * 根据虚拟DOM构建fiber树，要创建真实的DOM节点，还需要把真实的DOM节点插入容器
- * @param {*} root
- */
-function performConcurrentWorkOnRoot(root) {
-  //获取当前优先级最高的车道
-  const lanes = getNextLanes(root)
-  //如果没有要执行的任务
-  if (lanes === NoLanes) {
-    return
-  }
-  // 第一次渲染是以同步的方式渲染根节点，初次渲染的时候，都是同步的
-  renderRootSync(root, lanes)
-
-  // 开始进入提交阶段，就是执行副作用，修改真实DOM
-  const finishedWork = root.current.alternate
-
-  root.finishedWork = finishedWork
-
-  // 提交
-  commitRoot(root)
-
-  workInProgressRoot = null
-}
-```
-
-## `renderRootSync`
-
 > 构建 `Fiber Tree`
 
 ![fiber_tree](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fiber_tree.jpg)
 
+## `sync`同步模式
+
+- `performSyncWorkOnRoot`
+
+- `renderRootSync`
+
+- `prepareFreshStack`
+
+- `workLoopSync`
+
+### `performSyncWorkOnRoot` 执行同步工作
+
+在 `sync` 并发模式下会执行 `performSyncWorkOnRoot`
+
+- `return null`： `flushSyncCallbacks` 里的 `callback` 根据是否为`null`，来`中断循环`（[`flushSyncCallbacks 可以看这里`](/rsource/react/lane.md#reactfibersynctaskqueue)）
+
 ```js
-// 开始构建fiber树
+function performSyncWorkOnRoot(root) {
+  // 获得最高优的lane
+  const lanes = getNextLanes(root)
+
+  // 渲染新的fiber树(第一次渲染是以同步的方式渲染根节点，初次渲染的时候，都是同步的)
+  renderRootSync(root, lanes)
+
+  // 获取新渲染完成的fiber根节点
+  const finishedWork = root.current.alternate
+
+  root.finishedWork = finishedWork
+
+  commitRoot(root)
+
+  // flushSyncCallbacks 里的 callback 根据是否为null，来中断循环
+  return null
+}
+```
+
+### `renderRootSync`
+
+```js
 function renderRootSync(root, renderLanes) {
-  //如果新的根和老的根不一样，或者新的渲染优先级和老的渲染优先级不一样
+  // 如果新的根和老的根不一样，或者新的渲染优先级和老的渲染优先级不一样
   if (root !== workInProgressRoot || workInProgressRootRenderLanes !== renderLanes) {
     prepareFreshStack(root, renderLanes)
   }
 
-  // 同步执行工作循环
   workLoopSync()
+
+  return RootCompleted
+}
+```
+
+### `workLoopSync`
+
+- `workLoopSync`：开始同步模式的工作循环
+
+- `workLoopSync` 函数会一直执行 `performUnitOfWork` 函数，直到 `workInProgress === null`，表示没有正在进行的渲染
+
+```js
+function workLoopSync() {
+  while (workInProgress !== null) {
+    // 执行工作单元
+    performUnitOfWork(workInProgress)
+  }
+}
+```
+
+## `concurrent`并发模式
+
+### `performConcurrentWorkOnRoot`执行并发工作
+
+在 `concurrent` 并发模式下会执行 `performConcurrentWorkOnRoot`
+
+```js
+function performConcurrentWorkOnRoot(root, didTimeout) {
+  // 先获取当前根节点上的任务
+  const originalCallbackNode = root.callbackNode
+
+  //获取当前优先级最高的车道
+  const lanes = getNextLanes(root, NoLanes)
+
+  if (lanes === NoLanes) {
+    return null
+  }
+
+  //是否不包含阻塞车道
+  const nonIncludesBlockingLane = !includesBlockingLane(root, lanes)
+  //是否不包含过期的车道
+  const nonIncludesExpiredLane = !includesExpiredLane(root, lanes)
+  //时间片没有过期
+  const nonTimeout = !didTimeout
+
+  //三个变量都是真，才能进行时间分片，也就是进行并发渲染，也就是可以中断执行
+  const shouldTimeSlice = nonIncludesBlockingLane && nonIncludesExpiredLane && nonTimeout
+
+  const exitStatus = shouldTimeSlice
+    ? renderRootConcurrent(root, lanes)
+    : renderRootSync(root, lanes)
+
+  // 如果不是渲染中的话，那说明肯定渲染完了
+  if (exitStatus !== RootInProgress) {
+    const finishedWork = root.current.alternate
+    root.finishedWork = finishedWork
+    commitRoot(root)
+  }
+
+  // 说明任务没有完成
+  if (root.callbackNode === originalCallbackNode) {
+    // 把此函数返回，下次接着执行
+    return performConcurrentWorkOnRoot.bind(null, root)
+  }
+
+  return null
+}
+```
+
+### `renderRootConcurrent`
+
+```js
+function renderRootConcurrent(root, lanes) {
+  if (workInProgressRoot !== root || workInProgressRootRenderLanes !== lanes) {
+    prepareFreshStack(root, lanes)
+  }
+
+  //在当前分配的时间片(5ms)内执行fiber树的构建或者说渲染，
+  workLoopConcurrent()
+
+  //如果 workInProgress不为null，说明fiber树的构建还没有完成
+  if (workInProgress !== null) {
+    return RootInProgress
+  }
+
+  //如果workInProgress是null了说明渲染工作完全结束了
+  return workInProgressRootExitStatus
+}
+```
+
+### `workLoopConcurrent`
+
+`workLoopConcurrent` 函数在 `workLoopSync` 的基础上增加了 `shouldYield` 的判断
+
+`shouldYield` 函数会判断当前是否有剩余时间，如果没有剩余时间，就会返回 `true` 表示需要中断当前任务
+
+```js
+function workLoopConcurrent() {
+  // 如果有下一个要构建的fiber并且时间片没有过期
+  while (workInProgress !== null && !shouldYield()) {
+    performUnitOfWork(workInProgress)
+  }
 }
 ```
 
 ## `prepareFreshStack`
 
-- 这里
+- 因为在构建`fiber树`的过程中，`renderRootSync`和`renderRootConcurrent`会反复进入，所以只有在第一次进来的时候会创建新的`fiber树`，或者说`新fiber`
 
 ```js
 // 创建一个新栈
@@ -255,7 +362,7 @@ function prepareFreshStack(root, renderLanes) {
 
 ### `createWorkInProgress` 基于老的`fiber`和新的属性，创建新的`fiber`
 
-```js {7-47}
+```js {7-53}
 // ReactFiber.js
 
 export function FiberNode(tag, pendingProps, key) {
@@ -311,20 +418,6 @@ export function createWorkInProgress(current, pendingProps) {
 }
 ```
 
-## `workLoopSync` 同步循环
-
-`workLoopSync` 函数会一直执行 `performUnitOfWork` 函数，直到 `workInProgress === null`，表示没有正在进行的渲染
-
-```js
-// 工作循环同步
-function workLoopSync() {
-  while (workInProgress !== null) {
-    // 执行工作单元
-    performUnitOfWork(workInProgress)
-  }
-}
-```
-
 ## `performUnitOfWork` 执行工作单元
 
 > 源码地址 [performUnitOfWork ｜ react-reconciler/src/ReactFiberWorkLoop.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberWorkLoop.js#L2500)
@@ -364,6 +457,10 @@ function performUnitOfWork(unitOfWork) {
   }
 }
 ```
+
+> `Fiber 树`的结构
+
+![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
 
 ::: tip `Fiber 树` 的构建
 

@@ -2,6 +2,10 @@
 
 在 `render` 阶段完成更新后，会调用 `commitRoot(root)`（进入 `commit` 阶段）来提交更新
 
+> 流程图
+
+![commitRoot](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/commitRoot.jpg)
+
 ## `commitRoot`
 
 `commitRoot` 函数会做一些准备工作，然后调用 `commitRootImpl` 函数完成更新的提交

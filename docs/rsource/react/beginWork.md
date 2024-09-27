@@ -2,13 +2,13 @@
 
 `beginWork` 主要工作是根据传入的 `Fiber 节点` 创建或复用 `子 Fiber 节点`
 
-> 源码地址 [<u>beginWork | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L3861)
+> 流程图
 
-> `Fiber 树`的结构
-
-![begin_work](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/begin_work.jpg)
+![beginWork](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/beginWork.jpg)
 
 ## `beginWork`
+
+> 源码地址 [<u>beginWork | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L3861)
 
 `begin_work` 的参数
 

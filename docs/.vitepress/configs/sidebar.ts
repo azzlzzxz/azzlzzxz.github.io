@@ -213,6 +213,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: '源码文件结构', link: '/rsource/react/file' },
         { text: '前置知识', link: '/rsource/react/preknowledge' },
+        { text: 'JSX', link: '/rsource/react/jsx' },
         { text: 'Fiber', link: '/rsource/react/introduce' },
         {
           text: '渲染流程',

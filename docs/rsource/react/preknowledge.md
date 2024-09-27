@@ -214,6 +214,90 @@ console.log('循环结束')
 - **删除最小值**：`O(log n)`，删除最小值后需要进行下沉操作，最坏情况下会移动到叶子节点。
 - **查找最小值**：`O(1)`，因为最小值总是位于堆的根节点。
 
+### `React` 是怎么实现最小堆的
+
+> 源码地址 [最小堆的实现 ｜ scheduler/src/SchedulerMinHeap.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/scheduler/src/SchedulerMinHeap.js)
+
+```js
+// 向最小堆里添加一个节点
+export function push(heap, node) {
+  const index = heap.length
+  heap.push(node)
+  siftUp(heap, node, index)
+}
+
+// 查看最小堆顶的元素
+export function peek(heap) {
+  return heap.length === 0 ? null : heap[0]
+}
+
+// 弹出最小堆的堆顶元素
+export function pop(heap) {
+  if (heap.length === 0) {
+    return null
+  }
+  const first = heap[0]
+  const last = heap.pop()
+  if (last !== first) {
+    heap[0] = last
+    siftDown(heap, last, 0)
+  }
+  return first
+}
+
+// 向上调整某个节点，使其位于正确的位置
+function siftUp(heap, node, i) {
+  let index = i
+  while (index > 0) {
+    const parentIndex = (index - 1) >>> 1
+    const parent = heap[parentIndex]
+    if (compare(parent, node) > 0) {
+      heap[parentIndex] = node
+      heap[index] = parent
+      index = parentIndex
+    } else {
+      return
+    }
+  }
+}
+
+// 向下调整某个节点，使其位于正确的位置
+function siftDown(heap, node, i) {
+  let index = i
+  const length = heap.length
+  const halfLength = length >>> 1
+  while (index < halfLength) {
+    const leftIndex = (index + 1) * 2 - 1
+    const left = heap[leftIndex]
+    const rightIndex = leftIndex + 1
+    const right = heap[rightIndex]
+    if (compare(left, node) < 0) {
+      if (rightIndex < length && compare(right, left) < 0) {
+        heap[index] = right
+        heap[rightIndex] = node
+        index = rightIndex
+      } else {
+        heap[index] = left
+        heap[leftIndex] = node
+        index = leftIndex
+      }
+    } else if (rightIndex < length && compare(right, node) < 0) {
+      heap[index] = right
+      heap[rightIndex] = node
+      index = rightIndex
+    } else {
+      return
+    }
+  }
+}
+
+// 比较
+function compare(a, b) {
+  const diff = a.sortIndex - b.sortIndex
+  return diff !== 0 ? diff : a.id - b.id
+}
+```
+
 ## `MessageChannel`
 
 [<u>MessageChannel | MDN 介绍</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/MessageChannel)

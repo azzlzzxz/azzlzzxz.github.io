@@ -8,7 +8,7 @@
 
 ## `beginWork`
 
-> 源码地址 [<u>beginWork | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L3861)
+> 源码地址 [<u>beginWork | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-v18.2.0/blob/75de845d69876d84a4a8b226c5f2e6203328b8ee/packages/react-reconciler/src/ReactFiberBeginWork.old.js#L3685)
 
 `begin_work` 的参数
 
@@ -53,7 +53,7 @@ export function beginWork(current, workInProgress, renderLanes) {
 
 ### `ReactWorkTags`
 
-> 这里只列举了一些 `tag`，想了解全部的`tag`类型，可以看这里 [<u>FiberTage 源码地址 | react-reconciler/src/ReactWorkTags.js</u>](https://github.com/azzlzzxz/react-source-code/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
+> 这里只列举了一些 `tag`，想了解全部的`tag`类型，可以看这里 [<u>FiberTage 源码地址 | react-reconciler/src/ReactWorkTags.js</u>](https://github.com/azzlzzxz/react-v18.2.0/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
 
 ```js
 // fiber 的 tag 类型
@@ -97,7 +97,7 @@ export default function (prefix, workInProgress) {
 
 ## `updateHostRoot`
 
-> 源码地址 [<u>updateHostRoot | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L1480)
+> 源码地址 [<u>updateHostRoot | react-reconciler/src/ReactFiberBeginWork.old.js</u>](https://github.com/azzlzzxz/react-v18.2.0/blob/75de845d69876d84a4a8b226c5f2e6203328b8ee/packages/react-reconciler/src/ReactFiberBeginWork.old.js#L1278)
 
 `updateHostRoot`方法是构建`根Fiber`的`子fiber链表`
 
@@ -127,7 +127,7 @@ function updateHostRoot(current, workInProgress) {
 
 ### `processUpdateQueue`
 
-> 源码地址 [<u>processUpdateQueue | react-reconciler/src/ReactFiberClassUpdateQueue.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberClassUpdateQueue.js#L494)
+> 源码地址 [<u>processUpdateQueue | react-reconciler/src/ReactFiberClassUpdateQueue.js</u>](https://github.com/azzlzzxz/react-v18.2.0/blob/75de845d69876d84a4a8b226c5f2e6203328b8ee/packages/react-reconciler/src/ReactFiberClassUpdateQueue.old.js#L457)
 
 根据老状态和更新队列中的更新，来计算计算新状态
 
@@ -188,7 +188,7 @@ function getStateFromUpdate(update, prevState) {
 
 ## `updateHostComponent`
 
-> 源码地址 [<u>updateHostComponent | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L1615)
+> 源码地址 [<u>updateHostComponent | react-reconciler/src/ReactFiberBeginWork.js</u>](https://github.com/azzlzzxz/react-v18.2.0/blob/75de845d69876d84a4a8b226c5f2e6203328b8ee/packages/react-reconciler/src/ReactFiberBeginWork.old.js#L1426)
 
 `updateHostComponent` 函数用于处理`普通 DOM 标签`，构建`原生组件`的`子fiber链表`
 
@@ -269,7 +269,7 @@ export function updateFunctionComponent(
 
 ## `reconcileChildren` 根据`新的虚拟DOM`构建`新的fiber子链表`
 
-> 源码地址 [<u>reconcileChildren | react-reconciler/src/ReactChildFiber.js</u>](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-reconciler/src/ReactFiberBeginWork.js#L340)
+> 源码地址 [<u>reconcileChildren | react-reconciler/src/ReactChildFiber.old.js</u>](https://github.com/azzlzzxz/react-v18.2.0/blob/75de845d69876d84a4a8b226c5f2e6203328b8ee/packages/react-reconciler/src/ReactFiberBeginWork.old.js#L288)
 
 ```js
 // ReactFiberBeginWork.js

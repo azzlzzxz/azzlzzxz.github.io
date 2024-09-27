@@ -1,10 +1,5 @@
 # 源码文件结构
 
-::: tip
-
-- [<u>React 18.2.0 源码地址</u>](https://github.com/facebook/react/tree/v18.2.0)
-  :::
-
 ## 顶层目录
 
 ```sh
@@ -72,8 +67,10 @@
 └─ react-suspense-test-utils     # React Suspense 组件的测试工具包
 ```
 
-::: tip 相关资料
+::: info 相关资料
 
-[<u>react 18.2.0 源码目录结构</u>](https://notes.fe-mm.com/analysis/react/18.2.0/base/file)
+- [<u>源码目录结构</u>](https://react.iamkasong.com/preparation/file.html#%E9%A1%B6%E5%B1%82%E7%9B%AE%E5%BD%95)
+
+- [<u>React 18.2.0 源码地址</u>](https://github.com/facebook/react/tree/v18.2.0)
 
 :::

@@ -180,7 +180,7 @@ workInProgressFiber.alternate === currentFiber
 
 ![双缓存](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/react_fiber_%E5%8F%8C%E7%BC%93%E5%AD%98.jpg)
 
-::: tip 相关资料
+::: info 相关资料
 
 - [<u>React 技术揭秘</u>](https://react.iamkasong.com/process/doubleBuffer.html)
 

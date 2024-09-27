@@ -230,7 +230,7 @@ function updateReducer(reducer) {
 
 ## 渲染
 
-### 当上一次的状态和新状态一样时我们看一下是什么效果
+- 当上一次的状态和新状态一样时我们看一下是什么效果
 
 ```js
 import * as React from './react'
@@ -265,7 +265,7 @@ function dispatchSetState(fiber, queue, action) {
 
 ![useState_eager](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useState_eager.gif)
 
-### 正常渲染
+- 正常渲染
 
 ![useState_render](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/react/useState_render.gif)
 

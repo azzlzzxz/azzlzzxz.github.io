@@ -178,9 +178,19 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'React',
       collapsed: false,
       items: [
-        { text: 'jsx', link: '/frame/react/base/jsx' },
+        { text: 'JSX', link: '/frame/react/base/jsx' },
         { text: '虚拟DOM', link: '/frame/react/base/virtualDOM' },
+        { text: '数据在 React 组件中的流动', link: '/frame/react/base/dataFlow' },
         { text: '受控与非受控', link: '/frame/react/base/control' },
+        { text: 'Hooks', link: '/frame/react/base/hooks' },
+      ],
+    },
+    {
+      text: '应用',
+      collapsed: false,
+      items: [
+        { text: 'react-intl 实现国际化', link: '' },
+        { text: 'react-flow 画流程图', link: '' },
       ],
     },
   ],

@@ -65,10 +65,72 @@ export default App
 
 可以看到，`setCount` 时拿到的 `count` 一直是 `0`
 
-解决方案：
+**解决方案：**
 
 - 使用 `setState` 的函数的形式，从参数拿到上次的 `state`，这样就不会形成闭包了，或者用 `useReducer`，直接 `dispatch action`，而不是直接操作 `state`，这样也不会形成闭包
 
 - 把用到的 `state` 加到依赖数组里，这样 `state` 变了就会重新跑 `effect` 函数，引用新的 `state`
 
 - 使用 `useRef` 保存每次渲染的值，用到的时候从 `ref.current` 取
+
+## `useMemo`和`useCallback`
+
+先来看看`React`自己对这两个`hook`的定义：
+
+- [<u>`useMemo`</u>](https://zh-hans.react.dev/reference/react/useMemo)：`useMemo` 是一个 `React Hook`，它在每次重新渲染的时候能够缓存计算的结果。
+
+```js
+const cachedValue = useMemo(calculateValue, dependencies)
+```
+
+- [<u>`useCallback`</u>](https://zh-hans.react.dev/reference/react/useCallback)：`useCallback` 是一个允许你在多次渲染中缓存函数的 `React Hook`。
+
+```js
+const cachedFn = useCallback(fn, dependencies)
+```
+
+这也就是为什么使用他们的原因**<font color="#FF9D00">缓存</font>**
+
+在每次重渲染之间缓存数据。如果一个值或函数被包裹在这两个 `hooks` 中，`react` 就会在首次渲染时缓存这个值或函数。在接下来的每次重渲染时，都会返回这个缓存的值。如果不使用它们，所有非原始类型的值，如 `array`、`object`，或 `function`，都会在每一次重渲染时被彻底重新创建。
+
+> 举个 🌰
+
+```js
+const Component = () => {
+  const a = { test: 1 }
+
+  useEffect(() => {}, [a])
+}
+```
+
+`a` 是 `useEffect` 依赖。在每次重新渲染`Component`时，`React` 都会将其与之前的值进行比较。`a` 是在 `Component` 中定义的对象，这意味着在每次重新渲染时，它都会从头开始重新创建。因此，比较`重渲染之前`的 `a` 和 `重渲染之后`的 `a`，结果都会是 `false`，所以被 `useEffect` 包裹的函数也将会在每次重渲染的过程中触发调用。
+
+这时候用`useMemo`或`useCallback`，把它缓存起来，就可以很好的进行优化，只有在依赖项确实发生变化的时候才会触发回调。
+
+**但是，`useMemo`和`useCallback`，只有在重渲染的过程中才有用。在初始渲染过程中，它们会让 `React` 做很多额外的工作，也就意味着你的应用在初始渲染过程中会[稍稍更慢]一些**
+
+### 不要滥用 `useMemo`或`useCallback`
+
+首先一个组件什么时候会重新渲染自己？
+
+- 当 `state` 或者 `prop` 发生变化的时候，组件就会重渲染自己
+
+- 当组件的父组件重渲染，也就是说，当一个组件重渲染它自己的时候，它也会同时重渲染它的 `children`
+
+那我们就可以知道，`useMemo`和`useCallback`作用于 `prop` 并不能避免组件重渲染，只有当每一个 `prop` 都被缓存，且组件本身也被缓存的情况下，重渲染才能被避免。
+
+如果组件代码里有以下情形，我们可以毫无心理负担地删掉 `useMemo` 和 `useCallback`：
+
+- 它们作为属性直接或通过依赖链传递给 `DOM` 元素
+
+- 它们被作为 `props`，直接或通过依赖链传递到某个未被缓存的组件上
+
+- 它们被作为 `props`，直接或通过一系列依赖项传递给至少有一个 prop 未缓存的组件
+
+::: info 相关资料
+
+- [<u>如何使用 Memo 和 useCallback</u>](https://www.developerway.com/posts/how-to-use-memo-use-callback#part4)
+
+- [<u>「好文翻译」为什么你可以删除 90% 的 useMemo 和 useCallback</u>](https://juejin.cn/post/7251802404877893689)
+
+:::

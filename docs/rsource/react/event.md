@@ -83,7 +83,7 @@ export function createRoot(container) {
 
 ::: tip 合成事件实例上`currentTarget`是在不断的变化的
 
-- `event nativeEventTarget`：它的是原始的事件源（当前执行操作的 DOM 节点），是永远不变的
+- `event nativeEventTarget`：它的是原始的事件源（当前执行操作的 `DOM` 节点），是永远不变的
 - `event currentTarget`：当前的事件源，它是会随着事件回调的执行不断变化的
   :::
 
@@ -408,7 +408,7 @@ export { registerSimpleEvents as registerEvents, extractEvents }
 
 > 源码地址 [MouseEventInterface | react-dom-bindings/src/events/SyntheticEvent.js](https://github.com/azzlzzxz/react-source-code/blob/3d95c43b8967d4dda1ec9a22f0d9ea4999fee8b8/packages/react-dom-bindings/src/events/SyntheticEvent.js#L192C7-L192C26)
 
-```js {17-47}
+```js {17-53}
 import assign from 'shared/assign'
 
 function functionThatReturnsTrue() {
@@ -571,7 +571,7 @@ function dispatchDiscreteEvent(domEventName, eventSystemFlags, container, native
 
 ### `dispatchEvent`
 
-`dispatchEvent`函数：就是委托给容器的回调，当容器(#root)在捕获或者说冒泡阶段处理事件的时候会执行此函数
+`dispatchEvent`函数：就是委托给容器的回调，当容器`(#root)`在捕获或者说冒泡阶段处理事件的时候会执行此函数
 
 ```js
 /**

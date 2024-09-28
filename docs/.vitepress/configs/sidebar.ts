@@ -187,11 +187,16 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
+      text: '工具',
+      collapsed: false,
+      items: [{ text: 'Zustand', link: '/frame/react/tool/zustand' }],
+    },
+    {
       text: '应用',
       collapsed: false,
       items: [
-        { text: 'react-intl 实现国际化', link: '' },
-        { text: 'react-flow 画流程图', link: '' },
+        { text: 'react 实现国际化', link: '/frame/react/application/i18n' },
+        // { text: 'react-flow 画流程图', link: '' },
       ],
     },
   ],

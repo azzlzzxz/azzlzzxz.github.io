@@ -48,23 +48,23 @@ export const nav: DefaultTheme.Config['nav'] = [
       {
         text: '框架',
         items: [
-          { text: 'React', link: '/frame/react/base/jsx' },
-          { text: 'ReactNative', link: '/frame/react-native/init' },
-          { text: 'Electron', link: '/frame/electron/introduce' },
+          { text: 'React 相关知识', link: '/frame/react/base/jsx' },
+          { text: 'ReactNative 相关知识', link: '/frame/react-native/init' },
+          { text: 'Electron 相关知识', link: '/frame/electron/introduce' },
         ],
       },
       {
         text: '源码',
         items: [
-          { text: 'React18.2 源码', link: '/rsource/react/file' },
-          // { text: 'Vue3 源码', link: '/vsource/vue/effect' },
+          { text: 'React18.2 源码解析', link: '/rsource/react/file' },
+          // { text: 'Vue3 源码解析', link: '/vsource/vue/effect' },
         ],
       },
       {
         text: '第三方库源码解析',
         items: [
-          { text: 'React-Window', link: 'https://github.com/azzlzzxz/react-window' },
-          { text: 'React-Dnd', link: 'https://github.com/azzlzzxz/react-dnd' },
+          { text: 'React-Window 源码解析', link: 'https://github.com/azzlzzxz/react-window' },
+          { text: 'React-Dnd 源码解析', link: 'https://github.com/azzlzzxz/react-dnd' },
         ],
       },
     ],

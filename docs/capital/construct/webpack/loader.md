@@ -155,3 +155,51 @@ module.exports = {
 - [<u>Webpack | Rule.enforce 🚀</u>](https://webpack.docschina.org/configuration/module#ruleenforce)
 
 :::
+
+## 如何编写一个 `loader`
+
+`Loader` 本质上是一个函数，作用是将某个源码字符串转换成另一个源码字符串返回。接收源文件代码字符串为参数，经过处理转换，然后 `return` 目标代码字符串
+
+> 举个 🌰
+
+```js
+const babel = require('@babel/core')
+
+function loader(sourceCode, inputSourceMap, inputAst) {
+  //正在处理的文件绝对路径
+  const filename = this.resourcePath
+
+  // options就是webpack.config.js里的loader配置的options
+  const useOptions = this.getOptions()
+
+  const options = {
+    filename,
+    inputSourceMap, // 指定输入代码的sourcemap
+    sourceMaps: true, // 表示是否要生成sourcemap
+    sourceFileName: filename, // 指定编译 后的文件所属的文件名
+    ast: true, // 是否生成ast
+    ...useOptions,
+  }
+
+  //.babelrc babel.config.js
+  const config = babel.loadPartialConfig(options)
+
+  if (config) {
+    babel.transformAsync(sourceCode, config.options, (err, result) => {
+      this.callback(null, result.code, result.map, result.ast)
+    })
+    //code 转译后的代码 map sourcemap映射文件 ast 抽象语法树
+    return
+  }
+
+  return sourceCode
+}
+
+module.exports = loader
+```
+
+::: info 相关资料
+
+- [<u>Webpack | 编写 loader</u>](https://webpack.docschina.org/contribute/writing-a-plugin/)
+
+:::

@@ -315,6 +315,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             { text: '优化', link: '/capital/construct/webpack/optimize' },
           ],
         },
+        {
+          text: 'Rspack',
+          link: '/capital/construct/rspack/base',
+        },
+        {
+          text: 'Vite',
+        },
       ],
     },
     {

@@ -297,14 +297,24 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   // ],
   '/capital/': [
     {
+      text: '工程化',
+      items: [{ text: 'Monorepo', link: '/capital/engineering/monorepo' }],
+    },
+    {
       text: '构建工具',
       collapsed: false,
       items: [
-        // {
-        //   text: 'webpack',
-        //   collapsed: false,
-        //   items: [{ text: '基础', link: '/work/construct/webpack/base' }],
-        // },
+        {
+          text: 'webpack',
+          collapsed: false,
+          items: [
+            { text: '基本概念', link: '/capital/construct/webpack/base' },
+            { text: 'Loader', link: '/capital/construct/webpack/loader' },
+            { text: 'plugin', link: '/capital/construct/webpack/base' },
+            { text: 'sourceMap', link: '/capital/construct/webpack/sourceMap' },
+            { text: '优化', link: '/capital/construct/webpack/optimize' },
+          ],
+        },
       ],
     },
     {
@@ -330,9 +340,9 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: 'ESLint 插件', link: '/capital/plugins/eslint' },
-        { text: 'chrome 扩展插件', link: '/capital/plugins/chrome' },
-        // { text: 'webpack 插件', link: '/capital/plugins/webpack' },
-        // { text: 'vite 扩展插件', link: '/capital/plugins/vite' },
+        { text: 'Chrome 扩展插件', link: '/capital/plugins/chrome' },
+        // { text: 'Webpack 插件', link: '/capital/plugins/webpack' },
+        { text: 'Vite 扩展插件', link: '/capital/plugins/vite' },
       ],
     },
   ],

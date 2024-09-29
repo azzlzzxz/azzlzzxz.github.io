@@ -72,9 +72,27 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: '基建',
     items: [
-      { text: '构建', link: '/capital/construct/webpack/base' },
+      {
+        text: '工程化',
+        items: [{ text: 'Monorepo', link: '/capital/engineering/monorepo' }],
+      },
+      {
+        text: '构建工具',
+        items: [
+          { text: 'Webpack', link: '/capital/construct/webpack/base' },
+          { text: 'Rspack', link: '/capital/construct/rspack/base' },
+          { text: 'Vite', link: '/capital/construct/vite/base' },
+        ],
+      },
       { text: '部署', link: '/capital/deploy/release' },
-      { text: '插件开发', link: '/capital/plugins/eslint' },
+      {
+        text: '插件开发',
+        items: [
+          { text: 'Eslint 插件开发', link: '/capital/plugins/eslint' },
+          { text: 'Chrome 扩展插件开发', link: '/capital/plugins/chrome' },
+          { text: 'Vite 扩展插件', link: '/capital/plugins/vite' },
+        ],
+      },
     ],
   },
   {

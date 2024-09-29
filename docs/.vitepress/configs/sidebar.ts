@@ -310,8 +310,8 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           items: [
             { text: '基本概念', link: '/capital/construct/webpack/base' },
             { text: 'Loader', link: '/capital/construct/webpack/loader' },
-            { text: 'plugin', link: '/capital/construct/webpack/base' },
-            { text: 'sourceMap', link: '/capital/construct/webpack/sourceMap' },
+            { text: 'Plugin', link: '/capital/construct/webpack/plugin' },
+            { text: 'SourceMap', link: '/capital/construct/webpack/sourceMap' },
             { text: '优化', link: '/capital/construct/webpack/optimize' },
           ],
         },

@@ -321,6 +321,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         },
         {
           text: 'Vite',
+          link: '/capital/construct/vite/base',
         },
       ],
     },
@@ -334,11 +335,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         },
         {
           text: 'Docker',
-          collapsed: false,
-          items: [
-            { text: 'Docker基础', link: '/capital/deploy/docker/base' },
-            // { text: 'Docker常用命令', link: '/capital/deploy/docker/command' },
-          ],
+          link: '/capital/deploy/docker/base',
         },
       ],
     },

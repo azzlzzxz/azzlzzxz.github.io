@@ -43,9 +43,9 @@
 
 ![mechanism](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/mechanism.png)
 
-### 新生代内存回收机制：
+### 新生代内存回收机制
 
-新生代内存容量小，`64 位系统`下仅有` 32M`。新生代内存分为`From、To`两部分，进行垃圾回收时，先扫描` From`，将非存活对象回收，将存活对象顺序复制到`To`中，之后调换` From/To`，等待下一次回收。
+新生代内存容量小，`64 位系统`下仅有`32M`。新生代内存分为`From、To`两部分，进行垃圾回收时，先扫描`From`，将非存活对象回收，将存活对象顺序复制到`To`中，之后调换`From/To`，等待下一次回收。
 
 1. 分配方式
 
@@ -61,7 +61,7 @@
 
 处于使用状态的`semispace`称为`From`空间，处于闲置状态的`semispace`称为`To`空间。
 
-我画了一套详细的流程图，接下来我会结合流程图来详细说明`Cheney`算法是怎么工作的。 垃圾回收在下面我统称为`GC（Garbage Collection）`。
+接下来我会结合流程图来详细说明`Cheney`算法是怎么工作的。 垃圾回收在下面我统称为`GC（Garbage Collection）`。
 
 1. **在`From`空间中分配了 3 个对象 A、B、C**
 

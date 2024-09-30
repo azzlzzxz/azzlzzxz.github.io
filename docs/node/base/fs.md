@@ -46,7 +46,7 @@ fs.open('./xxx.js', 'r', function (err, fd) {
 ```
 
 ```js
-const buffer = Buffer.from('珠峰')
+const buffer = Buffer.from('steinsGate')
 
 // node中采用了流的方式简化了这坨代码  解耦 发布订阅模式 来做解耦操作
 function copy(source, target, cb) {
@@ -142,7 +142,7 @@ fs.readdir('a', (err, dirs) => {
 
 ![fs_async2](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/fs_async2.png)
 
-#### 异步串行方式删除，儿子一个一个删除，再删除父亲，后序遍历。
+#### 异步串行方式删除，儿子一个一个删除，再删除父亲，后序遍历
 
 递归删除
 
@@ -182,7 +182,7 @@ rmdir('a', (err) => {
 })
 ```
 
-#### 异步并行方式删除，儿子删，儿子都删完了通知父亲删除，类似 `Promise.all`。
+#### 异步并行方式删除，儿子删，儿子都删完了通知父亲删除，类似 `Promise.all`
 
 ```js
 function rmdir(dir, cb) {

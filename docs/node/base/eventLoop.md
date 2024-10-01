@@ -27,22 +27,23 @@
    └───────────────────────┘
 ```
 
-<font color="#5887ff">
+::: tip 流程
 
 - `timers:` 执行 `setTimeout` 和 `setInterval` 中到期的 `callback`。
 - `pending callback:` 上一轮循环中少数的 `callback` 会放在这一阶段执行。
 - `idle, prepare:` 仅在内部使用。
 - `poll:` 最重要的阶段，执行 `pending` `callback`，在适当的情况下会阻塞在这个阶段。
 - `check:` 执行 `setImmediate` 的 `callback`。
-- `close callbacks:` 执行 close 事件的 `callback`，例如 `socket.on(‘close’[,fn])`或者 `http.server.on('close, fn)`。
-
-</font>
 
 > `setImmediate()`是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行 `setImmediate` 指定的回调函数
 
+- `close callbacks:` 执行 close 事件的 `callback`，例如 `socket.on(‘close’[,fn])`或者 `http.server.on('close, fn)`。
+
+:::
+
 `event loop` 的每一次循环都需要依次经过上述的阶段。
 
-每个阶段都有自己的 `FIFO` 的 `callback` 队列（在 `timer` 阶段其实使用一个最小堆而不是队列来保存所有元素，比如 `timeout` 的 `callback` 是按照超时时间的顺序来调用的，并不是先进先出的队列逻辑），每当进入某个阶段，都会从所属的队列中取出 `callback` 来执行。
+每个阶段都有自己的 `FIFO` 的 `callback` 队列（在 `timer` 阶段其实使用一个[<u>最小堆</u>](/rsource/react/preknowledge.md#最小堆)而不是队列来保存所有元素，比如 `timeout` 的 `callback` 是按照超时时间的顺序来调用的，并不是先进先出的队列逻辑），每当进入某个阶段，都会从所属的队列中取出 `callback` 来执行。
 
 当队列为空或者被执行 `callback` 的数量达到系统的最大数量时，进入下一阶段。这六个阶段都执行完毕称为一轮循环。
 
@@ -50,7 +51,9 @@
 
 > 源码地址 [uv\_\_run_timers](https://github.com/nodejs/node/blob/23a3410f9fecf2c8652eef4f92b4072edf307137/deps/uv/src/timer.c#L163)
 
-在 `timers` 阶段，会执行 `setTimeout` 和 `setInterval` 中到期的 `callback`。执行这两者回调需要设置一个毫秒数，理论上来说，应该是时间一到就立即执行 `callback` 回调，但是由于 `system` 的调度可能会延时，达不到预期时间。如下例：
+在 `timers` 阶段，会执行 `setTimeout` 和 `setInterval` 中到期的 `callback`。执行这两者回调需要设置一个毫秒数，理论上来说，应该是时间一到就立即执行 `callback` 回调，但是由于 `system` 的调度可能会延时，达不到预期时间。
+
+> 举个 🌰
 
 ```js
 const fs = require('fs')
@@ -117,7 +120,7 @@ someAsyncOperation(() => {
 
 - `setTimeout()` 安排在经过`最小（ms）`后运行的脚本，在 `timers` 阶段执行。
 
-举个 🌰：
+> 举个 🌰
 
 ```js
 const fs = require('fs')

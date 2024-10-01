@@ -19,6 +19,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         items: [
           { text: '浏览器相关知识', link: '/base/browser/browser' },
           { text: '网络相关知识', link: '/base/network/restFulAPI' },
+          { text: '前端安全相关知识', link: '/base/secure/attack' },
         ],
       },
       { text: '数据结构与算法', link: '/base/structure/linkList' },

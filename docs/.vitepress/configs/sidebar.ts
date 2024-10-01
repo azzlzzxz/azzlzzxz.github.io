@@ -89,11 +89,16 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: 'RestFulAPI', link: '/base/network/restFulAPI' },
-        { text: 'http状态码', link: '/base/network/httpStatus' },
-        { text: 'http协议', link: '/base/network/httpAgreement' },
+        { text: 'Http状态码', link: '/base/network/httpStatus' },
+        { text: 'Http协议', link: '/base/network/httpAgreement' },
         { text: 'OSI&TCP', link: '/base/network/tcp' },
         { text: 'WebSocket', link: '/base/network/webSocket' },
       ],
+    },
+    {
+      text: '前端安全相关知识',
+      collapsed: false,
+      items: [{ text: 'Web安全', link: '/base/secure/attack' }],
     },
     {
       text: '数据结构与算法',

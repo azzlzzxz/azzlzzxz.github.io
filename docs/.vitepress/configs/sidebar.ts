@@ -144,7 +144,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: 'Node基础',
       collapsed: false,
       items: [
-        { text: 'Node介绍', link: '/node/base/base' },
+        { text: 'Node', link: '/node/base/base' },
         { text: 'EventLoop', link: '/node/base/eventLoop' },
         {
           text: 'Node_API',

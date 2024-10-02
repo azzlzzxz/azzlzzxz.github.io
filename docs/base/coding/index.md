@@ -329,6 +329,43 @@ function myNew() {
 
 :::
 
+## `Object.create`
+
+> `Object.create()` 方法创建一个新对象，使用现有的对象来提供新创建的对象的 `__proto__`
+
+::: info 模拟实现 Object.create
+
+```js
+function create(proto, properties) {
+  // 如果 proto 不是 null 或非原始包装对象，抛出 TypeError 异常
+  const type = typeof proto
+  if (type !== 'object' && type !== 'function') {
+    throw new TypeError('Object prototype may only be an Object or null: ' + proto)
+  }
+
+  function Fn() {}
+  // 将 proto 的原型设置为 Fn 的原型
+  Fn.prototype = proto
+  // 创建新对象
+  const result = new Fn()
+
+  // 兼容 null 的处理
+  if (proto === null) {
+    result.__proto__ = null
+    // OR Reflect.setPrototypeOf(result, null)
+  }
+
+  // 将 properties 的属性设置到新对象上
+  if (properties !== null && properties !== undefined) {
+    Object.defineProperties(result, properties)
+  }
+
+  return result
+}
+```
+
+:::
+
 ## `call` 实现
 
 > `call()` 方法在使用一个指定的 `this` 值和若干个指定的参数值的前提下调用某个函数或方法。

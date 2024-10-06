@@ -143,6 +143,8 @@ export function Page() {
 
 ## 增量静态生成 (ISR)
 
+> ISR 增量静态生成（Incremental Static Regeneration）
+
 增量静态再生`（ISR）`建立在 `SSG` 的基础上，同时又有 `SSR` 的优点，`ISR` 允许页面的某些部分是静态的，而其他部分则可以在数据发生变化时动态渲染。`ISR` 在性能和内容更新之间取得了平衡，因此适用于内容经常更新的站点。
 
 > 举个 🌰
@@ -245,3 +247,11 @@ export default Blog
 - 混合内容的应用
 
 `Next.js` 允许你在同一个应用中混合使用不同的渲染策略。例如，你可以使用 `SSR` 渲染首页，使用 `SSG` 渲染博客部分，而使用 `CSR` 渲染用户交互部分。
+
+::: info 相关资料
+
+- [<u>讲清楚 Next.js 里的 CSR, SSR, SSG 和 ISR</u>](https://weijunext.com/article/nextjs-csr-ssr-ssg-isr)
+
+- [<u>SSR 服务端渲染和同构原理</u>](https://johninch.github.io/Roundtable/Question-Bank/Engineering/SSR.html)
+
+:::

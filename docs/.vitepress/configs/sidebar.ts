@@ -123,6 +123,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '编程题',
       link: '/base/coding/',
     },
+    {
+      text: '其他',
+      items: [{ text: '前端页面渲染方式', link: '/base/other/renderMode' }],
+    },
   ],
 
   '/node/': [

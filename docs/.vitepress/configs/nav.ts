@@ -111,14 +111,14 @@ export const nav: DefaultTheme.Config['nav'] = [
           { text: '常用工具 / 方法', link: '/work/utils/regexp' },
         ],
       },
-      // {
-      //   text: '微信相关',
-      //   items: [
-      //     { text: '微信小程序', link: '/wx/qw/side' },
-      //     { text: '微信公众号', link: '/wx/qw/side' },
-      //     { text: '企业微信侧边栏', link: '/wx/qw/side' },
-      //   ],
-      // },
+      {
+        text: '微信相关',
+        items: [
+          { text: '微信小程序', link: '/wx/mini/optimize' },
+          // { text: '微信公众号', link: '/wx/qw/side' },
+          // { text: '企业微信侧边栏', link: '/wx/qw/side' },
+        ],
+      },
       { text: '日常问题记录', link: '/work/question/npm' },
       { text: '其他', link: '/work/command/command' },
     ],

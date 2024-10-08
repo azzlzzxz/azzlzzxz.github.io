@@ -411,6 +411,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   ],
   '/wx/': [
     {
+      text: '微信小程序',
+      collapsed: false,
+      items: [{ text: '小程序优化', link: '/wx/mini/optimize' }],
+    },
+    {
       text: '企业微信',
       collapsed: false,
       items: [{ text: '企微侧边栏', link: '/wx/qw/side' }],

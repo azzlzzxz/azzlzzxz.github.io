@@ -508,7 +508,7 @@ function commitDeletionEffects(root, returnFiber, deletedFiber) {
 
 #### `commitDeletionEffectsOnFiber`
 
-- `commitDeletionEffectsOnFiber`函数：根据需要删除的 fiber 的 tag 类型，执行不同的操作
+- `commitDeletionEffectsOnFiber`函数：根据需要删除的 `fiber` 的 `tag` 类型，执行不同的操作
   - `recursivelyTraverseDeletionEffects`：递归遍历子节点的删除
   - `removeChild`：删除`真实DOM`节点
 

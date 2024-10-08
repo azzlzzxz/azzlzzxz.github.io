@@ -11,6 +11,7 @@
 export function initializeUpdateQueue(fiber) {
   // 创建一个新的更新队列
   const queue = {
+    // ... 省略代码
     shared: {
       pending: null, // pending是循环链表
     },
@@ -37,7 +38,7 @@ export function createFiberRoot(containerInfo) {
   uninitializedFiber.stateNode = root
 
   // 初始化更新队列
-  ;+initializeUpdateQueue(uninitializedFiber)
+  initializeUpdateQueue(uninitializedFiber)
 
   return root
 }
@@ -49,29 +50,26 @@ export function createFiberRoot(containerInfo) {
 
 当初始化工作完成以后，会调用 `updateContainer` 开启更新
 
-```js {13}
+```js {13-16}
 // ReactDOMRoot.js
 
-import {
-  createContainer,
-  updateContainer,
-} from "react-reconciler/src/ReactFiberReconciler";
+import { createContainer, updateContainer } from 'react-reconciler/src/ReactFiberReconciler'
 
 function ReactDOMRoot(internalRoot) {
-  this._internalRoot = internalRoot;
+  this._internalRoot = internalRoot
 }
 
 // root.render()
-+ ReactDOMRoot.prototype.render = function (children) {
-+  const root = this._internalRoot;
-+  updateContainer(children, root);
-+ };
+ReactDOMRoot.prototype.render = function (children) {
+  const root = this._internalRoot
+  updateContainer(children, root)
+}
 
 export function createRoot(container) {
   // container ---> div #root
-  const root = createContainer(container); // ---> 创建FiberRootNode
+  const root = createContainer(container) // ---> 创建FiberRootNode
 
-  return new ReactDOMRoot(root);
+  return new ReactDOMRoot(root)
 }
 ```
 

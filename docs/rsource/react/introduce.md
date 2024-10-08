@@ -159,7 +159,7 @@ function FiberNode(
 
 `React` 应用的根节点通过使 `current` 指针在不同 `Fiber树` 的 `rootFiber`间切换来完成 `current Fiber树`指向的切换
 
-当 `workInProgress Fiber树`构建完成交给 `Renderer` 渲染在页面上后，应用跟节点的 `current` 指针指向 `workInProgress Fiber树`，此时 `workInProgress Fiber树` 就变成 current Fiber 树。
+当 `workInProgress Fiber树`构建完成交给 `Renderer` 渲染在页面上后，应用跟节点的 `current` 指针指向 `workInProgress Fiber树`，此时 `workInProgress Fiber树` 就变成 `current Fiber` 树。
 
 每次状态更新都会产生新的 `workInProgress Fiber树`，通过`current` 与 `workInProgress` 的替换，完成`DOM`更新。
 

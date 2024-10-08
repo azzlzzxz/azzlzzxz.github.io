@@ -275,7 +275,7 @@ function updateElement(returnFiber, current, element) {
 }
 ```
 
-### `userFiber`
+### `useFiber`
 
 ```js
 function useFiber(fiber, pendingProps) {

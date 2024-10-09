@@ -95,7 +95,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         items: [
           { text: 'Eslint 插件开发', link: '/capital/plugins/eslint' },
           { text: 'Chrome 扩展插件开发', link: '/capital/plugins/chrome' },
-          { text: 'Vite 扩展插件', link: '/capital/plugins/vite' },
+          // { text: 'Vite 扩展插件', link: '/capital/plugins/vite' },
         ],
       },
     ],

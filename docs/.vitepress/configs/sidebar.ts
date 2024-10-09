@@ -355,7 +355,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'ESLint 插件', link: '/capital/plugins/eslint' },
         { text: 'Chrome 扩展插件', link: '/capital/plugins/chrome' },
         // { text: 'Webpack 插件', link: '/capital/plugins/webpack' },
-        { text: 'Vite 扩展插件', link: '/capital/plugins/vite' },
+        // { text: 'Vite 扩展插件', link: '/capital/plugins/vite' },
       ],
     },
   ],

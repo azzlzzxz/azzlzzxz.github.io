@@ -1,5 +1,86 @@
 # 浏览器相关的 API
 
+## History API
+
+`History API` 通过 `history` 全局对象提供了对浏览器会话的历史记录，你可以在用户的历史记录中来回导航，而且可以操作历史记录栈中的内容。
+
+::: tip 注意 ⚠️
+
+`History API` 仅在主线程`（Window）`中可用。无法在 `Worker` 上下文中访问它。
+
+:::
+
+- `history.back()`
+
+在历史记录中向后跳转，这和用户点击浏览器的回退`（Back）`按钮的效果相同。
+
+- `history.forward()`
+
+在历史记录中向前跳转，这和用户点击浏览器的回退`（Forward）`按钮的效果相同。
+
+- `history.go()`
+
+可以用 `go()`方法从会话历史记录中加载某一特定页面，该页面使用与当前页面的相对位置来标识（当前页面的相对位置为 0）。
+
+> 举个 🌰
+
+```js
+history.go(-1)
+history.go(1)
+
+// 以下语句都具有刷新页面的效果
+history.go(0)
+history.go()
+```
+
+- `history.length`
+
+可以通过查看 `length` 属性的值来确定历史记录栈中的页面数量。
+
+- `history.pushState()`
+
+向浏览器的会话历史栈增加了一个条目。
+
+- `history.replaceState()`
+
+用新的条目替换当前的历史记录条目。
+
+- `popstate`
+
+`popstate` 事件只会在浏览器某些行为下触发，比如点击后退按钮（或者在 `JavaScript` 中调用 `history.back()` 方法）。在同一文档的两个历史记录条目之间导航会触发该事件。
+
+> 举个 🌰
+
+```js
+window.addEventListener('popstate', (event) => {
+  alert(`位置：${document.location}，状态：${JSON.stringify(event.state)}`)
+})
+
+history.pushState({ page: 1 }, '标题 1', '?page=1')
+history.pushState({ page: 2 }, '标题 2', '?page=2')
+history.replaceState({ page: 3 }, '标题 3', '?page=3')
+
+history.back() // http://example.com/example.html?page=1，状态：{"page":1}”
+history.back() // http://example.com/example.html，状态：null”
+history.go(2) // http://example.com/example.html?page=3，状态：{"page":3}”
+```
+
+- `hashchange`
+
+当 `URL` 的片段标识符（以 `#` 符号开头和之后的 `URL` 部分）更改时，将触发 `hashchange` 事件。
+
+::: tip 注意
+
+- `history.pushState`、`history.replaceState` 这种并不会触发 `popstate`，只有在 `history` 之间导航才会触发。
+
+:::
+
+::: info 相关资料
+
+- [<u>MDN | History_API</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/History_API)
+
+:::
+
 ## requestIdleCallback
 
 [<u>MDN requestIdleCallback API 🚀</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)

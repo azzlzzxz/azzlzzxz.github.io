@@ -1,6 +1,6 @@
 # Promise 方法
 
-## 1.`Promise.all`
+## `Promise.all` 实现原理
 
 ```js
 const fs = require('fs')
@@ -11,15 +11,19 @@ Promise.all([1, getName, getAge, 2]).then((data) => {
 })
 ```
 
-### `Promise.all` 方法返回的是一个 `promise`,其中一个失败就真的失败了
+`Promise.all` 方法返回的是一个 `promise`，其中一个失败就真的失败了
 
-`Promise.all` 实现原理
+::: tip times 做计数器的原因
+
+- `[1,getName,getAge,2]`循环走到`2`，那么`getName`，`getAge`是`empty`，因为是异步的，所以不能用`result.length === promises.length`作为判断条件
+  :::
 
 ```js
 // 判断是不是promise
 function isPromise(val) {
   return val && typeof val.then === 'function'
 }
+
 Promise.all = function (promises) {
   return new Promise((resolve, reject) => {
     let result = []
@@ -31,6 +35,7 @@ Promise.all = function (promises) {
         resolve(result)
       }
     }
+
     for (let i = 0; i < promises.length; i++) {
       if (isPromise(promises[i])) {
         promises[i].then((data) => {
@@ -44,7 +49,7 @@ Promise.all = function (promises) {
 }
 ```
 
-## 2.`Promise.race` (赛跑 采用跑的快的作为结果)
+## `Promise.race` (赛跑 采用跑的快的作为结果)
 
 ```js
 let p1 = new Promise((resolve, reject) => {
@@ -83,7 +88,7 @@ Promise.race = function (promises) {
 }
 ```
 
-## 3.`Promise.finally`
+## `Promise.finally`
 
 ```js
 // Promise.prototype.finally 也是相当于then 最终的  不是try  catch  finally
@@ -122,7 +127,7 @@ Promise.reject(123)
   )
 ```
 
-## 4.`PromisifyAll`
+## `PromisifyAll`
 
 ```js
 const fs = require('fs')
@@ -172,7 +177,7 @@ readFile('note.md', 'utf8').then((data) => {
 })
 ```
 
-## 5.`abort：Promise` 超时处理
+## `abort：Promise` 超时处理
 
 ```js
 let p1 = new Promise((resolve, reject) => {

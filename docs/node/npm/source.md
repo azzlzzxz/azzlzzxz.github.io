@@ -60,83 +60,83 @@ package.json
 
 ## 发布一个 `npm` 包(公共)
 
-1. 首先需要到 [npm 官网](https://www.npmjs.com/) 注册一个 `npm` 账号。
-   > 你也可以直接在本地执行 `npm adduser` 来创建账户
+1. 首先需要到 [<u>npm 官网</u>](https://www.npmjs.com/) 注册一个 `npm` 账号
+
+> 你也可以直接在本地执行 `npm adduser` 来创建账户
+
 2. 在本地通过运行 `npm login` 登陆你的 `npm` 账号
-   > `npm` 的账户管理是镜像维度的，所以当你切换镜像的时候用户也会跟着切换，也就是说如果你想把你的包发布到官方的 `npm` 上，那么你登陆时就需要将你的镜像设置为 `npm` 官方就像，如果你想发布到 `taobao`，那么你就需要切换为 `taobao` 镜像。
-   > 随便推荐一个 `npm` 镜像管理工具 nrm，可以像 `nvm` 切换 `node` 一样方便的切换 `npm` 镜像。
-   > `npm whoami` 可以查看到当前登陆的用户名
+
+> `npm whoami` 可以查看到当前登陆的用户名
+
 3. 初始化项目
 
-   - `npm init -y` 可以在当前目录下快速初始化一个 `package.json` 文件
+- `npm init -y` 可以在当前目录下快速初始化一个 `package.json` 文件
 
-   ```json
-   {
-     "name": "azzlzzxz",
-     "description": "this is test project",
-     "version": "1.0.0",
-     "repository": {
-       "type": "git",
-       "url": "https://github.com/xxx/xxx.git"
-     },
-     "keywords": ["test", "project", "azzlzzxz"],
-     "author": "xxx",
-     "license": "ISC",
-     "bugs": {
-       "url": "https://github.com/owner/project/issues",
-       "email": "project@hostname.com"
-     },
-     "homepage": "https://github.com/xxx/xxx",
-     "main": "index.js"
-   }
-   ```
+```json
+{
+  "name": "azzlzzxz",
+  "description": "this is test project",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xxx/xxx.git"
+  },
+  "keywords": ["test", "project", "azzlzzxz"],
+  "author": "xxx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owner/project/issues",
+    "email": "project@hostname.com"
+  },
+  "homepage": "https://github.com/xxx/xxx",
+  "main": "index.js"
+}
+```
 
-   - 初始化一个 `README.md` 文件
+- 编写代码/修改代码
 
-   ```md
-   这是一个测试的 npm 包
-   ```
+  - 如果你是修改代码，那么你还需要修改 `package.json` 中的 `version` 来修改版本，或者也可以运行 `npm version xxx`来智能的生成新版本号（命令参数详见官网或者 `npm version -h` ）
 
-4. 编写代码/修改代码
-   - 如果你是修改代码，那么你还需要修改 `package.json` 中的 `version` 来修改版本，或者也可以运行 `npm version xxx`来智能的生成新版本号（命令参数详见官网或者 `npm version -h` ）
-   - 升级版本：
-     `npm version patch` : `package.json` 中的版本号 2.0.0 变为 2.0.1
-     `npm version minor`: `package.json` 中的版本号 2.0.1 变为 2.1.0;
-     `npm version major` : `package.json` 中的版本号 2.1.0 变为 3.0.0
-5. 使用 `npm publish` 发布当前包到 `npm` 仓库
-   > 注意你当前的镜像必须是 `npm` 官方镜像
+  - 升级版本：
+    `npm version patch` : `package.json` 中的版本号 `2.0.0` 变为 `2.0.1`
+    `npm version minor`: `package.json` 中的版本号 `2.0.1` 变为 `2.1.0`
+    `npm version major` : `package.json` 中的版本号 `2.1.0` 变为 `3.0.0`
+
+- 使用 `npm publish` 发布当前包到 `npm` 仓库
 
 ## 发布属于某个 `scope` 或者组织下的包
 
-在实际项目中，对于一些不能完全和项目或者框架解藕的 `npm` 包我们一般会将其发布到相应的命名空间或者组织下，例如`@vue/cli`、 `@vue/runtime-core`、 `@vue/composition-api`...他们都是 `vue` 组织下的包，同理 `@bable/xxx`、`@webpack/xxx` 等也是一样的。当我们在开发一个公司内部的项目时一般也会搭建 `npm` 私服，然后在其中创建项目的 `scope`，然后将项目的 `npm` 发布上去。
+在实际项目中，对于一些不能完全和项目或者框架解藕的 `npm` 包我们一般会将其发布到相应的命名空间或者组织下，例如`@vue/cli`、 `@vue/runtime-core`、 `@vue/composition-api`...他们都是 `vue` 组织下的包，同理 `@bable/xxx`、`@webpack/xxx` 等也是一样的。
+
+当我们在开发一个公司内部的项目时一般也会搭建 `npm` 私服，然后在其中创建项目的 `scope`，然后将项目的 `npm` 发布上去。
 
 1. 需要 `name` 用 @组织名 开头，例如 `@vue/cli`
 
-   ```json
-   {
-     "name": "@azzlzzxz/form",
-     "version": "1.0.4",
-     "description": "",
-     "main": "index.js",
-     "keywords": ["test", "project"],
-     "author": "azzlzzxz",
-     "license": "ISC",
-     "dependencies": {
-       "jquery": "^3.6.0",
-       "lodash": "<4.2.0"
-     }
-   }
-   ```
+```json
+{
+  "name": "@azzlzzxz/form",
+  "version": "1.0.4",
+  "description": "",
+  "main": "index.js",
+  "keywords": ["test", "project"],
+  "author": "azzlzzxz",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "lodash": "<4.2.0"
+  }
+}
+```
 
 2. 你的 `npm` 账户需要属于这个组织或者命名空间
 
-   ```shell
-    npm set registry http://nexus.xxx
-    输入：npm config get registry 检查源是否切换成功
+```shell
+npm set registry http://nexus.xxx
+输入：npm config get registry 检查源是否切换成功
 
-    在本地注册并登录用户
-    npm adduser --registry http://nexus.xxx
-   ```
+在本地注册并登录用户
+npm adduser --registry http://nexus.xxx
+```
 
 3. 如果发布的包属于某一个 `scope` 或者组织，如果是非 `npm` 官方镜像（一般就是指私有 `npm` 仓库），那么你还需要配置 `publishConfig.registry` 来指定镜像地址。
 
@@ -153,9 +153,9 @@ package.json
 
 4. 发布 `npm` 包
 
-   ```shell
-    npm publish --registry 'xxx：私服镜像源'
-   ```
+```shell
+npm publish --registry 'xxx：私服镜像源'
+```
 
 ## 调试/修改包
 

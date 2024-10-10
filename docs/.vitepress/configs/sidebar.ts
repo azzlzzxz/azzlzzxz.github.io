@@ -17,7 +17,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: 'ES6 知识点',
+      text: 'ES6+ 知识点',
       collapsed: false,
       items: [
         { text: 'let & const', link: '/base/es6/let&const' },

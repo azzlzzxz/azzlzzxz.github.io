@@ -619,7 +619,7 @@ cursor：箭头可以变成需要的形状
 
 ## `link` 和 `@import` 加载样式的区别
 
-[`<link>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link) 是一个 `HTML` 标签，其规定了当前文档与外部资源的关系，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
+[`<link>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link) 是一个 `HTML` 标签，其规定了当前文档与外部资源的关系，不仅可以加载 `CSS` 文件，还可以定义 `RSS`、`rel` 连接属性等。
 
 [`@import`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@import) 是一个 `CSS` 语法规则，用于从其他样式表导入样式规则。
 

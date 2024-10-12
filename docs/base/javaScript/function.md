@@ -380,14 +380,20 @@ curry(fn)(1)(2)(3) // 1 2 3
 那么实现通用的 `curry` 函数的关键就在于：
 
 - 自动判断函数入参
-- 自我递归调用
+- 递归调用
 
 ```js
-const curry = (fn) => {
-  const argLen = fn.length // 原函数的入参个数
-  const recursion = (args) =>
-    args.length >= argLen ? fn(...args) : (newArg) => recursion([...args, newArg])
-  return recursion([])
+const curring = (fn, arr = []) => {
+  // arr就是我们要收集每次调用时传入的参数
+  let len = fn.length // 函数的长度就是参数个数
+  return function (...args) {
+    let newArgs = [...arr, ...args]
+    if (newArgs.length == len) {
+      return fn(...newArgs)
+    } else {
+      return curring(fn, newArgs)
+    }
+  }
 }
 ```
 

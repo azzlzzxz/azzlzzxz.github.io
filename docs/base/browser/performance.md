@@ -136,6 +136,121 @@ Content-Encoding: gzip
 <link rel="preload" href="style.css" as="style" />
 ```
 
+## `SEO` 优化
+
+- 添加 `favicon` 图标 和 `TDK` (`title`、`keywords`、`description`)
+
+- 使用 `https`
+
+- `html` 语义化标签
+
+- 图片标签 `alt` 属性
+
+- 服务端渲染
+
+- `sitemap` 站点地图
+
+`sitemap` 站点地图一般是`xml`格式的文件，用于帮助搜索引擎更好地发现和抓取网站上的所有页面，并提供页面优先级和更新频率的信息，帮助搜索引擎更好地分配抓取资源
+
+> 举个 🌰
+
+```xml
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://www.xxx.com/</loc>
+    <lastmod>2023-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
+```
+
+::: tip 标签
+
+- `loc`：页面地址
+
+- `lastmod`：内容最后修改时间
+
+- `changefreq`：预计更新频率
+
+- `priority`：页面相对于其他页面优先级，它的值范围是`0.0`到`1.0`，其中`1.0`表示最高优先级
+
+:::
+
+- `robots` 文件
+
+`robots.txt` 文件是一个网站用来告诉搜索引擎机器人(又称爬虫或蜘蛛)应该如何抓取和索引该网站的一种标准
+
+`robots.txt` 文件需放置在网站的根目录下，以`域名/robots.txt`的形式直接访问到
+
+```txt
+User-agent: *
+Disallow: /private/
+Allow: /vip
+
+Sitemap: https://xxx/sitemap.xml
+```
+
+::: tip
+
+- `User-agent`: 该项的值用于描述搜索引擎蜘蛛的名字。如果该项的值设为`*`，则该协议对任何机器人均有效
+
+- `Disallow`：这条指令明确地告诉爬虫不要访问 `/private/` 路径及其下的所有内容。这是 `robots.txt` 文件的核心功能之一，用于保护网站中不希望被搜索引擎索引的页面或内容。
+
+- `Allow`：允许爬虫访问指定路径下的内容，例如`/vip`，但 `Crawler` 不会递归地允许访问其子目录。
+
+- `Sitemap`：提供网站 `sitemap` 的 `URL` 地址，帮助搜索引擎爬虫更有效地发现和索引这些页面
+
+:::
+
+- 向各个搜索引擎提交站点收录
+
+除了`robots.txt + sitemap.xml` 方式增加网址被收录的可能性外，还可以在各搜索引擎站长平台手动提交网址，以缩短爬虫发现网站链接时间，加快爬虫抓取速度
+
+::: tip 搜索引擎站点平台
+
+- 百度：[<u>https://ziyuan.baidu.com/</u>](https://ziyuan.baidu.com/)
+
+- 谷歌：[<u>https://developers.google.com/search?hl=zh-cn</u>](https://developers.google.com/search?hl=zh-cn)
+
+- 360：[<u>https://zhanzhang.so.com/</u>](https://zhanzhang.so.com/)
+
+:::
+
+- 网址规范化
+
+一个页面可能有多个 URL 地址，比如：
+
+```js
+https://example.com/xxx.html
+https://example.com/xxx
+https://www.example.com/xxx
+```
+
+这些 `URL` 指向同一个页面内容。但是，我们应该指定其中一个作为该页面的规范化 `URL`
+
+在每个非规范版本的 `HTML` 网页的`<head>`部分中，添加一个 `rel="canonical"` 链接来进行指定规范网址
+
+```html
+<link rel="canonical" href="https://www.example.com/article" />
+```
+
+- `hreflang`
+
+许多网站会根据用户使用的语言或 区域。`hreflang` 链接可以告诉搜索引擎所有版本的网址 以便针对每种语言或地区显示正确的版本。
+
+```html
+<link rel="alternate" hreflang="en" href="https://example.com" />
+<link rel="alternate" hreflang="es" href="https://es.example.com" />
+<link rel="alternate" hreflang="de" href="https://de.example.com" />
+```
+
+::: info
+
+- [<u>谷歌浏览器 LightHouse SEO 审核</u>](https://developer.chrome.com/docs/lighthouse/seo/meta-description?hl=zh-cn)
+
+:::
+
 ## 重排和重绘
 
 - **重排（Reflow）**：当 `DOM` 结构或元素的几何属性发生改变时，浏览器需要重新计算元素的几何属性，将其安放在界面中的正确位置，这个过程叫做重排，表现为重新生成布局，重新排列元素（**重排会导致页面的布局重新计算，从而可能影响整个页面的渲染**）。

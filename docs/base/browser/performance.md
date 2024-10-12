@@ -98,9 +98,179 @@
 </html>
 ```
 
+## Lighthouse
+
+`Lighthouse` 是`Chrome` 浏览器工具，用于帮助开发者优化网站性能。
+
+::: info 相关资料
+
+- [<u>Lighthouse 性能审核</u>](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring?hl=zh-cn)
+
+:::
+
+> 审核指标占比
+
+![lighthouse](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/lighthouse.jpg)
+
+### FCP(First Contentful Paint)
+
+> 首次内容绘制 (FCP) 是 Lighthouse 报告的“性能”部分跟踪的六个指标之一
+
+首次内容绘制 (`FCP`) 用于衡量从用户首次导航到网页到网页内容的任何部分在屏幕上呈现的时间。对于此指标，选择“内容”是指文本、图片（包括背景图片）、`<svg>` 元素或非白色 `<canvas>` 元素。
+
+::: tip 如何优化 FCP
+
+- 消除阻塞渲染的资源
+
+- 缩减 `CSS` 的大小
+
+- 移除未使用的 `CSS`
+
+- 移除未使用的 `JavaScript`
+
+- 预先连接到所需的源
+
+- 缩短服务器响应用时 (`TTFB`)
+
+- 避免多个网页重定向
+
+- 预加载密钥请求
+
+- 避免网络载荷过大
+
+- 使用高效的缓存政策提供静态资源
+
+- 避免 `DOM` 规模过大
+
+- 最大限度地减少关键请求深度
+
+- 确保文本在网页字体加载期间保持可见
+
+- 尽量减少请求数量并减小传输大小
+
+:::
+
+::: info 相关资料
+
+- [<u>FCP</u>](https://web.dev/articles/fcp?hl=zh-cn)
+
+:::
+
+### 速度指数
+
+> 速度指数用于衡量在网页加载期间内容直观地显示的速度
+
+::: tip 如何提高速度指数
+
+- [尽量减少主线程工作](https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown?hl=zh-cn)
+
+- [缩短 `JavaScript` 执行时间](https://developer.chrome.com/docs/lighthouse/performance/bootup-time?hl=zh-cn)
+
+- [确保文本在网页字体加载期间保持可见状态](https://developer.chrome.com/docs/lighthouse/performance/font-display?hl=zh-cn)
+
+:::
+
+::: info 相关资料
+
+- [<u>速度指数</u>](https://developer.chrome.com/docs/lighthouse/performance/speed-index?hl=zh-cn)
+
+:::
+
+### TBT (Total Blocking Time)
+
+> 总阻塞时间 (TBT) ，阻塞时间是页面加载期间，主线程上花费的时间，该时间超过 50ms 的都是阻塞时间，阻塞时间越长，用户体验越差。
+
+::: tip 如何优化 TBT
+
+- [通过代码拆分减少 `JavaScript` 载荷](https://web.dev/articles/reduce-javascript-payloads-with-code-splitting?hl=zh-cn)
+
+- [移除未使用的代码](https://web.dev/articles/remove-unused-code?hl=zh-cn)
+
+- [高效加载第三方 `JavaScript`：CDN](https://web.dev/articles/efficiently-load-third-party-javascript?hl=zh-cn)
+
+:::
+
+::: info 相关资料
+
+- [<u>TBT</u>](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time?hl=zh-cn)
+
+:::
+
+### LCP(Largest Contentful Paint)
+
+> LCP 最大内容渲染时间，LCP 会报告视口中可见的最大图片、文本块或视频的呈现时间（相对于用户首次导航到相应网页的时间）
+
+`LCP` 会考虑哪些元素：
+
+- `<img>` 元素（第一帧呈现时间用于动画内容，例如 `GIF` 或动画 `PNG`）
+
+- `<svg>` 元素内的 `<image>` 元素
+
+- `<video>` 元素（使用海报图片加载时间或视频的第一帧呈现时间，以两者中较早达到者为准）
+
+- 此元素包含使用 `url()` 函数加载的背景图片（与 `CSS` 渐变相反）
+
+- 包含文本节点或其他内嵌级文本元素子级的块级元素。
+
+::: tip 如何优化 LCP
+
+- 消除资源加载延迟（你的 `LCP` 资源应与相应网页加载的第一个资源同时开始加载）
+
+  - `LCP` 元素为 `<img>` 元素，其 `src` 或 `srcset` 属性出现在初始 `HTML` 标记中。
+
+  - `LCP` 元素需要 `CSS` 背景图片，但该图片是通过 `HTML` 标记中的 `<link rel="preload">`（或使用 `Link` 标头）预加载的。
+
+  - `LCP` 元素是一个需要网页字体才能渲染的文本节点，字体是使用 `HTML` 标记中的 `<link rel="preload">`（或使用 `Link` 标头）加载的。
+
+- 消除元素渲染延迟（此步骤的目标是确保 `LCP` 元素在其资源加载完成后（无论何时）能够立即呈现）
+
+  - 减少或内嵌阻止渲染的样式表
+
+  - 延迟或内嵌阻止渲染的 `JavaScript`
+
+  - `SSR`
+
+  - 拆分冗长的任务
+
+- 缩短资源加载时长
+
+  - 缩减资源的大小
+
+  - 缩短资源需要移动的距离：`CDN`
+
+  - 减少网络带宽争用
+
+  如果您为 `LCP` 资源指定了较高的 `fetchpriority` 并开始尽快加载，则浏览器会尽最大努力阻止优先级较低的资源与之竞争。
+
+```html
+<img fetchpriority="high" src="/path/to/hero-image.webp" />
+```
+
+- 缩短加载第一个字节所需的时间：`CDN`、缓存、避免重定向
+
+:::
+
+::: info 相关资料
+
+- [<u>优化 LCP</u>](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint?hl=zh-cn)
+
+:::
+
+### CLS(Cumulative Layout Shift)
+
+> CLS 用于衡量视觉稳定性，因为它有助于量化用户遇到意外布局偏移的频率
+
+::: info 相关资料
+
+- [<u>CLS</u>](https://web.dev/articles/cls?hl=zh-cn)
+
+- [<u>CLS 优化策略</u>](https://web.dev/articles/optimize-cls?hl=zh-cn)
+
+:::
+
 ## 网络优化策略
 
-1. 减少`HTTP`请求数，合并`JS、CSS`，合理内嵌`CSS、JS`。
+1. 减少`HTTP`请求数，合并`JS`、`CSS`，合理内嵌`CSS`、`JS`。
 
 2. 合理设置服务端缓存，提高服务器处理速度。 (强制缓存、协商缓存)
 
@@ -113,6 +283,8 @@ Etag/if-none-match/last-modified/if-modified-since
 ```
 
 3. 避免重定向，重定向会降低响应速度 (`301`、`302`)。
+
+重定向会降低网页加载速度，因为它要求浏览器 在新位置发送额外的 `HTTP` 请求以检索资源
 
 4. 使用 `dns-prefetch`，进行`DNS`预解析。
 
@@ -477,7 +649,7 @@ window.addEventListener('load', function () {
 
 ## `HTML` 优化
 
-1. 语义化 `HTML`:代码简洁清晰，利于搜索引擎，便于团队开发
+1. 语义化 `HTML`：代码简洁清晰，利于搜索引擎
 
 2. 提前声明字符编码，让浏览器快速确定如何渲染网页内容
 
@@ -485,9 +657,7 @@ window.addEventListener('load', function () {
 
 4. 删除多余空格、空行、注释、及无用的属性等
 
-5. `HTML` 减少`iframes`使用（父页面要等待自页面加载完成） `(iframe 会阻塞 onload 事件可以动态加载 iframe)`
-
-6. 避免使用`table`布局
+5. `HTML` 减少`iframe`使用（父页面要等待自页面加载完成） `(iframe 会阻塞 onload 事件可以动态加载 iframe)`
 
 ## `CSS` 优化
 
@@ -501,7 +671,7 @@ background-color: expression((new Date()) .getHours() %2 ? 'red': 'yellow');
 
 3. 删除、减少无意义的代码、对`css` 进行压缩
 
-4. 使用外链 `css`,可以对 `css` 进行缓存
+4. 使用外链 `css`，可以对 `css` 进行缓存
 
 5. 添加媒体字段，只加载有效的 `css` 文件
 
@@ -509,7 +679,7 @@ background-color: expression((new Date()) .getHours() %2 ? 'red': 'yellow');
 <link href="index.css" rel="stylesheet" media="screen and (min-width:1024px)" />
 ```
 
-6. `CSS contain` 属性,将元素进行隔离（表示我当前修改的资源和其他资源没有关系，它可以节约渲染性能）
+6. `CSS contain` 属性，将元素进行隔离（表示我当前修改的资源和其他资源没有关系，它可以节约渲染性能）
 
 7. 减少`@import` 使用，由于`@import` 采用的是串行加载
 

@@ -282,6 +282,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             { text: 'useEffect', link: '/rsource/react/useEffect' },
             { text: 'useLayoutEffect', link: '/rsource/react/useLayoutEffect' },
             { text: 'useRef', link: '/rsource/react/useRef' },
+            { text: 'useMemo & useCallback', link: '/rsource/react/useMemo&useCallback' },
           ],
         },
         {

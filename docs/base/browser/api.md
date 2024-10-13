@@ -93,7 +93,7 @@ history.go(2) // http://example.com/example.html?page=3，状态：{"page":3}”
 
 ::: tip 缺点
 
-1. 兼容性问题。
+1. 兼容性问题 [<u>requestIdleCallback 的兼容性 🚀</u>](https://caniuse.com/?search=requestIdleCallback)。
 2. 执行任务的帧空闲时间不可控（`React` 自己实现了一个 `requestIdleCallback`）。
 3. 一个任务就是最小的执行单位，不能被打断，所以有可能会被卡住。
 
@@ -180,12 +180,6 @@ history.go(2) // http://example.com/example.html?page=3，状态：{"page":3}”
 - 第3个任务开始
 - 第3个任务结束
 ```
-
-::: tip 缺点
-
-- 兼容性问题 [<u>requestIdleCallback 的兼容性 🚀</u>](https://caniuse.com/?search=requestIdleCallback)。
-- 执行任务的帧空闲时间不可控。
-  :::
 
 ## requestAnimationFrame
 

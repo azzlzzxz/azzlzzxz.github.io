@@ -303,9 +303,9 @@ function pushEffect(tag, create, destroy, deps) {
 
   - 不需要执行，就不用添加标识
 
-- 需要执行，为`新hook`添加标识`（HookHasEffect | hookFlags）`
+  - 需要执行，为`新hook`添加标识`（HookHasEffect | hookFlags）`
 
-- 但是，无论是否需要重新执行，都要构建出一个`新的effect链表`
+  - 但是，无论是否需要重新执行，都要构建出一个`新的effect链表`
 
 ::: tip `HasEffect`的作用
 

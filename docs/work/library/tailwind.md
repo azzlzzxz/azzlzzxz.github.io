@@ -8,7 +8,7 @@
 
 :::
 
-## 为什么选择 TailWindCss
+## 为什么选择 `TailWindCss`
 
 - 快速开发
 

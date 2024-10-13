@@ -381,7 +381,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: '实用工具',
+      text: '常用库使用与配置',
+      collapsed: false,
+      items: [{ text: 'TailwindCss', link: '/work/library/tailwind' }],
+    },
+    {
+      text: '实用工具与配置',
       collapsed: false,
       items: [
         { text: 'ni包管理器工具', link: '/work/utility/ni' },
@@ -392,7 +397,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
     {
-      text: '常用工具/方法',
+      text: '常用工具与方法',
       collapsed: false,
       items: [{ text: '常用正则', link: '/work/utils/regexp' }],
     },

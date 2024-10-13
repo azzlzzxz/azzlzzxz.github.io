@@ -109,6 +109,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         items: [
           { text: '实用工具 / 配置', link: '/work/utility/ni' },
           { text: '常用工具 / 方法', link: '/work/utils/regexp' },
+          { text: '常用库使用 / 配置', link: '/work/library/tailwind' },
         ],
       },
       {

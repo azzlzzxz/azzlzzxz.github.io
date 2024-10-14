@@ -323,6 +323,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             { text: 'Plugin', link: '/capital/construct/webpack/plugin' },
             { text: 'SourceMap', link: '/capital/construct/webpack/sourceMap' },
             { text: '优化', link: '/capital/construct/webpack/optimize' },
+            { text: 'webpack5的升级', link: '/capital/construct/webpack/webpack5' },
           ],
         },
         {

@@ -115,8 +115,14 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             { text: '队列', link: '/base/structure/queue' },
           ],
         },
-        // { text: '排序', link: '/base/structure/sort' },
-        // { text: '查找', link: '/base/structure/search' },
+        {
+          text: '算法',
+          collapsed: false,
+          items: [
+            { text: '排序', link: '/base/structure/sort' },
+            { text: '查找', link: '/base/structure/search' },
+          ],
+        },
       ],
     },
     {

@@ -84,7 +84,7 @@ npm install -g pnpm
 
 ### 配置 `pnpm` 工作空间
 
-新建一个`pnpm-workspace.yaml`，这个文件定义了 工作空间的根目录，并能够使您从工作空间中包含 / 排除目录 。 默认情况下，包含所有子目录。
+新建一个`pnpm-workspace.yaml`，这个文件定义了 工作空间的根目录，并能够使您从工作空间中包含 / 排除目录，默认情况下，包含所有子目录。
 
 ```yaml
 # pnpm-workspace.yaml

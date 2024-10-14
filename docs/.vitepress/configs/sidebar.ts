@@ -141,6 +141,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'npm 常用命令', link: '/node/npm/npm' },
         { text: 'npm', link: '/node/npm/source' },
+        { text: 'yarn', link: '/node/npm/yarn' },
         { text: 'pnpm', link: '/node/npm/pnpm' },
       ],
     },

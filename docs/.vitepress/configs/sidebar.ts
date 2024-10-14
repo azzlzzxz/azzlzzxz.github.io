@@ -110,9 +110,9 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           items: [
             { text: '链表', link: '/base/structure/linkList' },
             { text: '树', link: '/base/structure/tree' },
-            // { text: '栈', link: '/base/structure/stack' },
-            // { text: '队列', link: '/base/structure/queue' },
-            // { text: '图', link: '/base/structure/graph' },
+            { text: '栈', link: '/base/structure/stack' },
+            { text: '堆', link: '/base/structure/heap' },
+            { text: '队列', link: '/base/structure/queue' },
           ],
         },
         // { text: '排序', link: '/base/structure/sort' },

@@ -153,6 +153,7 @@ let currentTime = performance.now()
 - `push`、`peek`、`pop`方法均属于最小堆的方法
 
   - 关于最小堆的实现可以看[前置知识｜最小堆](/rsource/react/preknowledge.md#最小堆)
+
   - [<u>React 源码 最小堆的实现 ｜ SchedulerMinHeap.js</u>](https://github.com/azzlzzxz/react-source-code/blob/main/packages/scheduler/src/SchedulerMinHeap.js)
 
 - `scheduleCallback`函数：按优先级执行任务
@@ -321,6 +322,7 @@ function performWorkUntilDeadline() {
 - 执行`scheduleCallback`函数，传入的`callback`回调函数，判断`callback`的返回是否是函数
 
   - 如果是函数，说明还有任务需要执行，`return true`，任务已经完成，则不需要再继续执行了，可以把此任务弹出`pop(taskQueue)`
+
   - 否则就直接把此任务弹出`pop(taskQueue)`
 
 - 如果当前的任务执行完了，或者当前任务不合法，取出下一个任务执行`currentTask = peek(taskQueue)`

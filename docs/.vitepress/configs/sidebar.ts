@@ -108,11 +108,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           text: '数据结构',
           collapsed: false,
           items: [
-            { text: '链表', link: '/base/structure/linkList' },
-            { text: '树', link: '/base/structure/tree' },
             { text: '栈', link: '/base/structure/stack' },
             { text: '堆', link: '/base/structure/heap' },
             { text: '队列', link: '/base/structure/queue' },
+            { text: '链表', link: '/base/structure/linkList' },
+            { text: '树', link: '/base/structure/tree' },
           ],
         },
         {

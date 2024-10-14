@@ -22,7 +22,7 @@ export const nav: DefaultTheme.Config['nav'] = [
           { text: '前端安全相关知识', link: '/base/secure/attack' },
         ],
       },
-      { text: '数据结构与算法', link: '/base/structure/linkList' },
+      { text: '数据结构与算法', link: '/base/structure/stack' },
       { text: '编程题', link: '/base/coding/' },
       {
         text: '其他',
@@ -76,7 +76,7 @@ export const nav: DefaultTheme.Config['nav'] = [
     ],
   },
   {
-    text: '基建',
+    text: 'Flow',
     items: [
       {
         text: '工程化',

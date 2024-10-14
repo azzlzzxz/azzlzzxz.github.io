@@ -156,6 +156,16 @@ module.exports = {
 }
 ```
 
+## `chunk` & `bundle`
+
+- `chunk`
+
+`chunk` 是 `Webpack` 构建时的逻辑产物，是 `Webpack` 按照配置或策略将一组模块（`module`）集合在一起的单元，一个 `chunk` 通常包含多个模块和它们的依赖项（依赖关系树）。
+
+- `bundle`
+
+`bundle` 是 `Webpack` 输出的产物，它是 `Webpack` 构建过程的最终结果，是`Webpack`输出的包含所有应用代码和依赖的最终文件，通常是被浏览器或其他运行环境所加载的文件，一个或多个 `chunk` 会被 `Webpack` 打包成一个 `bundle` 文件
+
 ## `webpack` 的工作流程
 
 ![webpack_work_flow](../images/webpack_work_flow.png)

@@ -40,6 +40,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         text: '包管理工具',
         items: [
           { text: 'Npm 相关知识', link: '/node/npm/npm' },
+          { text: 'Yarn 相关知识', link: '/node/npm/yarn' },
           { text: 'Pnpm 相关知识', link: '/node/npm/pnpm' },
         ],
       },

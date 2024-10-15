@@ -297,3 +297,35 @@ Message received at port2: Hello from port1!
 
 - `postMessage` 是全局的跨上下文通信方式，允许页面与同源或跨域的 `iframe` 以及同域的 worker 之间通信。
 - `MessageChannel` 提供的是独立的、基于 `MessagePort` 的双向通信通道，可以通过传递 `MessagePort` 对象，在多个上下文中使用。
+
+## `LocalStorage`
+
+生命周期：除非被手动清除，否则将会永久保存
+
+大小：可以保存`5MB`的信息
+
+::: tip 注意
+
+- `localStorage` 写入的时候，如果超出容量会报错，但之前保存的数据不会丢失。
+
+- `localStorage` 存储容量快要满的时候，`getItem` 方法性能会急剧下降。
+
+:::
+
+::: info 相关资料
+
+- [<u>`LocalStorage | MDN`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage)
+
+:::
+
+## `SessionStorage`
+
+生命周期：仅在当前网页会话下有效，关闭页面或浏览器后就会被清除
+
+大小：可以保存`5MB`的信息
+
+::: info 相关资料
+
+- [<u>`SessionStorage | MDN`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/sessionStorage)
+
+:::

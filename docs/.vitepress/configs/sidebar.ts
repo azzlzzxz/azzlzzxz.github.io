@@ -69,6 +69,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'HTML 基础知识', link: '/base/html/base' },
         { text: 'CSS 基础知识', link: '/base/css/base' },
+        { text: 'CSS 常用片段', link: '/base/css/fragment' },
       ],
     },
     {

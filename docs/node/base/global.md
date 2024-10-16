@@ -3,6 +3,7 @@
 ## `Global`
 
 1. node 中的全局变量是 `global`。
+
 2. 浏览器中的 `this` 是指代的是 `window（`浏览器中是没有 `global` 的可以理解为 `window` 代理了 `global`），服务端中的 `this` 指代的都是 `global`。
 3. 当我们在文件中访问 `this` 时，内部被更改了，所以返回的不是 `global`，而是 `module.exports`。
 4. `setInterval`、`clearInterval`、`setTimeout`、`clearTimeout`、`setImmediate`、`clearImmediate`、`queueMicrotask`、`process`、`buffer` 这些是全局变量（就是直接在文件中不需要声明就能直接访问的），他们都是挂在 `global` 上的，`global.xxx`。
@@ -18,25 +19,26 @@ function a() {
 }
 a()
 Object [global] {
-    global: [Circular *1],
-    clearInterval: [Function: clearInterval],
-    clearTimeout: [Function: clearTimeout],
-    setInterval: [Function: setInterval],
-    setTimeout: [Function: setTimeout] {
-      [Symbol(nodejs.util.promisify.custom)]: [Function (anonymous)]
-    },
-    queueMicrotask: [Function: queueMicrotask],
-    clearImmediate: [Function: clearImmediate],
-    setImmediate: [Function: setImmediate] {
-      [Symbol(nodejs.util.promisify.custom)]: [Function (anonymous)]
-    }
+  global: [Circular *1],
+  clearInterval: [Function: clearInterval],
+  clearTimeout: [Function: clearTimeout],
+  setInterval: [Function: setInterval],
+  setTimeout: [Function: setTimeout] {
+    [Symbol(nodejs.util.promisify.custom)]: [Function (anonymous)]
+  },
+  queueMicrotask: [Function: queueMicrotask],
+  clearImmediate: [Function: clearImmediate],
+  setImmediate: [Function: setImmediate] {
+    [Symbol(nodejs.util.promisify.custom)]: [Function (anonymous)]
+  }
 }
 ```
 
 ## `process` 进程对象
 
-1. `process` 中常用的变量有：`platform`、`cwd`、`env`、`argv`、`nextTick`。
-2. `process.platform` 用途：根据不同平台操作系统文件的。
+- `process` 中常用的变量有：`platform`、`cwd`、`env`、`argv`、`nextTick`。
+
+- `process.platform` 用途：根据不同平台操作系统文件的。
 
 ```lua
 console.log(process.platform)
@@ -44,17 +46,20 @@ win32  windows系统
 drawin linux系统
 ```
 
-3. `process.cwd()`用途：可以获取当前执行 `node` 命令的目录，可以找到当前目录下的某个文件。
-   `process.cwd()`获取的路径是可以改变的，`__dirname` 是不变的。
+- `process.cwd()`用途：可以获取当前执行 `node` 命令的目录，可以找到当前目录下的某个文件。
+
+`process.cwd()`获取的路径是可以改变的，`__dirname` 是不变的。
 
 ```lua
 console.log(process.cwd())
 /Users/xinxu/Desktop/node-master
 ```
 
-4. `process.env` 用途：根据不同的环境变量做配置（`webpack` 环境配置）
-   `cross-env` 这是一个第三方模块，用于区分环境。
-   如果 `windows` 系统可以用 `set xxx=xxx`，`mac` 用 `export xxx=xxx`
+- `process.env` 用途：根据不同的环境变量做配置（`webpack` 环境配置）
+
+`cross-env` 这是一个第三方模块，用于区分环境。
+
+如果 `windows` 系统可以用 `set xxx=xxx`，`mac` 用 `export xxx=xxx`
 
 ```js
 if (process.env.NODE_ENV === 'production') {
@@ -67,7 +72,7 @@ console.log(process.env.A) // 123 // 当前系统环境变量
 
 ![process_env](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/process_env.png)
 
-1. `process.argv` 用途：运行代码时传入参数，可以获取到当前用户传的所有参数 `--port(简写：-p)`，`--config`
+- `process.argv` 用途：运行代码时传入参数，可以获取到当前用户传的所有参数 `--port(简写：-p)`，`--config`
 
 ```js
 console.log(process.argv)
@@ -132,6 +137,79 @@ program.prase(process.argv)
 ```
 
 ![commander_rm](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/commander_rm.png)
+
+## `child_process`
+
+`child_process` 是一个模块，可以创建子进程，可以执行命令。
+
+### `child_process.exec`
+
+`exec` 是一种简便的方法，用来运行命令并获取完整的标准输出和标准错误的结果。它适合执行一些简单的命令
+
+```js
+const { exec } = require('child_process')
+
+// 执行 npm install 命令
+exec('npm install', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`执行错误: ${error.message}`)
+    return
+  }
+  if (stderr) {
+    console.error(`标准错误: ${stderr}`)
+    return
+  }
+  console.log(`标准输出: ${stdout}`)
+})
+```
+
+在 👆 的代码中，我们通过 `exec` 执行了 `npm install` 命令，并在回调函数中处理输出和可能出现的错误。
+
+### `child_process.spawn`
+
+`spawn` 是一种更底层的方法，适合执行长时间运行的进程或需要实时处理输出的情况。它不会缓存所有的输出，因此适合需要处理大量数据的情况
+
+```js
+const { spawn } = require('child_process')
+
+// 执行 npm install 命令
+const npmInstall = spawn('npm', ['install'])
+
+// 监听标准输出
+npmInstall.stdout.on('data', (data) => {
+  console.log(`输出: ${data}`)
+})
+
+// 监听标准错误输出
+npmInstall.stderr.on('data', (data) => {
+  console.error(`错误: ${data}`)
+})
+
+// 监听进程结束
+npmInstall.on('close', (code) => {
+  console.log(`子进程退出，退出码 ${code}`)
+})
+```
+
+### `child_process.execFile`
+
+`execFile` 是一种更简单的方法，适合执行可执行文件的名称或路径。它与 `exec` 的主要区别在于，`execFile` 会直接调用本地文件，而 `exec` 则是执行一个命令。
+
+```js
+const { execFile } = require('child_process')
+
+execFile('npm', ['install'], (error, stdout, stderr) => {
+  if (error) {
+    console.error(`执行错误: ${error.message}`)
+    return
+  }
+  if (stderr) {
+    console.error(`标准错误: ${stderr}`)
+    return
+  }
+  console.log(`标准输出: ${stdout}`)
+})
+```
 
 ## `path`
 

@@ -351,5 +351,51 @@ Message received at port2: Hello from port1!
 ### 主要特点
 
 - **双向通信**：每个 `MessagePort` 可以同时发送和接收消息。
+
 - **跨上下文**：可以在不同的浏览器上下文之间（如 `window`、`iframe`、`web worker`）进行通信。
+
 - **无副作用的通信**：与 `DOM` 没有直接的关系，消息传递机制是独立的，避免了性能开销。
+
+### 为什么`React`要用`MessageChannel`呢
+
+::: tip 前置知识
+
+- `requestIdleCallback`
+
+`requestIdleCallback`虽然能让浏览器空闲时运行代码，但它的调度并不可靠，在高优先级任务频繁出现的情况下，可能永远得不到空闲时间。
+
+而 `React` 想要一种机制，能够在任务执行时将高优先级的任务（比如用户输入）优先执行，并允许低优先级的任务（比如不紧急的更新）在空闲时处理
+
+- `requestAnimationFrame`
+
+`requestAnimationFrame` 是在下一次浏览器重绘之前触发的回调，它适用于执行高优先级的渲染任务，但由于它是每帧触发的，所以不适合处理低优先级的任务。
+
+- `setTimeout`
+
+`setTimeout` 的回调会被添加到宏任务队列中，任务会按时间触发，时间控制上并不够精确，不能很好地管理任务优先级。而且，如果浏览器有其他更高优先级的任务，`setTimeout` 可能会延迟执行。
+
+:::
+
+#### `MessageChannel` 的优势
+
+- **微任务机制**
+
+`MessageChannel` 的回调被添加到微任务队列中，而微任务的优先级高于宏任务，这意味着微任务可以在浏览器渲染和事件处理之前更快地执行，给 `React` 提供更高的调度精度。
+
+- **任务分片**
+
+通过将任务拆分为多个小块，使用 `MessageChannel`，`React` 可以在每次微任务执行之后检查是否有高优先级的任务需要执行，从而避免长时间阻塞主线程。
+
+- **更精细的控制**
+
+与 `requestIdleCallback` 相比，`MessageChannel` 能够在不依赖于浏览器空闲时间的情况下，控制任务的调度和优先级，更好地满足 `React Fiber` 的需求。
+
+::: tip 使用 `MessageChannel` 解决的具体问题
+
+- **精准控制任务执行顺序**：相比 `setTimeout` 和 `requestIdleCallback`，`MessageChannel` 能够在任务之间立即调度，从而保证低优先级任务不会延迟过长时间。
+
+- **避免长任务阻塞渲染**：通过使用 `MessageChannel`，`React` 能够将任务分片处理，这样可以在每次执行一小段任务之后，检查是否有更高优先级的任务（如用户交互）需要立即响应，防止长时间的计算阻塞页面渲染。
+
+- **跨浏览器兼容性**：原生的 `requestIdleCallback` 在不同浏览器中的行为不一致，而且在某些低端设备中表现欠佳。通过 `MessageChannel`，`React` 可以获得一致的调度行为，保证在所有浏览器中有一致的性能表现。
+
+:::

@@ -269,20 +269,20 @@ var foo = require('foo.js')
 举例来说，脚本`/home/user/projects/foo.js` 执行了 `require('bar.js')`命令，`Node` 会依次搜索以下文件。
 
 > `/usr/local/lib/node/bar.js`
-
+>
 > `/home/user/projects/node_modules/bar.js`
-
+>
 > `/home/user/node_modules/bar.js`
-
+>
 > `/home/node_modules/bar.js`
-
+>
 > `/node_modules/bar.js`
 
 这样设计的目的是，使得不同的模块可以将所依赖的模块本地化。
 
 （4）如果参数字符串不以`./`或`/`开头，而且是一个路径，比如 `require('example-module/path/to/file')`，则将先找到 `example-module` 的位置，然后再以它为参数，找到后续路径。
 
-（5）如果指定的模块文件没有发现，`Node `会尝试为文件名添加`.js`、`.json`、`.node` 后，再去搜索。`.js `件会以文本格式的 `JavaScript` 脚本文件解析，`.json` 文件会以 `JSON` 格式的文本文件解析，`.node` 文件会以编译后的二进制文件解析。
+（5）如果指定的模块文件没有发现，`Node`会尝试为文件名添加`.js`、`.json`、`.node` 后，再去搜索。`.js`件会以文本格式的 `JavaScript` 脚本文件解析，`.json` 文件会以 `JSON` 格式的文本文件解析，`.node` 文件会以编译后的二进制文件解析。
 
 （6）如果想得到 `require` 命令加载的确切文件名，使用 `require.resolve()`方法
 
@@ -290,19 +290,21 @@ var foo = require('foo.js')
 
 通常，我们会把相关的文件会放在一个目录里面，便于组织。这时，最好为该目录设置一个入口文件，让 `require` 方法可以通过这个入口文件，加载整个目录。
 
-==在目录中放置一个 `package.json` 文件，并且将入口文件写入 `main` 字==段。  
-下面是一个例子。
+在目录中放置一个 `package.json` 文件，并且将入口文件写入 `main` 字段。
+
+> 举个 🌰
 
 ```json
-// package.json
 { "name": "some-library", "main": "./lib/some-library.js" }
 ```
 
-`require` 发现参数字符串指向一个目录以后，==会自动查看该目录的 `package.json` 文件，然后加载 `main` 字段指定的入口文件。如果 `package.json` 文件没有 `main` 字段，或者根本就没有 `package.json` 文件，则会加载该目录下的 `index.js` 文件或 `index.node` 文件。==
+`require` 发现参数字符串指向一个目录以后，会自动查看该目录的 `package.json` 文件，然后加载 `main` 字段指定的入口文件。
+
+如果 `package.json` 文件没有 `main` 字段，或者根本就没有 `package.json` 文件，则会加载该目录下的 `index.js` 文件或 `index.node` 文件。
 
 ### 4.4 模块缓存
 
-==第一次加载某个模块时，`Node` 会缓存该模块。以后再加载该模块，就直接从缓存取出该模块的`module.exports` 属性。==
+第一次加载某个模块时，`Node` 会缓存该模块，以后再加载该模块，就直接从缓存取出该模块的`module.exports` 属性。
 
 ```js
 require('./example.js')
@@ -311,11 +313,13 @@ require('./example.js').message
 // "hello"
 ```
 
-上面代码中，连续三次使用 `require` 命令，加载同一个模块。第二次加载的时候，为输出的对象添加了一个 `message` 属性。但是第三次加载的时候，这个 `message` 属性依然存在，这就证明 `require` 命令并没有重新加载模块文件，而是输出了缓存。
+👆 代码中，连续三次使用 `require` 命令，加载同一个模块。第二次加载的时候，为输出的对象添加了一个 `message` 属性。
+
+但是第三次加载的时候，这个 `message` 属性依然存在，这就证明 `require` 命令并没有重新加载模块文件，而是输出了缓存。
 
 如果想要多次执行某个模块，可以让该模块输出一个函数，然后每次 `require` 这个模块的时候，重新执行一下输出的函数。
 
-==所有缓存的模块保存在 `require.cache` 之中，如果想删除模块的缓存，可以像下面这样写==。
+所有缓存的模块保存在 `require.cache` 之中，如果想删除模块的缓存，可以像这样写。
 
 ```js
 // 删除指定模块的缓存
@@ -327,7 +331,11 @@ Object.keys(require.cache).forEach(function (key) {
 })
 ```
 
-==注意，缓存是根据绝对路径识别模块的，如果同样的模块名，但是保存在不同的路径，==`require` 命令还是会重新加载该模块====
+::: tip 注意
+
+缓存是根据绝对路径识别模块的，如果同样的模块名，但是保存在不同的路径，`require` 命令还是会重新加载该模块
+
+:::
 
 ### 4.5 模块的循环加载
 
@@ -335,20 +343,24 @@ Object.keys(require.cache).forEach(function (key) {
 
 ```js
 // a.js
-exports.x = 'a1';
-console.log('a.js ', require('./b.js').x);
-exports.x = 'a2';
+exports.x = 'a1'
+console.log('a.js ', require('./b.js').x)
+exports.x = 'a2'
 
 // b.js
-exports.x = 'b1';
-console.log('b.js ', require('./a.js').x);
-exports.x = 'b2';
+exports.x = 'b1'
+console.log('b.js ', require('./a.js').x)
+exports.x = 'b2'
 
 // main.js
-console.log('main.js ', require('./a.js').x);
-console.log('main.js ', require('./b.js').x);
+console.log('main.js ', require('./a.js').x)
+console.log('main.js ', require('./b.js').x)
 // 上面代码是三个JavaScript文件。其中，a.js加载了b.js，而b.js又加载a.js。这时，Node返回a.js的不完整版本，所以执行结果如下。
+```
 
+> 输出
+
+```bash
 $ node main.js
 b.js  a1
 a.js  b2
@@ -356,16 +368,20 @@ main.js  a2
 main.js  b2
 ```
 
-修改 main.js，再次加载 `a.js` 和 `b.js`
+修改 `main.js`，再次加载 `a.js` 和 `b.js`
 
 ```js
 // main.js
-console.log('main.js ', require('./a.js').x);
-console.log('main.js ', require('./b.js').x);
-console.log('main.js ', require('./a.js').x);
-console.log('main.js ', require('./b.js').x);
+console.log('main.js ', require('./a.js').x)
+console.log('main.js ', require('./b.js').x)
+console.log('main.js ', require('./a.js').x)
+console.log('main.js ', require('./b.js').x)
 // 执行上面代码，结果如下。
+```
 
+> 输出
+
+```bash
 $ node main.js
 b.js  a1
 a.js  b2
@@ -390,6 +406,16 @@ require.main === module
 
 调用执行的时候（通过 `require` 加载该脚本执行），上面的表达式返回 `false`。
 
+### 总结
+
+- **同步加载**：`require` 是同步执行的，模块在加载完成后返回结果。如果模块较大，可能会阻塞事件循环。
+
+- **运行时加载**：在 `Node.js` 中，模块是在运行时加载的。这意味着当程序运行时，`require` 函数会从磁盘上读取模块文件，并执行该文件。
+
+- **缓存机制**：一旦模块被加载后，它会被缓存。如果你多次 `require` 同一个模块，`Node.js` 不会重新加载它，而是直接从缓存中获取。
+
+- **支持动态路径**：`require` 支持动态路径，如通过变量拼接路径来加载模块。
+
 ## 5.模块的加载机制
 
 `CommonJS` 模块的加载机制是，输入的是被输出的值的拷贝。也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。
@@ -408,8 +434,7 @@ module.exports = {
 }
 ```
 
-上面代码输出内部变量 `counter` 和改写这个变量的内部方法 `incCounter`。
-然后，加载上面的模块
+上面代码输出内部变量 `counter` 和改写这个变量的内部方法 `incCounter`，然后，加载上面的模块
 
 ```js
 // main.js
@@ -425,7 +450,7 @@ console.log(counter) // 3
 
 ### 5.1 `require` 的内部处理流程
 
-==`require` 命令是 `CommonJS` 规范之中，用来加载其他模块的命令。它其实不是一个全局命令，而是指向当前模块的 `module.require` 命令，而后者又调用 `Node` 内部命令 `Module._load`。==
+`require` 命令是 `CommonJS` 规范之中，用来加载其他模块的命令。它其实不是一个全局命令，而是指向当前模块的 `module.require` 命令，而后者又调用 `Node` 内部命令 `Module._load`。
 
 ```js
 Module._load = function (request, parent, isMain) {
@@ -439,7 +464,7 @@ Module._load = function (request, parent, isMain) {
 }
 ```
 
-上面的第 4 步，采用 `module.compile()`执行指定模块的脚本，逻辑如下。
+上面的第 `4` 步，采用 `module.compile()`执行指定模块的脚本，逻辑如下。
 
 ```js
 Module.prototype._compile = function (content, filename) {
@@ -450,15 +475,17 @@ Module.prototype._compile = function (content, filename) {
 }
 ```
 
-上面的第 1 步和第 2 步，`require `函数及其辅助方法主要如下。
+上面的第 `1` 步和第 `2` 步，`require`函数及其辅助方法主要如下。
 
-1. `require(): `加载外部模块
+1. `require():`加载外部模块
 2. `require.resolve()：`将模块名解析到一个绝对路径
 3. `require.main：`指向主模块
 4. `require.cache：`指向所有缓存的模块
 5. `require.extensions：`根据文件的后缀名，调用不同的执行函数
 
-==一旦 `require` 函数准备完毕，整个所要加载的脚本内容，就被放到一个新的函数之中，这样可以避免污染全局环境==。该函数的参数包括 `require`、`module、exports`，以及其他一些参数。
+一旦 `require` 函数准备完毕，整个所要加载的脚本内容，就被放到一个新的函数之中，这样可以避免污染全局环境。
+
+该函数的参数包括 `require`、`module、exports`，以及其他一些参数。
 
 ```js
 ;(function (exports, require, module, __filename, __dirname) {

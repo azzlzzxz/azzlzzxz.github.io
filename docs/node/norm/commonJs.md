@@ -22,9 +22,11 @@ var addX = function (value) {
 global.warning = true
 ```
 
-上面代码的 `warning` 变量，可以被所有文件读取。==当然，这样写法是不推荐的==。
+上面代码的 `warning` 变量，可以被所有文件读取，这样写法是不推荐的。
 
-`CommonJS` 规范规定，==每个模块内部，`module` 变量代表当前模块==。这个变量是一个对象，它的 `exports` 属性（即 `module.exports`）是对外的接口。==加载某个模块，其实是加载该模块的 `module.exports` 属性。==
+`CommonJS` 规范规定，每个模块内部，`module` 变量代表当前模块。
+
+这个变量是一个对象，它的 `exports` 属性（即 `module.exports`）是对外的接口。加载某个模块，其实是加载该模块的 `module.exports` 属性。
 
 ```js
 var x = 5
@@ -52,7 +54,7 @@ console.log(example.addX(1)) // 6
 
 ## 2.`module` 对象
 
-`Node` 内部提供一个 `Module` 构建函数。==所有模块都是 `Module` 实例。==
+`Node` 内部提供一个 `Module` 构建函数。所有模块都是 `Module` 实例。
 
 ```js
 function Module(id, parent) {
@@ -147,7 +149,7 @@ exports = function (x) {
 }
 ```
 
-==上面这样的写法是无效的，因为 `exports` 不再指向 `module.exports` 了。==
+👆 这样的写法是无效的，因为 `exports` 不再指向 `module.exports` 了。
 
 ```js
 exports.hello = function () {
@@ -157,7 +159,7 @@ exports.hello = function () {
 module.exports = 'Hello world'
 ```
 
-上面代码，`hello` 函数是无法对外输出的，因为 `module.esports` 被重制了。
+👆 代码，`hello` 函数是无法对外输出的，因为 `module.exports` 被重制了。
 这意味着，如果一个模块的对外接口，就是一个单一的值，就不能用 `exports` 输出，只能使用 `module.exports` 输出
 
 ```js
@@ -170,9 +172,9 @@ module.exports = function (x) {
 
 ## 3.`AMD` 规范与 `CommonJS` 规范的兼容性
 
-==`CommonJS` 规范加载模块是同步的==，也就是说，只有加载完成，才能执行后面的操作。
+`CommonJS` 规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。
 
-==`AMD` 规范则是异步加载模块，允许指定回调函数。==
+`AMD` 规范则是异步加载模块，允许指定回调函数。
 
 由于 `Node.js` 主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载比较快，不用考虑非同步加载方式，所以 `CommonJS` 规范比较适用。
 

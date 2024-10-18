@@ -193,7 +193,7 @@ packages:
 
 例如，`pnpm install` 会安装所有工作区包的依赖，`pnpm run build --filter <package>` 可以只构建某一个包，`pnpm recursive` 则可以在多个包之间并行运行命令。
 
-::: 优点
+::: tip 优点
 
 - 依赖的去重和共享
 

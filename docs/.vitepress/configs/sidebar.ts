@@ -217,6 +217,13 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+  '/frame/next/': [
+    {
+      text: 'Next',
+      collapsed: false,
+      items: [],
+    },
+  ],
   '/frame/react-native/': [
     {
       text: 'ReactNative',

@@ -231,7 +231,7 @@ const uniqueArr = arr.reduce((acc, curr) => {
 console.log(uniqueArr) // [1, 2, 3, 4, 5]
 ```
 
-::: tip**解释：**
+::: tip **解释：**
 
 - `reduce()` 方法逐个遍历数组元素，`acc` 是累积器，`curr` 是当前元素。
 

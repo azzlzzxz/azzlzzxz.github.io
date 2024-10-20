@@ -18,22 +18,31 @@
 属性：
 
 - `controls` 控制面板
+
 - `autoplay` 自动播放
+
 - `loop=‘true’` 循环播放
 
 ---
 
 - `<video>`
 
-```html
-<video id="video" src="video.mp4" controls = "true"
-允许用户控制视频的播放，包括音量，跨帧，暂停/恢复播放 controlsList="nodownload" 去除视频下载功能
-poster="images.jpg" 视频封面 preload="auto" 页面加载后载入视频 webkit-playsinline="true"
-这个属性是ios 10中设置可以让视频在小窗内播放，也就是不是全屏播放 playsinline="true"
-IOS微信浏览器支持小窗内播放 x-webkit-airplay="allow" 应该是使此视频支持ios的AirPlay功能
-x5-video-player-type="h5" 启用H5播放器,是wechat安卓版特性 x5-video-player-fullscreen="true"
-全屏设置，设置为 true 是防止横屏 x5-video-orientation="portraint"
-播放器支付的方向，landscape横屏，portraint竖屏，默认值为竖屏 style="object-fit:fill" />
+```js
+<video
+  id="video"
+  src="video.mp4"
+  controls="true" // 允许用户控制视频的播放，包括音量，跨帧，暂停/恢复播放
+  controlsList="nodownload" // 去除视频下载功能
+  poster="images.jpg" // 视频封面
+  preload="auto" // 页面加载后载入视频
+  webkit-playsinline="true" // 这个属性是ios 10中设置可以让视频在小窗内播放，也就是不是全屏播放
+  playsinline="true" // IOS微信浏览器支持小窗内播放
+  x-webkit-airplay="allow" // 应该是使此视频支持ios的AirPlay功能
+  x5-video-player-type="h5" // 启用H5播放器,是wechat安卓版特性
+  x5-video-player-fullscreen="true" // 全屏设置，设置为 true 是防止横屏
+  x5-video-orientation="portraint" //播放器支付的方向，landscape横屏，portraint竖屏，默认值为竖屏
+  style="object-fit:fill"
+/>
 ```
 
 ![html5_video](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/html5_video.jpg)
@@ -319,6 +328,7 @@ CACHE MANIFEST
 - `CACHE`: 表示需要离线存储的资源列表，由于包含 `manifest` 文件的页面将被自动离线存储，所以不需要把页面自身也列出来。
 
 - `NETWORK`: 表示在它下面列出来的资源只有在在线的情况下才能访问，他们不会被离线存储，所以在离线情况下无法使用这些资源。不过，如果在 `CACHE` 和 `NETWORK` 中有一个相同的资源，那么这个资源还是会被离线存储，也就是说 `CACHE` 的优先级更高。
+
 - `FALLBACK`: 表示如果访问第一个资源失败，那么就使用第二个资源来替换他，比如上面这个文件表示的就是如果访问根目录下任何一个资源失败了，那么就去访问 `app.html`。
 
 在离线状态时，操作 `window.applicationCache`进行离线缓存的操作。
@@ -385,10 +395,12 @@ CACHE MANIFEST
 ## 渐进增强和优雅降级
 
 - 渐进增强：主要是针对低版本的浏览器进行页面重构，保证基本的功能情况下，再针对高级浏览器进行效果、交互等方面的改进和追加功能，以达到更好的用户体验。
+
 - 优雅降级：一开始就构建完整的功能，然后再针对低版本的浏览器进行兼容。
 
 区别：
 
 - 优雅降级是从复杂的现状开始的，并试图减少用户体验的供给。
+
 - 渐进增强是从一个非常基础的，能够起作用的版本开始的，并在此基础上不断扩充，以适应未来环境的需要。
 - 降级意味着往回看，而渐进增强则意味着往前看，同时保证其根基处于安全地带。

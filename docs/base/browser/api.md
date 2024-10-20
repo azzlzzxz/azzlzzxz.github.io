@@ -312,6 +312,36 @@ Message received at port2: Hello from port1!
 
 :::
 
+::: tip 为什么同域下多窗口间`localStorage`能共享
+
+- 同源策略
+
+由于同源策略，来自同一个源的多个窗口或标签页可以访问同一份 `localStorage` 数据
+
+- 持久性存储
+
+`localStorage` 数据是持久的，意味着它不会在浏览器关闭时被清除。相同源的多个窗口或标签页在访问 `localStorage` 时，它们实际上都在访问同一份存储数据。
+
+因此，如果一个窗口或标签页对 `localStorage` 进行了写入，其他窗口或标签页可以立即读取到这些数据。
+
+- 事件通知
+
+当某个窗口或标签页对 `localStorage` 进行了更改，其他同源的窗口或标签页会收到 `storage` 事件通知。这使得它们能够及时更新自己对 `localStorage` 的读取，保持数据的一致性。
+
+```js
+// 在一个窗口中对 localStorage 进行更改
+localStorage.setItem('key', 'value')
+
+// 在其他窗口中监听 storage 事件
+window.addEventListener('storage', (event) => {
+  if (event.key === 'key') {
+    console.log('New value: ', event.newValue)
+  }
+})
+```
+
+:::
+
 ::: info 相关资料
 
 - [<u>`LocalStorage | MDN`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage)
@@ -324,8 +354,135 @@ Message received at port2: Hello from port1!
 
 大小：可以保存`5MB`的信息
 
+::: tip 多窗口之间`sessionStorage`不能共享状态吗？
+
+答案：**多窗口之间`sessionStorage`不可以共享状态！！！但是在特定场景下新开的页面会复制之前页面的`sessionStorage`！！**
+
+:::
+
+> 举个 🌰
+
+- 现有页面`A`，在页面`A`中执行
+
+```js
+window.sessionStorage.setItem('pageA_1', '123')
+```
+
+- 在页面中有个`button`按钮，点击按钮触发 `window.open("同源页面")`，现得到新开的页面`B`，在`B`中执行
+
+```js
+window.sessionStorage.getItem('pageA_1') //拿到的结果是 "123"
+```
+
+- 在页面`A`中继续执行
+
+```js
+window.sessionStorage.setItem("pageA_1","456") (之前的pageA_1设置的值是 ‘123’ )
+window.sessionStorage.setItem("pageA_2","789")
+```
+
+- 在页面`B`中再次尝试获取
+
+```js
+window.sessionStorage.getItem('pageA_1') //拿到的结果还是 "123"
+window.sessionStorage.getItem('pageA_2') //拿到的结果是 null
+```
+
+**在该标签或窗口打开一个新页面时会复制顶级浏览会话的上下文作为新会话的上下文，所以，在打开新的同源页面时，会复制之前页面的`sessionStorage`**
+
+::: tip 对于`a`标签，新打开的页面
+
+在`Chrome 89`的版本，`Stop cloning sessionStorage for windows opened with noopener`，而`a`标签`_blank`默认 `rel="noopener"` 。
+
+所以`a`标签需要加入`rel="opener"` 而才能像` window.open("同源页面")``这种方式新开的页面会复制之前的sessionStorage `
+
+```html
+<a href="http://..." target="_blank" rel="opener">Link</a>
+```
+
+- [<u>Why is sessionStorage preserved across multiple tabs | stackoverflow</u>](https://stackoverflow.com/questions/57330335/why-is-sessionstorage-preserved-across-multiple-tabs)
+
+:::
+
+::: tip 总结
+
+- 页面会话在浏览器打开期间一直保持，并且重新加载或恢复页面仍会保持原来的页面会话。
+
+- 在新标签或窗口打开一个页面时会复制顶级浏览会话的上下文作为新会话的上下文。
+
+- 打开多个相同的 `URL` 的 `Tabs` 页面，会创建各自的  `sessionStorage`。
+
+- 关闭对应浏览器标签或窗口，会清除对应的  `sessionStorage`。
+
+:::
+
 ::: info 相关资料
 
 - [<u>`SessionStorage | MDN`</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/sessionStorage)
+
+:::
+
+## `Web Storage`
+
+`localStorage` 与 `sessionStorage`两者其实都拥有一个相同的原型对象 `Storage`。
+
+`Web Storage` 包含如下两种机制：
+
+- `sessionStorage`  为每一个给定的源维持一个独立的存储区域，该存储区域在页面会话期间可用（即只要浏览器处于打开状态，包括页面重新加载和恢复）。
+- `localStorage`  同样的功能，但是在浏览器关闭，然后重新打开后数据仍然存在。
+
+作为 `Web Storage API` 的接口，`Storage` 提供了访问特定域名下的会话存储或本地存储的功能。
+
+例如，可以添加、修改或删除存储的数据项。
+
+### 属性 & 方法
+
+- `Storage.length`  只读
+
+返回一个整数，表示存储在  `Storage`  对象中的数据项数量。
+
+- `Storage.key()`
+
+该方法接受一个数值 `n` 作为参数，并返回存储中的第 `n` 个键名。
+
+- `Storage.getItem()`
+
+该方法接受一个键名作为参数，返回键名对应的值。
+
+- `Storage.setItem()`
+
+该方法接受一个键名和值作为参数，将会把键值对添加到存储中，如果键名存在，则更新其对应的值。
+
+- `Storage.removeItem()`
+
+该方法接受一个键名作为参数，并把该键名从存储中删除。
+
+- `Storage.clear()`
+
+调用该方法会清空存储中的所有键名。
+
+::: info 相关资料
+
+- [<u>Web Storage API | MDN</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API)
+
+:::
+
+## `indexedDB`
+
+`IndexedDB` 是一种底层 `API`，用于在客户端存储大量的结构化数据（也包括文件/二进制大型对象（`blobs`））。该 `API` 使用索引实现对数据的高性能搜索。
+
+使用 `IndexedDB` 执行的操作是异步执行的，以免阻塞应用程序。
+
+应用场景：适合存储大量结构化数据，如离线数据、文件缓存等。
+
+存储大小：浏览器不同，但通常是 `50MB` 到`几百 MB`。
+
+```js
+const request = indexedDB.open('MyDatabase')
+```
+
+::: info 相关资料
+
+- [<u>MDN indexDB API 🚀</u>](https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API)
 
 :::

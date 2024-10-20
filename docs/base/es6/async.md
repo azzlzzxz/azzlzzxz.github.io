@@ -1,10 +1,12 @@
 # async await
 
 - `Promise` 中有很多问题，内部还是采用回调的方式，如果逻辑过多还是可能会导致回调地狱。
-- 我们希望写的代码更像同步一些 ---> `generator`。
-- `koa 1.0 `用的是 `generator` `koa2.0` 用的是 `async+await`。
 
-## `generator`（生成器）里的关键字：
+- 我们希望写的代码更像同步一些 ---> `generator`。
+
+- `koa 1.0`用的是 `generator` `koa2.0` 用的是 `async+await`。
+
+## `generator`（生成器）里的关键字
 
 1. 代表 `generator` 函数（返回迭代器函数）（写在 `function` 与函数名之间）
 2. `yield` 表示产出。
@@ -45,31 +47,32 @@ console.log(it.next()) // {value:100,done:true}
 
 ```js
 function $gen(contxt) {
-    switch(contxt.prev = context.next){ // 保证每次调完next，把next赋值给prev，走下个case
-        case 0: context.next = 1 return 1
-        case 1: context.next = 2 return 2
-        case 2: context.next = 3 return 3
-        case 3: context.stop() return 100
-    }
+  switch(contxt.prev = context.next){ // 保证每次调完next，把next赋值给prev，走下个case
+    case 0: context.next = 1 return 1
+    case 1: context.next = 2 return 2
+    case 2: context.next = 3 return 3
+    case 3: context.stop() return 100
+  }
 }
 
 let gen = function () {
-    const context = {
-        prev: 0, // 当前运行的
-        next: 0, // 下一次要运行的
-        done: false,// 是否完成运行
-        stop () {
-            this.done = true // 更改完成状态
-        }
-        return {
-            next () {
-                return {
-                    value:$gen(context),
-                    done: context.done
-                }
-            }
-        }
+  const context = {
+    prev: 0, // 当前运行的
+    next: 0, // 下一次要运行的
+    done: false,// 是否完成运行
+    stop () {
+      this.done = true // 更改完成状态
     }
+  }
+
+  return {
+    next () {
+      return {
+        value:$gen(context),
+        done: context.done
+      }
+    }
+  }
 }
 
 let it = gen();
@@ -125,16 +128,16 @@ co(read())
 const fs = require('fs').promises
 
 async read () {
-    let name = await fs.readFile('name.txt', 'utf8')
-    let age = await fs.readFile(name, 'utf8')
-    return age
+  let name = await fs.readFile('name.txt', 'utf8')
+  let age = await fs.readFile(name, 'utf8')
+  return age
 }
 
 // async方法执行后返回的是一个promise
 read().then(data => {
-    console.log(data)
+  console.log(data)
 }).catch(err => {
-    console.log(err)
+  console.log(err)
 })
 ```
 

@@ -130,7 +130,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     },
     {
       text: '编程题',
-      link: '/base/coding/',
+      collapsed: false,
+      items: [
+        { text: '模拟实现', link: '/base/coding/simulate' },
+        { text: '工具方法', link: '/base/coding/tool' },
+        { text: '数组', link: '/base/coding/array' },
+      ],
     },
     {
       text: '其他',

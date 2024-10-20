@@ -23,7 +23,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         ],
       },
       { text: '数据结构与算法', link: '/base/structure/stack' },
-      { text: '编程题', link: '/base/coding/' },
+      { text: '编程题', link: '/base/coding/simulate' },
       {
         text: '其他',
         items: [{ text: '前端页面渲染方式', link: '/base/other/renderMode' }],

@@ -18,13 +18,13 @@
 
 ## Docker 组件
 
-- ` Docker Client：` `Docker ` 客户端，通过命令行或者其他工具使用 `Docker API` 进行操作。
-- ` Docker Image：` `Docker ` 镜像，用来打包应用程序及其依赖。
-- ` Docker Container：` `Docker ` 容器，是 `Docker` 运行时环境中的一个进程，是应用运行的环境。
-- ` Docker Compose：` `Docker ` 编排，用于定义和运行多容器 `Docker` 应用程序。
-- ` Docker File：` `Docker` 镜像构建文件，用来定义 `Docker` 镜像的内容。
+- `Docker Client`：`Docker` 客户端，通过命令行或者其他工具使用 `Docker API` 进行操作。
+- `Docker Image`：`Docker` 镜像，用来打包应用程序及其依赖。
+- `Docker Container`：`Docker` 容器，是 `Docker` 运行时环境中的一个进程，是应用运行的环境。
+- `Docker Compose`：`Docker` 编排，用于定义和运行多容器 `Docker` 应用程序。
+- `Docker File`：`Docker` 镜像构建文件，用来定义 `Docker` 镜像的内容。
 
-## 通过 Docker Destop 直观学习 Docker
+## Docker Desktop
 
 ![docker_desktop](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/docker_desktop.jpg)
 
@@ -51,12 +51,17 @@ docker run --name nginx-test2 -p 80:80 -v /tmp/aaa:/usr/share/nginx/html -e KEY1
 ```
 
 - `-p` 是端口映射
-  - 端口：这个是宿主机的端口，比如你要访问宿主机的 80 端口，那你就要映射到容器的 80 端口，容器内跑的 `nginx` 服务是在 80 端口，你要把宿主机的某个端口映射到容器的 80 端口才可以访问。
-- `-v` 是指定数据卷挂载目录
-  - 数据卷 `volume`：这个是把宿主机某个目录挂到容器内。因为容器是镜像跑起来的，下次再用这个镜像跑的还是同样的容器，那你在容器内保存的数据就会消失。所以我们都是把某个宿主机目录，挂载到容器内的某个保存数据的目录，这样数据是保存在宿主机的，下次再用镜像跑一个新容器，只要把这个目录挂载上去就行。
-- `-e` 是指定环境变量
-- `-d `是后台运行
 
-点击 run，可以看到容器内的 nginx 服务跑起来了。
+  - 端口：这个是宿主机的端口，比如你要访问宿主机的 `80` 端口，那你就要映射到容器的 `80` 端口，容器内跑的 `nginx` 服务是在 `80` 端口，你要把宿主机的某个端口映射到容器的 `80` 端口才可以访问。
+
+- `-v` 是指定数据卷挂载目录
+
+  - 数据卷 `volume`：这个是把宿主机某个目录挂到容器内。因为容器是镜像跑起来的，下次再用这个镜像跑的还是同样的容器，那你在容器内保存的数据就会消失。所以我们都是把某个宿主机目录，挂载到容器内的某个保存数据的目录，这样数据是保存在宿主机的，下次再用镜像跑一个新容器，只要把这个目录挂载上去就行。
+
+- `-e` 是指定环境变量
+
+- `-d`是后台运行
+
+点击 `run`，可以看到容器内的 `nginx` 服务跑起来了。
 
 ![run](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/run.png)

@@ -120,6 +120,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           text: '算法',
           collapsed: false,
           items: [
+            { text: '时间 & 空间复杂度', link: '/base/structure/complexity' },
             { text: '排序', link: '/base/structure/sort' },
             { text: '查找', link: '/base/structure/search' },
           ],

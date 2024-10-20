@@ -207,3 +207,59 @@ setTimeout(() => {
   p2.abort()
 }, 2000)
 ```
+
+## `Promise.allSettled`
+
+`Promise.allSettled()` 方法接受一个 可迭代对象（通常是一个数组），并返回一个新的 `Promise`。
+
+这个新 `Promise` 会在所有输入的 `Promise` 都 已解决或已拒绝 时完成。返回的结果是一个数组，数组中的每个元素都是一个对象，表示对应的 `Promise` 的状态
+
+::: tip 实现思路
+
+- 它返回一个新的 `Promise`，这个 `Promise` 会在所有的输入 `Promise` 都 `settled`（无论是成功还是失败）时完成。
+
+- 对于每个输入 `Promise`，都会调用它的 `then` 和 `catch` 方法，来捕获它们的结果或错误。
+
+- 最终把所有结果组合成一个数组，返回这个数组。
+
+:::
+
+```js
+Promise.allSettled = function (promises) {
+  // 返回一个新的 Promise
+  return new Promise((resolve, reject) => {
+    // 检查传入的是否是可迭代对象
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('Argument must be an iterable'))
+    }
+
+    const results = [] // 用于存储每个 Promise 的结果
+    let completedPromises = 0 // 记录已 settled 的 Promise 数量
+
+    // 遍历所有的 Promise
+    promises.forEach((promise, index) => {
+      // 将每个 promise 包装为一个 settled 处理器
+      Promise.resolve(promise)
+        .then((value) => {
+          results[index] = { status: 'fulfilled', value }
+        })
+        .catch((reason) => {
+          results[index] = { status: 'rejected', reason }
+        })
+        .finally(() => {
+          completedPromises += 1 // 每完成一个 Promise 递增
+
+          // 当所有的 Promise 都 settled 后，resolve 返回结果数组
+          if (completedPromises === promises.length) {
+            resolve(results)
+          }
+        })
+    })
+
+    // 处理空的 Promise 数组
+    if (promises.length === 0) {
+      resolve(results)
+    }
+  })
+}
+```

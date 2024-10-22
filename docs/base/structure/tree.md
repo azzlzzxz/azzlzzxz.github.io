@@ -604,8 +604,11 @@ class BST {
     }
     this.size++
   }
-  invertTree() {
-    if (node === null) return
+
+  // 使用栈实现翻转二叉树
+  invertTreeUseStack() {
+    if (this.root === null) return
+
     let stack = [this.root]
     let currentNode = null
     let index = 0
@@ -622,11 +625,26 @@ class BST {
       }
     }
   }
+
+  // 递归翻转二叉树
+  invertTreeUseRecursion() {
+    if (this.root === null) return
+
+    // 交换左右子节点
+    let temp = node.left
+    node.left = node.right
+    node.right = temp
+
+    // 递归翻转左右子树
+    this.invertTree(node.left)
+    this.invertTree(node.right)
+  }
 }
 let bst = new BST()
 let arr = [10, 8, 19, 6, 15, 22, 20]
 arr.forEach((item) => {
   bst.add(item)
 })
-bst.invertTree()
+bst.invertTreeUseStack()
+bst.invertTreeUseRecursion()
 ```

@@ -228,7 +228,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'Next',
       collapsed: false,
-      items: [{ text: '前端页面渲染方式', link: '/frame/next/renderMode' }],
+      items: [
+        { text: '前端页面渲染方式', link: '/frame/next/renderMode' },
+        { text: '路由', link: '/frame/next/router' },
+      ],
     },
   ],
   '/frame/react-native/': [

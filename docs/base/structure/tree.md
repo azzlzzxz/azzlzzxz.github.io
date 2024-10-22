@@ -70,17 +70,19 @@ const tree = [null, 1, 2, 3, 4, 5, 6, 7] // 使用数组表示完全二叉树
 
 ### 二叉树的遍历方式
 
-常见的二叉树遍历的四种方式:
+常见的二叉树遍历的四种方式（树的遍历时间复杂度都是 `O(n)`）:
 
-- 前序遍历 `Preorder Traversal`(先访问根节点、前序遍历左子树、前序遍历右子树)（父 --> 左 --> 右）
+- 前序遍历 `PreOrder Traversal` (根节点、左子树、右子树)（父 --> 左 --> 右）
 
-- 中序遍历  `Inorder Traversal`(中序遍历左子树、根节点、中序遍历右子树)（左 --> 父 --> 右 ）（只有中序遍历后的结果是有顺序的）
+- 中序遍历  `InOrder Traversal` (左子树、根节点、右子树)（左 --> 父 --> 右 ），只有中序遍历后的结果是有顺序的，它能保持节点值的有序性
 
-- 后续遍历  `Postorder Traversal`(后序遍历左子树、后续遍历右子树、根节点)（左 --> 右 --> 父）
+- 后续遍历  `PostOrder Traversal` (左子树、右子树、根节点)（左 --> 右 --> 父）
 
-- 层序遍历  `Level Order Traversal` (从上到下，从左到右依次访问每一个节点)
+- 层序遍历  `LevelOrder Traversal` (从上到下，从左到右依次访问每一个节点)
 
 ![tree_for](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/tree_for.png)
+
+> 首先看一下，怎么生成树结构
 
 ```js
 class Node {
@@ -122,83 +124,339 @@ class BST {
     }
     this.size++
   }
-  preorderTraversal(visitor) {
-    const traveral = (node) => {
-      if (node === null) return
-      visitor.visit(node)
-      // --> console.log(node.element) // 父
-      traveral(node.left) // 左
-      traveral(node.right) // 右
-    }
-    traveral(this.root)
-  }
-  inorderTraversal(visitor) {
-    const traveral = (node) => {
-      if (node === null) return
-      traveral(node.left) // 左
-      visitor.visit(node)
-      // console.log(node.element) // 父
-      traveral(node.right) // 右
-    }
-    traveral(this.root)
-  }
-  postorderTraversal(visitor) {
-    const traveral = (node) => {
-      if (node === null) return
-      traveral(node.left) // 左
-      traveral(node.right) // 右
-      visitor.visit(node)
-      // console.log(node.element) // 父
-    }
-    traveral(this.root)
-  }
-  levelorderTraversal(visitor) {
-    // 先把根节点放入[10]，指针指向10 找根节点的左右子节点 放进去，
-    // [10, 8, 19]，指针指向8 找其节点的左右子节点 放进去，
-    // [10, 8, 19]，指针指向19 找其节点的左右子节点 放进去 。。。一直这样找，就是一层层的push
-    if (node === null) return
-    let stack = [this.root]
-    let currentNode = null
-    let index = 0
-    while ((currentNode = stack[index++])) {
-      visitor.visit(currentNode)
-      if (currentNode.left) {
-        stack.push(currentNode.left)
-      }
-      if (currentNode.right) {
-        stack.push(currentNode.right)
-      }
-    }
+
+  showCurrentTree() {
+    console.log(this.root)
   }
 }
+
 let bst = new BST()
 let arr = [10, 8, 19, 6, 15, 22, 20]
+
 arr.forEach((item) => {
   bst.add(item)
 })
-// 访问者模式 (babel内部转化都是使用的这种方式（说白了就是回调）)
-bst.preorderTraversal({
-  visit(node) {
-    console.log(node.element)
+
+bst.showCurrentTree()
+```
+
+> 当前树结构
+
+![create_tree](./images/create_tree.png)
+
+#### 前序遍历树结构
+
+```js
+class BST {
+  preOrderTraversal(visitor) {
+    const traversal = (node) => {
+      if (node === null) return
+      visitor.visit(node)
+      traversal(node.left) // 左
+      traversal(node.right) // 右
+    }
+    traversal(this.root)
+  }
+
+  // 为了方便展示，我们还可以传递当前节点的深度和父节点给 visitor，这样在遍历过程中，我们可以根据深度和父节点来判断当前节点的位置。
+  preOrderTraversal(visitor) {
+    const traversal = (node, depth = 0, parent = null) => {
+      if (node === null) return
+      // 传递当前节点的深度和父节点给 visitor
+      visitor.visit(node, depth, parent)
+      traversal(node.left, depth + 1, node) // 递归左子树
+      traversal(node.right, depth + 1, node) // 递归右子树
+    }
+    traversal(this.root)
+  }
+}
+```
+
+> 使用
+
+```js
+bst.preOrderTraversal({
+  visit(node, depth, parent) {
+    // 根据深度缩进打印节点
+    const indent = ' '.repeat(depth * 2)
+    if (!parent) {
+      console.log(`${indent}根节点: ${node.element}`)
+    } else if (parent.left === node) {
+      console.log(`${indent}左子树: ${node.element} (父节点: ${parent.element})`)
+    } else if (parent.right === node) {
+      console.log(`${indent}右子树: ${node.element} (父节点: ${parent.element})`)
+    }
   },
 })
 ```
 
-#### 深度优先（DFS）
+> 输出
+
+```bash
+根节点: 10
+  左子树: 8 (父节点: 10)
+    左子树: 6 (父节点: 8)
+  右子树: 19 (父节点: 10)
+    左子树: 15 (父节点: 19)
+    右子树: 22 (父节点: 19)
+      左子树: 20 (父节点: 22)
+```
+
+#### 中序遍历树结构
+
+```js
+class BST {
+  inOrderTraversal(visitor) {
+    const traversal = (node, depth = 0, parent = null) => {
+      if (node === null) return
+      traversal(node.left, depth + 1, node)
+      visitor.visit(node, depth, parent)
+      traversal(node.right, depth + 1, node)
+    }
+    traversal(this.root)
+  }
+}
+```
+
+> 使用
+
+```js
+bst.inOrderTraversal({
+  // ...
+})
+```
+
+> 输出
+
+```bash
+    左子树: 6 (父节点: 8)
+  左子树: 8 (父节点: 10)
+根节点: 10
+    左子树: 15 (父节点: 19)
+  右子树: 19 (父节点: 10)
+      左子树: 20 (父节点: 22)
+    右子树: 22 (父节点: 19)
+```
+
+#### 后序遍历树结构
+
+```js
+class BST {
+  postOrderTraversal(visitor) {
+    const traversal = (node, depth = 0, parent = null) => {
+      if (node === null) return
+      traversal(node.left, depth + 1, node) // 递归左子树
+      traversal(node.right, depth + 1, node) // 递归右子树
+      visitor.visit(node, depth, parent)
+    }
+    traversal(this.root)
+  }
+}
+```
+
+> 使用
+
+```js
+bst.postOrderTraversal({
+  // ...
+})
+```
+
+> 输出
+
+```bash
+    左子树: 6 (父节点: 8)
+  左子树: 8 (父节点: 10)
+    左子树: 15 (父节点: 19)
+      左子树: 20 (父节点: 22)
+    右子树: 22 (父节点: 19)
+  右子树: 19 (父节点: 10)
+根节点: 10
+```
+
+#### 层序遍历树结构
+
+::: tip 思路
+
+- 首先将根节点加入队列。
+
+- 当队列中有元素时，访问队列中的第一个节点（即当前层的某个节点），将其左右子节点依次加入队列。
+
+- 继续直到队列为空，即完成所有层的访问。
+
+:::
+
+```js
+class BST {
+  levelOrderTraversal(visitor) {
+    if (this.root === null) return
+
+    // 创建一个队列，存储每层的节点信息，初始加入根节点
+    const queue = [{ node: this.root, parent: null, depth: 0 }]
+
+    while (queue.length > 0) {
+      // 取出队列的第一个元素
+      const { node, parent, depth } = queue.shift()
+
+      // 访问当前节点
+      visitor.visit(node, parent, depth)
+
+      // 如果有左子树，加入队列，并标记当前节点为其父节点
+      if (node.left) {
+        queue.push({ node: node.left, parent: node, depth: depth + 1 })
+      }
+
+      // 如果有右子树，加入队列，并标记当前节点为其父节点
+      if (node.right) {
+        queue.push({ node: node.right, parent: node, depth: depth + 1 })
+      }
+    }
+  }
+}
+```
+
+> 使用
+
+```js
+bst.levelOrderTraversal({
+  visit(node, parent, depth) {
+    if (!parent) {
+      console.log(`深度 ${depth} - 根节点: ${node.element}`)
+    } else if (parent.left === node) {
+      console.log(`深度 ${depth} - 左子树: ${node.element}, 父节点: ${parent.element}`)
+    } else if (parent.right === node) {
+      console.log(`深度 ${depth} - 右子树: ${node.element}, 父节点: ${parent.element}`)
+    }
+  },
+})
+```
+
+> 输出
+
+```bash
+深度 0 - 根节点: 10
+深度 1 - 左子树: 8, 父节点: 10
+深度 1 - 右子树: 19, 父节点: 10
+深度 2 - 左子树: 6, 父节点: 8
+深度 2 - 左子树: 15, 父节点: 19
+深度 2 - 右子树: 22, 父节点: 19
+深度 3 - 左子树: 20, 父节点: 22
+```
+
+#### 完整简化代码
+
+```js
+class Node {
+  constructor(element, parent) {
+    this.element = element
+    this.parent = parent
+    this.left = null
+    this.right = null
+  }
+}
+class BST {
+  constructor() {
+    this.root = null
+    this.size = 0
+  }
+  add(element) {
+    if (this.root === null) {
+      this.root = new Node(element, null)
+      this.size++
+      return
+    }
+    let currentNode = this.root
+    let compare = null
+    let parent = null
+    while (currentNode) {
+      compare = element - currentNode.element
+      parent = currentNode
+      if (compare > 0) {
+        currentNode = currentNode.right
+      } else if (compare < 0) {
+        currentNode = currentNode.left
+      }
+    }
+    let newNode = new Node(element, parent)
+    if (compare > 0) {
+      parent.right = newNode
+    } else if (compare < 0) {
+      parent.left = newNode
+    }
+    this.size++
+  }
+
+  // 前序
+  preOrderTraversal(visitor) {
+    const traversal = (node) => {
+      if (node === null) return
+      visitor.visit(node)
+      traversal(node.left) // 左
+      traversal(node.right) // 右
+    }
+    traversal(this.root)
+  }
+
+  // 中序
+  inOrderTraversal(visitor) {
+    const traversal = (node) => {
+      if (node === null) return
+      traversal(node.left)
+      visitor.visit(node)
+      traversal(node.right)
+    }
+    traversal(this.root)
+  }
+
+  // 后序
+  postOrderTraversal(visitor) {
+    const traversal = (node) => {
+      if (node === null) return
+      traversal(node.left)
+      traversal(node.right)
+      visitor.visit(node)
+    }
+    traversal(this.root)
+  }
+
+  // 层序
+  levelOrderTraversal(visitor) {
+    if (this.root === null) return
+    const queue = [{ node: this.root }]
+    while (queue.length > 0) {
+      const { node } = queue.shift()
+      visitor.visit(node)
+      if (node.left) {
+        queue.push({ node: node.left })
+      }
+      if (node.right) {
+        queue.push({ node: node.right })
+      }
+    }
+  }
+}
+```
+
+### 深度优先（DFS）
 
 深度优先搜索英文缩写为 `DFS` 即 `Depth First Search`。
-其过程简要来说是对每一个可能的分支路径深入到不能再深入为止，而且每个节点只能访问一次。
-应用场景：
+
+其过程简要来说是对每一个可能的分支路径深入到不能再深入为止，而且每个节点只能访问一次(前、中、后序遍历)。
+
+::: tip 应用场景：
 
 - `React` 虚拟 `DOM` 的构建
 - `React` 的 `fiber` 树构建
 
+:::
+
 ![DFS](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/DFS.jpg)
 
-#### 广度优先（BFS）
+### 广度优先（BFS）
 
-宽度优先搜索算法（又称广度优先搜索），其英文全称是 Breadth First Search。
-算法首先搜索距离为 k 的所有顶点，然后再去搜索距离为 k+l 的其他顶点。
+宽度优先搜索算法（又称广度优先搜索），其英文全称是 `Breadth First Search`。
+
+首先搜索距离为 `k` 的所有顶点，然后再去搜索距离为 `k+l` 的其他顶点(层序遍历)。
 
 ![BFS](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/BFS.jpg)
 
@@ -224,7 +482,11 @@ bst.preorderTraversal({
 - `size` 元素个数
 - `contains` 包含元素
 
-**树是没有索引的，不能通过索引来检索数据**
+::: tip 注意 ⚠️
+
+- 树是没有索引的，不能通过索引来检索数据
+
+:::
 
 ### 实现二叉搜索树
 

@@ -123,7 +123,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
           items: [
             { text: '时间 & 空间复杂度', link: '/base/structure/complexity' },
             { text: '排序', link: '/base/structure/sort' },
-            { text: '查找', link: '/base/structure/search' },
+            { text: '搜索', link: '/base/structure/search' },
           ],
         },
       ],
@@ -137,10 +137,10 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '数组', link: '/base/coding/array' },
       ],
     },
-    {
-      text: '其他',
-      items: [{ text: '前端页面渲染方式', link: '/base/other/renderMode' }],
-    },
+    // {
+    //   text: '其他',
+    //   items: [],
+    // },
   ],
 
   '/node/': [
@@ -228,7 +228,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'Next',
       collapsed: false,
-      items: [],
+      items: [{ text: '前端页面渲染方式', link: '/frame/next/renderMode' }],
     },
   ],
   '/frame/react-native/': [

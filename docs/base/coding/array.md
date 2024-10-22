@@ -1,6 +1,6 @@
-# 数组系列
+# 数组相关
 
-## 反转数组的方式和时间复杂度
+## 反转数组的方式
 
 ### 双指针法
 
@@ -326,4 +326,165 @@ console.log(uniqueArr) // [1, 2, 3, 4, 5]
 
 - 外层循环是 `O(n)`，`indexOf()` 查找是 `O(n)`，总时间复杂度是 `O(n^2)`。
 
-## 三数之和
+## 两数之和
+
+给定一个数组 `nums` 和一个目标值 `target`，在该数组中找出和为目标值的两个数
+
+> 🌰 一
+
+```md
+输入: nums = [2, 7, 11, 15], target = 9
+
+输出: [0, 1]
+```
+
+```js
+function twoNumAdd(nums, target) {
+  const map = new Map()
+  for (let i = 0, len = nums.length; i < len; i++) {
+    if (map.has(target - nums[i])) {
+      return [map.get(target - nums[i]), i]
+    }
+    map.set(nums[i], i)
+  }
+  return []
+}
+```
+
+> 🌰 二
+
+```md
+输入：nums: [8, 2, 6, 5, 4, 1, 3], target:7
+
+输出：[2, 5]
+```
+
+```js
+// 时间复杂度O(n)、 空间复杂度O(n)
+function twoNumAdd(arr, target) {
+  // 使用map将遍历过的数字存起来，空间换时间
+  let map = {}
+  for (let i = 0; i < arr.length; i++) {
+    // 从map中查找是否有key 等于 target-nums[i]，如果有，则条件成立，返回结果
+    if (map[target - arr[i]] !== undefined) {
+      return [target - arr[i], arr[i]]
+    } else {
+      // 条件不成立，将该值存起来
+      map[arr[i]] = i
+    }
+  }
+  return []
+}
+```
+
+::: info 相关资料
+
+- [两数之和 | LeetCode](https://leetcode-cn.com/problems/two-sum/)
+
+:::
+
+### 三数之和
+
+给定一个数组`nums`，判断 `nums` 中是否存在三个元素`a`，`b`，`c`，使得 `a + b + c = target`，找出所有满足条件且不重复的三元组合
+
+```md
+输入： nums: [5, 2, 1, 1, 3, 4, 6], target:8
+
+输出： [[1, 1, 6], [1, 2, 5], [1, 3, 4]]
+```
+
+> 用`双端指针`的方式，将三数之和转化为两数之和
+
+```js
+function findThree(arr, target) {
+  // 先将数组从小到大排序
+  arr.sort((a, b) => a - b)
+
+  let result = []
+
+  for (let i = 0; i < arr.length - 2; i++) {
+    // 跳过重复的arr[i]值, 比如[2, 1, 1],跳过第二个1
+    if (i && arr[i] === arr[i - 1]) continue
+
+    let left = i + 1
+    let right = arr.length - 1
+
+    // 双端指针left、right
+    while (left < right) {
+      let sum = arr[i] + arr[left] + arr[right]
+      if (sum > target) {
+        right--
+      } else if (sum < target) {
+        left++
+      } else {
+        // 先取arr[left]，然后left++, 两步合成一步；arr[right--]同样的逻辑
+        result.push([arr[i], arr[left++], arr[right--]])
+        while (arr[left] === arr[left - 1]) {
+          // 跳过重复的arr[left]值,
+          left++
+        }
+        while (arr[right] === arr[right + 1]) {
+          // 跳过重复的arr[right]值
+          right--
+        }
+      }
+    }
+  }
+  return result
+}
+```
+
+::: info 相关资料
+
+- [三数之和 | LeetCode](https://leetcode.cn/problems/3sum/description/)
+
+- [常见前端算法题](https://juejin.cn/post/7158730050718662687#heading-13)
+
+:::
+
+### 版本号排序
+
+输入一组版本号，输出从大到小的排序
+
+```md
+输入： ['2.1.0.1', '0.42.1', '10.2.1', '5.1.2', '1.0.4.5']
+
+输出： ['10.2.1', '5.1.2', '2.1.0.1', '1.0.4.5', '0.42.1']
+```
+
+::: tip 思路
+
+- 利用 split 分割版本字符串为数组，eg：1.0.1 ==> ['1','0','1']
+
+- 取出相同位置的数字进行比较
+
+:::
+
+```js
+function versionSort(arr) {
+  return arr.sort((a, b) => {
+    let i = 0
+    const arr1 = a.split('.')
+    const arr2 = b.split('.')
+    while (true) {
+      // 取出相同位置的数字
+      const s1 = arr1[i]
+      const s2 = arr2[i]
+      i++
+      // 若s1 或 s2 不存在，说明相同的位置已比较完成，接下来比较arr1 与 arr2的长度，长的版本号大
+      if (s1 === undefined || s2 === undefined) {
+        return arr2.length - arr1.length
+      }
+      if (s1 === s2) continue
+      // 比较相同位置的数字大小
+      return s2 - s1
+    }
+  })
+}
+```
+
+::: info 相关资料
+
+- [版本号排序 | LeetCode](https://leetcode.cn/problems/compare-version-numbers/description/)
+
+:::

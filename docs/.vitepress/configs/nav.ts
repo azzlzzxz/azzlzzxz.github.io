@@ -24,10 +24,6 @@ export const nav: DefaultTheme.Config['nav'] = [
       },
       { text: '数据结构与算法', link: '/base/structure/stack' },
       { text: '编程题', link: '/base/coding/simulate' },
-      {
-        text: '其他',
-        items: [{ text: '前端页面渲染方式', link: '/base/other/renderMode' }],
-      },
     ],
     activeMatch: '^/base',
   },
@@ -56,6 +52,7 @@ export const nav: DefaultTheme.Config['nav'] = [
         items: [
           { text: 'React 相关知识', link: '/frame/react/base/jsx' },
           { text: 'ReactNative 相关知识', link: '/frame/react-native/init' },
+          { text: 'Next 相关知识', link: '/frame/next/renderMode' },
           { text: 'Electron 相关知识', link: '/frame/electron/introduce' },
         ],
       },

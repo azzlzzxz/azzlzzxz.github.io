@@ -230,7 +230,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       collapsed: false,
       items: [
         { text: '前端页面渲染方式', link: '/frame/next/renderMode' },
-        { text: '路由', link: '/frame/next/router' },
+        { text: '路由相关知识', link: '/frame/next/router' },
       ],
     },
   ],

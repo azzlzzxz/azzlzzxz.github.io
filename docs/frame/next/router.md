@@ -1,4 +1,4 @@
-# Next 路由
+# Next 路由相关知识
 
 `Next.js` 有两套路由解决方案，`v13.4` 之前的方案称之为`“Pages Router”`，目前的方案称之为`“App Router”`，两套方案目前是兼容的，都可以在 `Next.js` 中使用。
 

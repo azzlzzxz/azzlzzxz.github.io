@@ -203,13 +203,13 @@ var f = (a, b, c) => a // 传入a,b,c 返回a
 - 简化回调函数，让你的回调函数更优雅
 
 ```js
-;[1, 2, 3].map(function (x) {
+const arr = [1, 2, 3].map(function (x) {
   return x * x
 }) // 普通函数写法
 ```
 
 ```js
-;[(1, 2, 3)].map((x) => x * x) // 箭头函数只需要一行
+const arr = [(1, 2, 3)].map((x) => x * x) // 箭头函数只需要一行
 ```
 
 ## 箭头函数的注意事项

@@ -23,7 +23,9 @@
 ```js
 let s = new Set()
 
-;[1, 2, 3, 4, 5, 4, 3, 2].forEach((x) => s.add(x))
+let arr = [1, 2, 3, 4, 5, 4, 3, 2]
+
+arr.forEach((x) => s.add(x))
 
 for (let i of s) {
   console.log(i) // 1, 2, 3, 5, 4
@@ -118,9 +120,9 @@ for (let item of set.entries()) {
 - `Set` 可以用来去除数组的重复元素。
 
 ```js
-;[...new Set(arr)]
+const uniqueArr = [...new Set(arr)]
 
-Array.from(new Set(arr))
+const uniqueArr2 = Array.from(new Set(arr))
 ```
 
 - 实现集合数组

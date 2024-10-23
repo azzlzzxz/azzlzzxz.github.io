@@ -12,6 +12,7 @@
 function reverseArray(arr) {
   let left = 0,
     right = arr.length - 1
+
   while (left < right) {
     ;[arr[left], arr[right]] = [arr[right], arr[left]]
     left++
@@ -41,7 +42,9 @@ arr.reverse()
 ```js
 function reverseArrayRecursive(arr, start, end) {
   if (start >= end) return arr
+
   ;[arr[start], arr[end]] = [arr[end], arr[start]]
+
   return reverseArrayRecursive(arr, start + 1, end - 1)
 }
 ```
@@ -62,7 +65,7 @@ let arr = [
 > 输出结构
 
 ```js
-;[
+result = [
   {
     id: 1,
     name: '部门1',

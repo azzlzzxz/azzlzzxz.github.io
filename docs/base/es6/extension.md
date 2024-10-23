@@ -218,7 +218,7 @@ const [first, ...middle, last] = [1, 2, 3, 4, 5];
 ```js
 let str = 'hello'
 
-;[...str] // ["h", "e", "l", "l", "o"]
+console.log([...str]) // ["h", "e", "l", "l", "o"]
 ```
 
 ::: tip 提示 💡
@@ -347,7 +347,6 @@ arr.findIndex((item) => item === 9) // -1
 
 ```js
 ;[NaN].indexOf(NaN) // -1
-
 ;[NaN].findIndex((y) => Object.is(NaN, y)) // 0
 ```
 
@@ -358,17 +357,17 @@ arr.findIndex((item) => item === 9) // -1
 `fill`方法使用给定值，填充一个数组。
 
 ```js
-;['a', 'b', 'c'].fill(7)
+const arr = ['a', 'b', 'c'].fill(7)
 // [7, 7, 7]
 
-new Array(3).fill(7)
+const arr1 = new Array(3).fill(7)
 // [7, 7, 7]
 ```
 
 `fill`方法还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。
 
 ```js
-;['a', 'b', 'c'].fill(7, 1, 2)
+const arr = ['a', 'b', 'c'].fill(7, 1, 2)
 // ['a', 7, 'c']
 ```
 

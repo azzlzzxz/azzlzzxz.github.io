@@ -627,8 +627,8 @@ class BST {
   }
 
   // 递归翻转二叉树
-  invertTreeUseRecursion() {
-    if (this.root === null) return
+  invertTreeUseRecursion(node = this.root) {
+    if (node === null) return
 
     // 交换左右子节点
     let temp = node.left
@@ -636,8 +636,8 @@ class BST {
     node.right = temp
 
     // 递归翻转左右子树
-    this.invertTree(node.left)
-    this.invertTree(node.right)
+    this.invertTreeUseRecursion(node.left)
+    this.invertTreeUseRecursion(node.right)
   }
 }
 let bst = new BST()

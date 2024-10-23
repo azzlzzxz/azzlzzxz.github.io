@@ -114,7 +114,7 @@ for (let item of set.entries()) {
 - `Set` 可以用来去除字符串的重复元素。
 
 ```js
-;[...new Set(str)].join('')
+const uniqueStr = [...new Set(str)].join('')
 ```
 
 - `Set` 可以用来去除数组的重复元素。

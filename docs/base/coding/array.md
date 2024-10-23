@@ -42,7 +42,6 @@ arr.reverse()
 ```js
 function reverseArrayRecursive(arr, start, end) {
   if (start >= end) return arr
-
   ;[arr[start], arr[end]] = [arr[end], arr[start]]
 
   return reverseArrayRecursive(arr, start + 1, end - 1)
@@ -445,7 +444,7 @@ function findThree(arr, target) {
 
 :::
 
-### 版本号排序
+## 版本号排序
 
 输入一组版本号，输出从大到小的排序
 

@@ -217,6 +217,7 @@ const [first, ...middle, last] = [1, 2, 3, 4, 5];
 
 ```js
 let str = 'hello'
+
 ;[...str] // ["h", "e", "l", "l", "o"]
 ```
 
@@ -345,12 +346,9 @@ arr.findIndex((item) => item === 9) // -1
 这两个方法都可以发现 NaN，弥补了数组的`indexOf()`方法的不足。
 
 ```js
-;[NaN]
-  .indexOf(NaN)
-  // -1
+;[NaN].indexOf(NaN) // -1
 
-  [NaN].findIndex((y) => Object.is(NaN, y))
-// 0
+;[NaN].findIndex((y) => Object.is(NaN, y)) // 0
 ```
 
 :::

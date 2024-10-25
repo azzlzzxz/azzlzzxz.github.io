@@ -491,6 +491,14 @@ cursor：箭头可以变成需要的形状
 
 :::
 
+## 栅格布局（`Grid Layout`）
+
+栅格布局主要由容器和项目组成：
+
+- 容器（`Grid Container`）：应用了 `display: grid` 或 `display: inline-grid` 的元素。
+
+- 项目（`Grid Items`）：容器内的直接子元素，每个项目可以定义它的大小、位置等。
+
 ## 实现垂直水平居中
 
 ### `text-align` + `line-height`

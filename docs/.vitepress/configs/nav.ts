@@ -30,8 +30,11 @@ export const nav: DefaultTheme.Config['nav'] = [
   {
     text: 'Node',
     items: [
-      { text: '模块&规范', link: '/node/norm/commonJs' },
-      { text: 'Node 基础知识', link: '/node/base/base' },
+      {
+        text: '模块&规范',
+        items: [{ text: 'CommonJs', link: '/node/norm/commonJs' }],
+      },
+
       {
         text: '包管理工具',
         items: [
@@ -40,7 +43,14 @@ export const nav: DefaultTheme.Config['nav'] = [
           { text: 'Pnpm 相关知识', link: '/node/npm/pnpm' },
         ],
       },
-      { text: 'Nest 相关知识', link: '/node/nest/base' },
+      {
+        text: 'Node',
+        items: [{ text: 'Node 相关知识', link: '/node/base/base' }],
+      },
+      {
+        text: '框架',
+        items: [{ text: 'Nest 相关知识', link: '/node/nest/base' }],
+      },
     ],
     activeMatch: '^/node',
   },
@@ -87,7 +97,7 @@ export const nav: DefaultTheme.Config['nav'] = [
           { text: 'Vite', link: '/capital/construct/vite/base' },
         ],
       },
-      { text: '部署', link: '/capital/deploy/release' },
+      { text: '部署', items: [{ text: 'Docker', link: '/capital/deploy/docker/base' }] },
       {
         text: '插件开发',
         items: [
@@ -104,6 +114,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       { text: '编程规范', link: '/work/standard/code' },
       { text: 'Git 相关知识', link: '/work/git/command' },
       {
+        text: '工具相关',
         items: [
           { text: '实用工具 / 配置', link: '/work/utility/ni' },
           { text: '常用工具 / 方法', link: '/work/utils/regexp' },
@@ -118,8 +129,13 @@ export const nav: DefaultTheme.Config['nav'] = [
           { text: '企业微信侧边栏', link: '/wx/qw/side' },
         ],
       },
-      { text: '日常问题记录', link: '/work/question/npm' },
-      { text: '其他', link: '/work/command/command' },
+      {
+        text: '日常记录',
+        items: [
+          { text: '日常问题记录', link: '/work/question/npm' },
+          { text: '其他', link: '/work/command/command' },
+        ],
+      },
     ],
   },
 ]

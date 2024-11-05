@@ -499,8 +499,6 @@ cursor：箭头可以变成需要的形状
 
 - 项目（`Grid Items`）：容器内的直接子元素，每个项目可以定义它的大小、位置等。
 
-...
-
 ::: info 相关资料
 
 - [<u>网格布局 | MDN</u>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_grid_layout)

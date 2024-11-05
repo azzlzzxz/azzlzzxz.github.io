@@ -69,13 +69,12 @@ zinit delete --clean
 
 用于常用目录间的快速跳转（通过维护命令行中最常用的目录的数据库来工作）
 
-安装
-
 ```sh
+# 安装
 brew install autojump
 ```
 
-[autojump | Github](https://github.com/wting/autojump)
+- [<u>autojump | Github</u>](https://github.com/wting/autojump)
 
 ### `zsh-autosuggestions`
 
@@ -175,6 +174,14 @@ source ~/.zshrc
 ```
 
 ::::
+
+配置
+
+> 使用 [iTerm2](/efficiency/software/mac#iterm2) 可自动安装所需字体
+
+```sh
+p10k configure
+```
 
 修改字体
 

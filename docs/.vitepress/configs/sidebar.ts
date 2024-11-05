@@ -417,8 +417,8 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '实用工具与配置',
       collapsed: false,
       items: [
-        { text: 'ni包管理器工具', link: '/work/utility/ni' },
-        { text: 'node版本管理', link: '/work/utility/nvm' },
+        { text: '包管理器工具', link: '/work/utility/package' },
+        { text: 'node相关工具', link: '/work/utility/node' },
         { text: 'vscode配置', link: '/work/utility/vscode' },
         { text: 'zsh配置', link: '/work/utility/zsh' },
         { text: '图床搭建', link: '/work/utility/picgo' },

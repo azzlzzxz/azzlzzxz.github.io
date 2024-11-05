@@ -1,18 +1,21 @@
-# ni
+# 包管理器工具
 
-:::tip ni
+## ni
+
+:::tip
+
 **[ni](https://github.com/antfu/ni#ni)** 根据你的项目使用对应的包管理工具。
 
 支持：`npm` · `yarn` · `pnpm` · `bun`
 :::
 
-## 全局安装
+### 全局安装
 
 ```sh
 npm i -g @antfu/ni
 ```
 
-## `ni`
+### `ni` 命令
 
 ```sh
 ni
@@ -42,7 +45,7 @@ ni --frozen
 # bun install --no-save
 ```
 
-## `nr` - `run`
+### `nr` - `run`
 
 ```sh
 nr dev --port=3000
@@ -53,7 +56,7 @@ nr dev --port=3000
 # bun run dev --port=3000
 ```
 
-## `nlx` - `download` & `execute`
+### `nlx` - `download` & `execute`
 
 ```sh
 nlx vitest
@@ -64,7 +67,7 @@ nlx vitest
 # bunx vitest
 ```
 
-## `nu` - `upgrade`
+### `nu` - `upgrade`
 
 ```sh
 nu
@@ -85,7 +88,7 @@ nu -i
 # pnpm update -i
 ```
 
-## `nun` - `uninstall`
+### `nun` - `uninstall`
 
 ```sh
 nun webpack

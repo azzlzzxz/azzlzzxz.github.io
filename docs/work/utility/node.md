@@ -1,6 +1,8 @@
-# node 版本管理工具
+# node 相关工具
 
-## nvm
+## node 版本管理工具
+
+### nvm
 
 安装 `HomeBrew`
 
@@ -50,7 +52,7 @@ source .bash_profile
 
 ![nvm](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/nvm.png)
 
-## `fnm`
+### `fnm`
 
 :::tip
 [参考链接-fnm](https://github.com/Schniz/fnm)
@@ -80,4 +82,22 @@ fnm use <版本号>
 
 # 查看安装的node版本
 fnm ls
+```
+
+## nrm (npm 镜像管理工具)
+
+`npm registry` 管理工具，能够查看和切换当前使用的 `registry`
+
+```sh
+# 安装
+npm install -g nrm
+
+# 查看所有 registry
+nrm ls
+
+# 切换 registry
+nrm use yarn
+
+# 添加自定义 registry
+nrm add [别名] [registry 地址]
 ```

@@ -18,13 +18,72 @@ sh -c "$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install
 omz update
 ```
 
+## `zinint`
+
+安装
+
+```sh
+# 下载安装脚本
+bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+```
+
+更新
+
+```sh
+# 更新 zinit
+zinit self-update
+
+# 更新所有插件
+zinit update
+
+# 并发更新所有插件
+zinit update --parallel
+```
+
+加载插件
+
+```sh
+# 加载插件（启动分析功能跟踪插件具体）
+zinit load [插件]
+
+# 加载插件（静默加载，启动更快）
+zinit light [插件]
+```
+
+卸载
+
+```sh
+# 卸载插件
+zinit delete [插件]
+
+# 卸载所有插件
+zinit delete --all
+
+# 卸载所有未使用插件
+zinit delete --clean
+```
+
 ## `zsh` 插件
+
+### `autojump`
+
+用于常用目录间的快速跳转（通过维护命令行中最常用的目录的数据库来工作）
+
+安装
+
+```sh
+brew install autojump
+```
+
+[autojump | Github](https://github.com/wting/autojump)
 
 ### `zsh-autosuggestions`
 
 根据您的历史记录和完成情况建议您键入的命令
 
-```sh
+:::: code-group
+
+```sh [oh-my-zsh]
 # clone
 git clone --depth=1 git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 
@@ -35,9 +94,20 @@ plugins=(其他插件 zsh-autosuggestions)
 source ~/.zshrc
 ```
 
+```sh [zinit]
+# 在 ~/.zshrc 中配置
+zinit ice lucid wait="0" atload="_zsh_autosuggest_start"
+zinit light zsh-users/zsh-autosuggestions
+
+# 使配置生效
+source ~/.zshrc
+```
+
+::::
+
 ### `zsh-completions`
 
-zsh 的自动补全功能。
+`zsh` 的自动补全功能。
 
 ```sh
 # clone
@@ -52,10 +122,11 @@ source ~/.zshrc
 
 ### `fast-syntax-highlighting`
 
-zsh 的语法高亮功能。
+`zsh` 的语法高亮功能。
 
-```sh
-# clone
+:::: code-group
+
+```sh [oh-my-zsh]
 # clone
 git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 
@@ -66,13 +137,25 @@ plugins=(其他插件 fast-syntax-highlighting)
 source ~/.zshrc
 ```
 
+```sh [zinit]
+# 在 ~/.zshrc 中配置
+zinit light zdharma-continuum/fast-syntax-highlighting
+
+# 使配置生效
+source ~/.zshrc
+```
+
+::::
+
 ## `zsh` 主题
 
 ### `powerlevel10k`
 
 安装
 
-```sh
+:::: code-group
+
+```sh [oh-my-zsh]
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # 在 ~/.zshrc 中配置
@@ -81,6 +164,17 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # 使配置生效
 source ~/.zshrc
 ```
+
+```sh [zinit]
+# 在 ~/.zshrc 中配置
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
+
+# 使配置生效
+source ~/.zshrc
+```
+
+::::
 
 修改字体
 

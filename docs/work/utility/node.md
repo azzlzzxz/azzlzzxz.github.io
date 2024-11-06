@@ -96,8 +96,29 @@ npm install -g nrm
 nrm ls
 
 # 切换 registry
-nrm use yarn
+nrm use [registry 别名]
 
 # 添加自定义 registry
 nrm add [别名] [registry 地址]
+```
+
+- `nrm` 查询镜像地址返回
+
+```lua
+npm ---------- https://registry.npmjs.org/
+yarn --------- https://registry.yarnpkg.com/
+tencent ------ https://mirrors.cloud.tencent.com/npm/
+cnpm --------- https://r.cnpmjs.org/
+taobao ------- https://registry.npmmirror.com/
+npmMirror ---- https://skimdb.npmjs.com/registry/
+```
+
+### 镜像获取/修改
+
+```sh
+# 切换源
+npm set registry https://registry.npmjs.org/
+
+# 检查源是否切换成功
+npm config get registry
 ```

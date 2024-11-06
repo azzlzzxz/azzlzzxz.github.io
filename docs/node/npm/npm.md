@@ -1,38 +1,5 @@
 # NPM 常用命令
 
-## 镜像
-
-1. 镜像查询可以使用 `nrm`
-
-```sh
- # 全局安装 nrm
-npm install nrm -g
-```
-
-```sh
-# 使用 nrm 查询镜像地址
-nrm ls
-```
-
-```lua
-  npm ---------- https://registry.npmjs.org/
-  yarn --------- https://registry.yarnpkg.com/
-  tencent ------ https://mirrors.cloud.tencent.com/npm/
-  cnpm --------- https://r.cnpmjs.org/
-  taobao ------- https://registry.npmmirror.com/
-  npmMirror ---- https://skimdb.npmjs.com/registry/
-```
-
-2. 镜像获取/修改
-
-```sh
-# 切换源
-npm set registry https://registry.npmjs.org/
-
-# 检查源是否切换成功
-npm config get registry
-```
-
 ## `npx`
 
 `npx:` `Node` 包的可执行运行器。
@@ -77,7 +44,7 @@ npm cache clean -f
 yarn cache clean
 ```
 
-## `npm init `初始化
+## `npm init`初始化
 
 ```sh
 # 项目名
@@ -151,7 +118,7 @@ i add
 npm uninstall antd
 ```
 
-## `npm link `引用模块
+## `npm link`引用模块
 
 ```sh
 # 在全局模块路径下中创建 link

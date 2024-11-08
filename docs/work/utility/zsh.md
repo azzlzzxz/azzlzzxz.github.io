@@ -175,10 +175,6 @@ source ~/.zshrc
 
 ::::
 
-配置
-
-> 使用 [iTerm2](/efficiency/software/mac#iterm2) 可自动安装所需字体
-
 ```sh
 p10k configure
 ```

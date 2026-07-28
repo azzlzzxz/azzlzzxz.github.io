@@ -6,7 +6,6 @@ const DEV = inject('DEV') as Ref<boolean>
 
 <template>
   <img
-    v-if="!DEV"
     class="visitor"
     src="https://visitor-badge.laobi.icu/badge?page_id=azzlzzxz.azzlzzxz.github.io"
     onerror="this.style.display='none'"

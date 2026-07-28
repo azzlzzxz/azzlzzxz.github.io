@@ -81,13 +81,136 @@ src
 ```
 
 ::: tip
-| 文件名 | 文件概述 |
-| ---------------------- | ------------------------------------------------------------- |
-| `app.controller.ts` | 带有单个路由的基本控制器示例。 |
-| `app.controller.spec.ts` | 对于基本控制器的单元测试样例。 |
-| `app.module.ts` | 应用程序的根模块。 |
-| `app.service.ts` | 带有单个方法的基本服务。 |
-| `main.ts` | 应用程序入口文件。它使用 `NestFactory` 用来创建 `Nest` 应用实例。 |
+
+| 文件名                   | 文件概述                                                          |
+| ------------------------ | ----------------------------------------------------------------- |
+| `app.controller.ts`      | 带有单个路由的基本控制器示例。                                    |
+| `app.controller.spec.ts` | 对于基本控制器的单元测试样例。                                    |
+| `app.module.ts`          | 应用程序的根模块。                                                |
+| `app.service.ts`         | 带有单个方法的基本服务。                                          |
+| `main.ts`                | 应用程序入口文件。它使用 `NestFactory` 用来创建 `Nest` 应用实例。 |
+
+:::
+
+## Nest 生命周期
+
+Nest 生命周期指应用从启动、初始化，到接收请求，最后关闭的完整过程。理解生命周期后，就知道数据库连接、缓存预热和资源释放应该放在哪里。
+
+### 应用启动生命周期
+
+```text
+创建应用 → 初始化 Module、Controller 和 Provider → OnModuleInit
+→ OnApplicationBootstrap → 开始监听端口
+```
+
+常用的启动钩子如下：
+
+| 生命周期钩子             | 执行时机                     | 常见用途                 |
+| ------------------------ | ---------------------------- | ------------------------ |
+| `OnModuleInit`           | 当前模块及其依赖初始化完成后 | 初始化当前模块资源       |
+| `OnApplicationBootstrap` | 所有模块初始化完成后         | 应用整体启动前的最后准备 |
+
+### `OnModuleInit`
+
+Nest 会在 provider 初始化完成时调用 `onModuleInit`，适合建立当前服务需要的连接。
+
+```ts
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
+
+@Injectable()
+export class CacheService implements OnModuleInit {
+  private readonly logger = new Logger(CacheService.name)
+
+  async onModuleInit() {
+    await this.connectRedis() // 初始化 Redis 连接
+    this.logger.log('Redis 连接成功')
+  }
+
+  private async connectRedis() {
+    // 实际项目中替换成 Redis 客户端的 connect 方法
+  }
+}
+```
+
+### `OnApplicationBootstrap`
+
+所有模块初始化完成后执行，适合预热缓存等依赖多个模块的任务。
+
+```ts
+import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
+
+@Injectable()
+export class AppStartupService implements OnApplicationBootstrap {
+  private readonly logger = new Logger(AppStartupService.name)
+
+  async onApplicationBootstrap() {
+    await this.loadHotData() // 此时其他模块已经完成初始化
+    this.logger.log('应用初始化完成')
+  }
+
+  private async loadHotData() {
+    // 从数据库读取热门数据并放入缓存
+  }
+}
+```
+
+### 一次请求的处理生命周期
+
+```text
+Middleware → Guard → Interceptor（请求前） → Pipe → Controller
+→ Service → Interceptor（响应后） → 返回响应
+```
+
+- `Middleware`：处理原始请求，例如记录日志。
+- `Guard`：判断请求是否有权限访问接口。
+- `Interceptor`：在控制器前后增加通用逻辑。
+- `Pipe`：校验和转换参数。
+- `Controller`：接收请求并调用业务逻辑。
+- `Service`：处理具体业务。
+- `ExceptionFilter`：捕获异常并转换成统一响应。
+
+### 应用关闭生命周期
+
+```ts
+import { Injectable, OnModuleDestroy } from '@nestjs/common'
+
+@Injectable()
+export class DatabaseService implements OnModuleDestroy {
+  async onModuleDestroy() {
+    await this.closeConnection() // 释放数据库连接
+  }
+
+  private async closeConnection() {
+    // 实际项目中替换成数据库客户端的 close 方法
+  }
+}
+```
+
+要处理 `SIGTERM`、`SIGINT` 等系统关闭信号，需要在 `main.ts` 中启用关闭钩子：
+
+```ts
+const app = await NestFactory.create(AppModule)
+app.enableShutdownHooks() // 监听系统关闭信号
+await app.listen(3000)
+```
+
+```ts
+import { Injectable, Logger, OnApplicationShutdown } from '@nestjs/common'
+
+@Injectable()
+export class ShutdownService implements OnApplicationShutdown {
+  private readonly logger = new Logger(ShutdownService.name)
+
+  onApplicationShutdown(signal?: string) {
+    this.logger.log(`应用正在关闭，信号：${signal ?? 'unknown'}`)
+    // 停止消费者、刷新日志或清理临时文件
+  }
+}
+```
+
+::: tip
+
+只有被 Nest 容器管理的 provider 才能自动执行这些生命周期钩子。异步钩子可以返回 `Promise`，Nest 会等待它完成。
 
 :::
 
@@ -200,7 +323,7 @@ npm i -D @types/multer
 
 其中前两种是 `url` 中的：
 
-`url param：` `url` 中的参数，`Nest` 中使用 `@Param `来取。
+`url param：` `url` 中的参数，`Nest` 中使用 `@Param`来取。
 
 ` query：``url ` 中 ? 后的字符串，`Nest` 中使用`@Query`来取。
 
@@ -211,32 +334,3 @@ npm i -D @types/multer
 `json：` `json` 格式的数据。`Nest` 中使用 `@Body` 来取，`axios` 中不需要单独指定 `content type`，`axios` 内部会处理。
 
 `form data：`通过 ----- 作为 `boundary` 分隔的数据。主要用于传输文件，`Nest` 中要使用 `FilesInterceptor` 来处理其中的 `binary` 字段，用 `@UseInterceptors` 来启用，其余字段用 `@Body` 来取。`axios` 中需要指定 `content type` 为 `multipart/form-data`，并且用 `FormData` 对象来封装传输的内容。
-
-## `Nest` 装饰器
-
-- `@Module`： 声明 `Nest` 模块
-- `@Controller`：声明模块里的 `controller`
-  > 控制器的目的是接收应用的特定请求。路由机制控制哪个控制器接收哪些请求。通常，每个控制器有多个路由，不同的路由可以执行不同的操作。
-- `@Injectable`：声明模块里可以注入的 `provider`
-- `@Inject`：通过 `token` 手动指定注入的 `provider`，`token` 可以是 `class` 或者 `string`
-- `@Optional`：声明注入的 `provider` 是可选的，可以为空
-- `@Global`：声明全局模块
-- `@Catch`：声明 `exception filter` 处理的 `exception` 类型
-- `@UseFilters`：路由级别使用 `exception filter`
-- `@UsePipes`：路由级别使用 `pipe`
-- `@UseInterceptors`：路由级别使用 `interceptor`
-- `@SetMetadata`：在 `class` 或者 `handler` 上添加 `metadata`
-- `@Get`、`@Post`、`@Put`、`@Delete`、`@Patch`、`@Options`、`@Head`：声明 `get`、`post`、`put`、`delete`、`patch`、`options`、`head` 的请求方式
-- `@Param`：取出 `url` 中的参数，比如 `/aaa/:id` 中的 `id`
-- `@Query`: 取出 `query` 部分的参数，比如 `/aaa?name=xx` 中的 `name`
-- `@Body`：取出请求 `body`，通过 `dto class` 来接收
-- `@Headers`：取出某个或全部请求头
-- `@Session`：取出 `session` 对象，需要启用 `express-session` 中间件
-- `@HostParm`： 取出 `host` 里的参数
-- `@Req`、`@Request`：注入 `request` 对象
-- `@Res`、`@Response`：注入 `response` 对象，一旦注入了这个 Nest 就不会把返回值作为响应了，除非指定 `passthrough` 为 `true`
-- `@Next`：注入调用下一个 `handler` 的 `next` 方法
-- `@HttpCode`： 修改响应的状态码
-- `@Header`：修改响应头
-- `@Redirect`：指定重定向的 `url`
-- `@Render`：指定渲染用的模版引擎

@@ -13,7 +13,7 @@ export default defineConfig({
 
   lang: 'zh-CN',
   title: 'SteinsGate',
-  description: '包含前端常用知识、源码阅读笔记、日常遇到的问题等',
+  description: '包含常用知识、源码阅读笔记、日常遇到的问题等',
   head,
 
   lastUpdated: true,

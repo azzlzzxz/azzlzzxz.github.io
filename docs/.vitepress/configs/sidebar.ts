@@ -188,6 +188,8 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: '基础知识', link: '/node/nest/base' },
         { text: 'IOC', link: '/node/nest/ioc' },
         { text: 'AOP', link: '/node/nest/aop' },
+        { text: '装饰器', link: '/node/nest/decorator' },
+        { text: 'Rxjs', link: '/node/nest/rxjs' },
       ],
     },
     // {
@@ -197,6 +199,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     //   text: 'Koa',
     // },
   ],
+
   '/frame/react/': [
     {
       text: 'React',
@@ -224,6 +227,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+
   '/frame/next/': [
     {
       text: 'Next',
@@ -234,6 +238,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+
   '/frame/react-native/': [
     {
       text: 'ReactNative',
@@ -245,6 +250,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+
   '/frame/electron/': [
     {
       text: 'Electron',
@@ -256,6 +262,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+
   '/rsource/': [
     { text: 'React 18 的新特性', link: '/rsource/newFeature' },
     {
@@ -324,6 +331,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       ],
     },
   ],
+
   // '/vsource/': [
   //   {
   //     text: 'Vue3源码',
@@ -331,6 +339,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   //     items: [{ text: 'Effect', link: 'vsource/vue/effect' }],
   //   },
   // ],
+
   '/capital/': [
     {
       text: '工程化',
@@ -373,7 +382,16 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         },
         {
           text: 'Docker',
-          link: '/capital/deploy/docker/base',
+          collapsed: false,
+          items: [
+            { text: 'Docker 概念', link: '/capital/deploy/docker/base' },
+            { text: 'Dockerfile', link: '/capital/deploy/docker/file' },
+            { text: 'Docker Compose', link: '/capital/deploy/docker/compose' },
+          ],
+        },
+        {
+          text: 'PM2',
+          link: '/capital/deploy/pm2.md',
         },
       ],
     },

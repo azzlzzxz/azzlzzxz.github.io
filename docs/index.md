@@ -4,15 +4,15 @@ layoutClass: 'm-home-layout'
 
 hero:
   name: Steins Gate
-  text: 前端知识记录
+  text: 知识记录
   tagline: Knowledge is power
   image:
     src: /logo.jpg
     alt: Steins Gate
   actions:
-    - text: 前端知识
+    - text: 知识
       link: /base/javaScript/dataType
-    - text: 前端导航
+    - text: 导航
       link: /nav
       theme: alt
 features:

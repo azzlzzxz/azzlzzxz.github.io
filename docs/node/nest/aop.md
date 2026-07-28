@@ -16,6 +16,8 @@
 
 ## `Nest`实现`AOP`的方式
 
+![nest核心机制](./img/node-nest-core.png)
+
 ### `Middleware` 中间件
 
 中间件是在路由处理程序 之前 调用的函数。 中间件函数可以访问请求和响应对象，以及应用程序请求响应周期中的 `next()` 中间件函数。 `next()` 中间件函数通常由名为 `next` 的变量表示。
@@ -344,6 +346,216 @@ bootstrap()
 - `ParseFilePipe`
   他们从 `@nestjs/common` 包中导出。
 
+## 内置 Pipe 示例
+
+内置 Pipe 可以直接写在控制器参数后面。请求参数通常都是字符串，Pipe 会先完成转换或校验，再把处理后的值传给方法。
+
+### `ValidationPipe`
+
+根据 DTO 的校验规则检查请求体。常用于统一校验 `body`、`query` 和 `param`。
+
+```ts
+import { IsEmail, IsString, MinLength } from 'class-validator'
+
+export class CreateUserDto {
+  @IsString()
+  @MinLength(2)
+  name: string // 名称至少两个字符
+
+  @IsEmail()
+  email: string // 必须是合法邮箱
+}
+```
+
+```ts
+import { Body, Controller, Post, ValidationPipe } from '@nestjs/common'
+
+@Controller('user')
+export class UserController {
+  @Post()
+  create(@Body(new ValidationPipe()) body: CreateUserDto) {
+    return body // 校验通过后才会进入这里
+  }
+}
+```
+
+如果希望所有接口都自动进行 DTO 校验，可以在 `main.ts` 中注册全局 `ValidationPipe`。这样控制器中就不需要为每个 `@Body()` 单独传入 `new ValidationPipe()`。
+
+```ts
+// main.ts
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule)
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // 自动把请求参数转换成 DTO 声明的类型
+      whitelist: true, // 删除 DTO 中没有声明的字段
+      forbidNonWhitelisted: true, // 存在多余字段时直接返回 400
+    }),
+  )
+
+  await app.listen(3000)
+}
+
+bootstrap()
+```
+
+控制器只需要声明 DTO 类型：
+
+```ts
+@Post()
+create(@Body() body: CreateUserDto) {
+  return body
+}
+```
+
+例如发送下面的请求：
+
+```json
+{
+  "name": "张三",
+  "email": "zhangsan@example.com",
+  "extra": "不允许的字段"
+}
+```
+
+由于开启了 `forbidNonWhitelisted`，请求会被拦截并返回 `400 Bad Request`。如果只配置 `whitelist: true`，`extra` 字段会被自动删除，其他合法字段继续传给控制器。
+
+### `ParseIntPipe`
+
+把字符串转换成整数。如果参数不是整数，就返回 `400 Bad Request`。
+
+```ts
+import { Get, Param, ParseIntPipe } from '@nestjs/common'
+
+@Get(':id')
+findOne(@Param('id', ParseIntPipe) id: number) {
+  return { id, type: typeof id } // /user/12 -> { id: 12, type: 'number' }
+}
+```
+
+### `ParseFloatPipe`
+
+把字符串转换成浮点数，适合价格、距离等可以包含小数的参数。
+
+```ts
+import { Get, ParseFloatPipe, Query } from '@nestjs/common'
+
+@Get('nearby')
+findNearby(@Query('distance', ParseFloatPipe) distance: number) {
+  return { distance } // /user/nearby?distance=1.5 -> { distance: 1.5 }
+}
+```
+
+### `ParseBoolPipe`
+
+把字符串 `true` 或 `false` 转换成布尔值。
+
+```ts
+import { Get, ParseBoolPipe, Query } from '@nestjs/common'
+
+@Get()
+findAll(@Query('enabled', ParseBoolPipe) enabled: boolean) {
+  return { enabled } // ?enabled=true -> { enabled: true }
+}
+```
+
+### `ParseArrayPipe`
+
+把请求参数解析成数组。下面的配置表示使用逗号分隔参数，并将每一项转换成数字。
+
+```ts
+import { Get, ParseArrayPipe, Query } from '@nestjs/common'
+
+@Get('batch')
+findBatch(
+  @Query('ids', new ParseArrayPipe({ items: Number, separator: ',' }))
+  ids: number[],
+) {
+  return ids // ?ids=1,2,3 -> [1, 2, 3]
+}
+```
+
+### `ParseUUIDPipe`
+
+校验参数是否为合法 UUID，适合用户 ID、订单 ID 等使用 UUID 的接口。
+
+```ts
+import { Get, Param, ParseUUIDPipe } from '@nestjs/common'
+
+@Get('uuid/:id')
+findByUuid(
+  @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+) {
+  return { id } // 不是 UUID v4 时会抛出 400 异常
+}
+```
+
+### `ParseEnumPipe`
+
+校验参数是否属于指定枚举，并将错误参数拦截下来。
+
+```ts
+import { Get, ParseEnumPipe, Query } from '@nestjs/common'
+
+enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+@Get('sort')
+sort(@Query('order', new ParseEnumPipe(SortOrder)) order: SortOrder) {
+  return { order } // ?order=asc 可以通过，?order=random 会失败
+}
+```
+
+### `DefaultValuePipe`
+
+当参数没有传递时提供默认值。它通常和其他转换 Pipe 连用。
+
+```ts
+import { DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common'
+
+@Get()
+findAll(
+  @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+) {
+  return { page } // 不传 page 时使用 1，传 page=2 时得到 2
+}
+```
+
+### `ParseFilePipe`
+
+校验上传文件，例如限制文件大小和文件类型。
+
+```ts
+import {
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  UploadedFile,
+} from '@nestjs/common'
+
+@Post('avatar')
+upload(
+  @UploadedFile(
+    new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 2 * 1024 * 1024 }), // 最大 2 MB
+        new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }), // 只允许图片
+      ],
+    }),
+  )
+  file: Express.Multer.File,
+) {
+  return { filename: file.originalname }
+}
+```
+
 `nest cli` 创建个 `pipe`
 
 ```shell
@@ -464,4 +676,4 @@ import { TestFilter } from './test.filter';
 
 ![aop_sort](https://steinsgate.oss-cn-hangzhou.aliyuncs.com/aop_sort.jpg)
 
-`Middleware` 是 `Express` 的概念，在最外层，到了某个路由之后，会先调用 `Guard`，`Guard `用于判断路由有没有权限访问，然后会调用 `Interceptor`，对 `Contoller` 前后扩展一些逻辑，在到达目标 `Controller` 之前，还会调用 `Pipe` 来对参数做检验和转换。所有的 `HttpException` 的异常都会被 `ExceptionFilter` 处理，返回不同的响应。
+`Middleware` 是 `Express` 的概念，在最外层，到了某个路由之后，会先调用 `Guard`，`Guard`用于判断路由有没有权限访问，然后会调用 `Interceptor`，对 `Contoller` 前后扩展一些逻辑，在到达目标 `Controller` 之前，还会调用 `Pipe` 来对参数做检验和转换。所有的 `HttpException` 的异常都会被 `ExceptionFilter` 处理，返回不同的响应。

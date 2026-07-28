@@ -1,4 +1,4 @@
-# Steins Gate 的前端知识记录
+# Steins Gate 的知识记录
 
 - 前端知识
   - JavaScript

@@ -55,6 +55,22 @@ export const nav: DefaultTheme.Config['nav'] = [
     activeMatch: '^/node',
   },
   {
+    text: '后端知识',
+    items: [
+      {
+        text: '数据库',
+        items: [
+          { text: 'MySQL', link: '/backend/mysql/base' },
+          { text: 'Redis', link: '/backend/redis/base' },
+        ],
+      },
+    ],
+  },
+  {
+    text: 'AI',
+    items: [],
+  },
+  {
     text: '框架&源码',
     items: [
       {

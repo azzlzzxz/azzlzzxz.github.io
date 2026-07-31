@@ -190,6 +190,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         { text: 'AOP', link: '/node/nest/aop' },
         { text: '装饰器', link: '/node/nest/decorator' },
         { text: 'Rxjs', link: '/node/nest/rxjs' },
+        { text: 'TypeOrm', link: '/node/nest/typeorm' },
       ],
     },
     // {
@@ -471,6 +472,23 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       text: '企业微信',
       collapsed: false,
       items: [{ text: '企微侧边栏', link: '/wx/qw/side' }],
+    },
+  ],
+  '/backend/': [
+    {
+      text: 'MySQL',
+      collapsed: false,
+      items: [
+        { text: 'SQL 基础', link: '/backend/mysql/base' },
+        { text: 'SQL 表关系', link: '/backend/mysql/relation' },
+        { text: 'SQL 子查询与 `EXISTS`', link: '/backend/mysql/subquery' },
+        { text: 'SQL 事务', link: '/backend/mysql/business' },
+      ],
+    },
+    {
+      text: 'Redis',
+      collapsed: false,
+      items: [{ text: 'redis 基础', link: '/backend/redis/base' }],
     },
   ],
 }

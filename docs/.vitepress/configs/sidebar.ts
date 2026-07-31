@@ -488,7 +488,11 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     {
       text: 'Redis',
       collapsed: false,
-      items: [{ text: 'redis 基础', link: '/backend/redis/base' }],
+      items: [
+        { text: 'Redis 基础与命令', link: '/backend/redis/base' },
+        { text: 'Redis 常见业务用法', link: '/backend/redis/usage' },
+        { text: 'Redis 可靠性与性能', link: '/backend/redis/reliability' },
+      ],
     },
   ],
 }
